@@ -1,6 +1,7 @@
 ﻿using PC.DAL.Conference;
 using PC.IBLL.Conferences;
 using PC.IDAL.Conference;
+using PC.Model.Models;
 using PC.Model.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -15,9 +16,18 @@ namespace PC.BLL.Conferences
         {
             _dal = dal;
         }
+        //会议显示
         public List<ConferenceShow> ShowConference()
         {
             return _dal.ShowConference();
         }
+        //添加会议
+        public int AddConference(ConferenceTableModel c)
+        {
+
+            return _dal.AddConference(c);
+        }
+
+
     }
 }
