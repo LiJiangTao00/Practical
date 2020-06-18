@@ -13,8 +13,8 @@ namespace PC.MVC.Controllers.MaterialManagement
 {
     public class MaterialController : Controller
     {
-
-        public IActionResult Index()
+        
+        public IActionResult ShowMaterial()
         {
             return View();
         }

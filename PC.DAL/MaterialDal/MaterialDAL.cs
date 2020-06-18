@@ -12,7 +12,7 @@ namespace PC.DAL.MaterialDal
     public class MaterialDAL : IMaterialDAL  // 接口
     {
         //连接数据库
-        SqlConnection conn = new SqlConnection("Data Source=192.168.43.93;Initial Catalog=Practial;User ID=sa");
+        SqlConnection conn = new SqlConnection("Data Source=192.168.43.93;Initial Catalog=Practial;User ID=sa;pwd=12345");
 
         /// <summary>
         /// 显示物料信息
@@ -29,7 +29,7 @@ namespace PC.DAL.MaterialDal
         /// <returns></returns>
         public List<MaterialTypeTableModel> GetTypes()
         {
-            return conn.Query<MaterialTypeTableModel>("select * from MaterialType").ToList();
+            return conn.Query<MaterialTypeTableModel>("select * from MaterialTypeTable").ToList();
         }
     }
 }

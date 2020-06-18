@@ -9,6 +9,7 @@ using PC.IDAL.IMaterialDAL;
 using PC.DAL.MaterialDal;
 using PC.IBLL.MaterialBLL;
 using PC.BLL.MaterialBll;
+using Microsoft.AspNetCore.Routing;
 
 namespace PC.API.Controllers.MaterialManagement
 {
@@ -29,7 +30,8 @@ namespace PC.API.Controllers.MaterialManagement
         /// 显示物料信息
         /// </summary>
         /// <returns></returns>
-        [HttpGet("ShowMaterial")]
+        [Route("ShowMaterial")]
+        [HttpGet]
         public List<MaterialTableModel> ShowMaterial()
         {
             return _bll.ShowMaterial();
@@ -39,7 +41,8 @@ namespace PC.API.Controllers.MaterialManagement
         /// 显示物料下拉信息
         /// </summary>
         /// <returns></returns>
-        [HttpGet("GetTypes")]
+        [Route("GetTypes")]
+        [HttpGet]
         public List<MaterialTypeTableModel> GetTypes()
         {
             return _bll.GetTypes();
