@@ -16,4 +16,8 @@
     <ProjectReference Include="..\PC.Model\PC.Model.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Images\" />
+  </ItemGroup>
+
 </Project>
