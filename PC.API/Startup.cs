@@ -13,6 +13,10 @@ using PC.IDAL.IMaterialDAL;
 using PC.DAL.MaterialDal;
 using PC.IBLL.MaterialBLL;
 using PC.BLL.MaterialBll;
+using PC.IDAL.Conference;
+using PC.DAL.Conference;
+using PC.IBLL.Conferences;
+using PC.BLL.Conferences;
 
 namespace PC.API
 {
@@ -31,6 +35,9 @@ namespace PC.API
             services.AddControllers();
             services.AddSingleton<IMaterialDAL, MaterialDAL>();
             services.AddSingleton<IMaterialBLL,MaterialBLL>();
+
+            services.AddSingleton<IConferenceDal, ConferenceDal>();
+            services.AddSingleton<IConferenceBll, ConferenceBll>();
             //配置跨域处理，允许所有来源：
             services.AddCors(options =>
             options.AddPolicy("cor",

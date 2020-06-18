@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\PC.Common\PC.Common.csproj" />
     <ProjectReference Include="..\PC.DAL\PC.DAL.csproj" />
     <ProjectReference Include="..\PC.IDAL\PC.IDAL.csproj" />
     <ProjectReference Include="..\PC.Model\PC.Model.csproj" />
