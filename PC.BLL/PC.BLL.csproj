@@ -4,4 +4,16 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Dapper" Version="2.0.35" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PC.DAL\PC.DAL.csproj" />
+    <ProjectReference Include="..\PC.IBLL\PC.IBLL.csproj" />
+    <ProjectReference Include="..\PC.IDAL\PC.IDAL.csproj" />
+    <ProjectReference Include="..\PC.Model\PC.Model.csproj" />
+  </ItemGroup>
+
 </Project>
