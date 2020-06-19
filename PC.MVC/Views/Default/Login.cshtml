@@ -10,7 +10,83 @@
     <meta name="viewport" content="width=device-width" />
     <title>Login</title>
 </head>
-<body style="background: url(/img/Login.jpg)">
+<body style="background: url(/wwwroot/img/Login.jpg);background-size:cover">
+
+    <table>
+        <tr>
+            <td>手机号</td>
+            <td>
+                <input id="User_Phone" type="text" />
+            </td>
+        </tr>
+        <tr>
+            <td>验证码</td>
+            <td>
+                <input id="MessageText" type="text" />
+            </td>
+        </tr>
+        <tr>
+            <td>登录密码</td>
+            <td>
+                <input id="User_Pwd" type="password" />
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <input type="button" value="登录" onclick="Login()" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+            </td>
+            <td>
+                <a href="Default/forget">忘记密码</a>
+            </td>
+        </tr>
+    </table>
 </body>
 </html>
+<link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
 <script src="~/lib/jquery/dist/jquery.js"></script>
+<style>
+    table {
+        margin: auto;
+    }
+
+    body {
+        text-align: center;
+    }
+</style>
+<script>
+    function Login() {
+        var User_Phone = $('#User_Phone').val();
+        var User_Pwd = $('#User_Pwd').val();
+        $.ajax({
+            url: "http://localhost:49764/api/user/Login?User_Phone=" + User_Phone + "&User_Pwd=" + User_Pwd,
+            type: "get",
+            success: function (data) {
+                console.log(data);
+                if (data >0) {
+                    alert("OK");
+                    ShowName(User_Phone);
+                    if (localStorage["Name"] != "") {
+                        location.href = "/default/index";
+                    }
+                }
+            }
+        })
+    }
+    function ShowName(phone) {
+        $.ajax({
+            url: "http://localhost:49764/api/user/SelectName?User_Phone=" + phone,
+            type: "get",
+            dataType:"json",
+            success: function (data) {
+                console.log(data);
+                if (data != null || data != "") {
+                    localStorage["Name"] = data;
+                }
+            }
+        })
+    }
+</script>
