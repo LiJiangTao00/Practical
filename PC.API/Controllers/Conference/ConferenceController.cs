@@ -12,10 +12,10 @@ namespace PC.API.Controllers.Conference
 {
     [Route("api/[Controller]/[Action]")]
     [ApiController]
-    public class ConferenceController : ControllerBase
+    public class ActivityController : ControllerBase
     {
         public IConferenceBll _bll;
-        public ConferenceController(IConferenceBll bll)
+        public ActivityController(IConferenceBll bll)
         {
 
             _bll = bll;
