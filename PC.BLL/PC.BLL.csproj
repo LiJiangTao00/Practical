@@ -10,6 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\PC.Common\PC.Common.csproj" />
     <ProjectReference Include="..\PC.DAL\PC.DAL.csproj" />
     <ProjectReference Include="..\PC.IBLL\PC.IBLL.csproj" />
     <ProjectReference Include="..\PC.IDAL\PC.IDAL.csproj" />

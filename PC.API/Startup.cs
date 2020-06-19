@@ -13,6 +13,10 @@ using PC.IDAL.IMaterialDAL;
 using PC.DAL.MaterialDal;
 using PC.IBLL.MaterialBLL;
 using PC.BLL.MaterialBll;
+using PC.IDAL.Conference;
+using PC.DAL.Conference;
+using PC.IBLL.Conferences;
+using PC.BLL.Conferences;
 
 namespace PC.API
 {
@@ -31,17 +35,17 @@ namespace PC.API
             services.AddControllers();
             services.AddSingleton<IMaterialDAL, MaterialDAL>();
             services.AddSingleton<IMaterialBLL,MaterialBLL>();
-            //配置跨域处理，允许所有来源：
-            services.AddCors(options =>
-            options.AddPolicy("cor",
-            p => p.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod())
-            );
+
+            services.AddSingleton<IConferenceDal, ConferenceDal>();
+            services.AddSingleton<IConferenceBll, ConferenceBll>();
+            services.AddCors(options => options.AddPolicy("cors", options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app.UseCors("cor");
+            app.UseCors("cors");
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
