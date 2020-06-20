@@ -8,9 +8,10 @@ namespace PC.MVC.Controllers.Conference
 {
     public class ConferenceController : Controller
     {
-        public IActionResult Index()
+        public IActionResult ShowConference()
         {
             return View();
+
         }
     }
 }

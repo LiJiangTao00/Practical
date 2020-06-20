@@ -12,11 +12,12 @@ namespace PC.API.Controllers.Conference
 {
     [Route("api/[Controller]/[Action]")]
     [ApiController]
-    public class ActivityController : ControllerBase
+    public class ConferenceController : ControllerBase
     {
         public IConferenceBll _bll;
-        public ActivityController(IConferenceBll bll)
+        public ConferenceController(IConferenceBll bll)
         {
+
 
             _bll = bll;
         }
@@ -28,6 +29,13 @@ namespace PC.API.Controllers.Conference
         public List<ConferenceShow> ShowConference()
         {
             return _bll.ShowConference();
+
+        }
+        [HttpPost]
+        public List<ConferenceShow> SearchConference(DateTime condate, string conplace, string constate, string conname, int conproduct)
+        {
+
+            return _bll.SearchConference(condate, conplace, constate, conname, conproduct);
 
         }
         /// <summary>
