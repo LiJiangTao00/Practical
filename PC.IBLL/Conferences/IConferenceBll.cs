@@ -12,6 +12,7 @@ namespace PC.IBLL.Conferences
         List<ConferenceShow> ShowConference();
         //添加会议
         int AddConference(ConferenceTableModel c);
-
+        //查询会议
+        List<ConferenceShow> SearchConference(DateTime condate, string conplace, string constate, string conname, int conproduct);
     }
 }
