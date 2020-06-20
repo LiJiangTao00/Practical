@@ -35,5 +35,17 @@ namespace PC.BLL.MaterialBll
         {
             return _dal.GetTypes();
         }
+
+        /// <summary>
+        /// 多条件查询物料信息
+        /// </summary>
+        /// <param name="materialid"></param>
+        /// <param name="materialname"></param>
+        /// <param name="materialprice"></param>
+        /// <returns></returns>
+        public List<MaterialTableModel> SelMaterial(string Materialid, string Materialname, float Materialprice, float Materialprice1)
+        {
+            return _dal.SelMaterial(Materialid, Materialname, Materialprice,Materialprice1);
+        }
     }
 }
