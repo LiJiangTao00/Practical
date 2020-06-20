@@ -4,19 +4,15 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
-namespace PC.MVC.Controllers
+namespace PC.MVC.Controllers.UserInfo
 {
-    public class DefaultController : Controller
+    public class UserController : Controller
     {
-        public IActionResult Index()
+        public IActionResult ShowList()
         {
             return View();
         }
-        public IActionResult Login()
-        {
-            return View();
-        }
-        public IActionResult Forget()
+        public IActionResult ShowJob()
         {
             return View();
         }

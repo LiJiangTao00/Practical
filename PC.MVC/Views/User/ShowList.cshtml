@@ -1,0 +1,66 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>用户列表</title>
+</head>
+<body>
+    <div>
+        <select id="ShowDepartment">
+        </select>
+        <select id="ShowProvince">
+        </select>
+        <select id="ShowCity">
+        </select>
+        <select id="ShowDistrict">
+        </select>
+        <select id="ShowJob">
+        </select>
+        <input id="txt_Sel" type="text" placeholder="输入手机号或姓名或工号" />
+        <input type="button" value="筛选" onclick="Select()" />
+    </div>
+    <div>
+        <div>
+            <input type="button" value="添加" />
+            <input type="button" value="导入" />
+            <input type="button" value="导出" />
+            <input type="button" value="修改职务" />
+            <input type="button" value="修改部门" />
+            <input type="button" value="停用用户" />
+            <input type="button" value="冻结用户" />
+        </div>
+        <div>
+            <input type="button" value="全部" style="background-color: Transparent; border-style: none;" />
+            <input type="button" value="CV组" style="background-color: Transparent; border-style: none;" />
+            <input type="button" value="DIA组" style="background-color: Transparent; border-style: none;" />
+            <input type="button" value="社区组" style="background-color: Transparent; border-style: none;" />
+        </div>
+        <table class="layui-hide" id="test"></table>
+    </div>
+</body>
+</html>
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<link href="~/layuiadmin/layui/css/layui.css" rel="stylesheet" />
+<link href="~/layuiadmin/style/admin.css" rel="stylesheet" />
+<script src="~/layuiadmin/layui/layui.js"></script>
+<script>
+    $(function () {
+        ShowDepartment();
+    })
+    function ShowDepartment() {
+        $.ajax({
+            url: "http://localhost:49764/api/user/ShowDepartment",
+            type: "get",
+            dataType: "json",
+            success: function (data) {
+                console.log(data);
+            }
+        })
+    }
+</script>

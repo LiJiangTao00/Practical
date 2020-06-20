@@ -9,9 +9,9 @@ namespace PC.IBLL.Conferences
     public interface IConferenceBll
     {
         //会议显示
-        public List<ConferenceShow> ShowConference();
+        List<ConferenceShow> ShowConference();
         //添加会议
-        public int AddConference(ConferenceTableModel c);
+        int AddConference(ConferenceTableModel c);
 
     }
 }

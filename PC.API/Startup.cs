@@ -17,6 +17,10 @@ using PC.IDAL.Conference;
 using PC.DAL.Conference;
 using PC.IBLL.Conferences;
 using PC.BLL.Conferences;
+using PC.IBLL.UserIBLL;
+using PC.IDAL.UserIDAL;
+using PC.BLL.UserBLL;
+using PC.DAL.UserDAL;
 
 namespace PC.API
 {
@@ -38,6 +42,8 @@ namespace PC.API
 
             services.AddSingleton<IConferenceDal, ConferenceDal>();
             services.AddSingleton<IConferenceBll, ConferenceBll>();
+            services.AddSingleton<IUBLL, UBLL>();
+            services.AddSingleton<IUDAL, UDAL>();
             services.AddCors(options => options.AddPolicy("cors", options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
 
         }

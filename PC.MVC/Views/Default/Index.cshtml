@@ -31,7 +31,7 @@
                 <ul class="layui-nav layui-layout-right" lay-filter="layadmin-layout-right">
                     <li class="layui-nav-item" lay-unselect>
                         <a href="javascript:;">
-                            <cite>登录人</cite>
+                            <div id="Name"></div>
                         </a>
                     </li>
                     <li class="layui-nav-item layui-hide-xs" lay-unselect>
@@ -41,7 +41,7 @@
                     </li>
                     <li class="layui-nav-item" lay-unselect>
                         <a href="javascript:;">
-                            <cite>退出1</cite>
+                            <cite>退出</cite>
                         </a>
                     </li>
 
@@ -120,10 +120,10 @@
                             </a>
                             <dl class="layui-nav-child">
                                 <dd data-name="console" class="layui-this">
-                                    <a lay-href="">用户列表</a>
+                                    <a lay-href="/User/ShowList">用户列表</a>
                                 </dd>
                                 <dd data-name="console">
-                                    <a lay-href="">职务权限</a>
+                                    <a lay-href="/User/ShowJob">职务权限</a>
                                 </dd>
 
                             </dl>
@@ -282,7 +282,7 @@
             <div class="layadmin-body-shade" layadmin-event="shade"></div>
         </div>
     </div>
-    <script src="~/lib/jquery/dist/jquery.js"></script>
+    
     <script>
         layui.config({
             base: '../layuiadmin/' //静态资源所在路径
@@ -292,5 +292,11 @@
     </script>
 </body>
 </html>
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script>
+    $(function () {
+        $('#Name').html(localStorage["Name"]);
+    })
+</script>
 
 
