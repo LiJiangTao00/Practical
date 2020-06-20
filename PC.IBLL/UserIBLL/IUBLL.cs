@@ -12,6 +12,9 @@ namespace PC.IBLL.UserIBLL
         int Forget(UserTableModel m);
         string SelectName(string user_Phone);
         List<DepartmentTableModel> ShowDepartment();
-        List<UserShowModel> ShowUser();
+        List<UserShowModel> ShowUser(int did, int pid, int cid, int dis, int jid, string name);
+        List<PlaceTableModel> ShowProvince(int id);
+        List<JobTableModel> ShowJob();
+        List<UserShowModel> SelectUser(int id);
     }
 }

@@ -11,7 +11,8 @@ namespace PC.Common.Helpers
     {
         public List<T> Query(string sql)
         {
-            using(SqlConnection con = new SqlConnection(@"Data Source=192.168.43.93;Initial Catalog=Practial;User ID=sa;Pwd=12345"))
+            ///Data Source=192.168.43.93;Initial Catalog=Practial;User ID=sa;Pwd=12345
+            using (SqlConnection con = new SqlConnection(@"Data Source=192.168.1.117;Initial Catalog=Practial;User ID=sa;Pwd=12345"))
             {
                 List<T> list = con.Query<T>(sql).ToList();
                 return list;
@@ -19,10 +20,17 @@ namespace PC.Common.Helpers
         }
         public int Execute(string sql)
         {
-            using (SqlConnection con = new SqlConnection(@"Data Source=192.168.43.93;Initial Catalog=Practial;User ID=sa;Pwd=12345"))
+            using (SqlConnection con = new SqlConnection(@"Data Source=192.168.1.117;Initial Catalog=Practial;User ID=sa;Pwd=12345"))
             {
                 int res = con.Execute(sql);
                 return res;
+            }
+        }
+        public T ShowProc(string proc, DynamicParameters par)
+        {
+            using (SqlConnection con = new SqlConnection(@"Data Source=192.168.1.117;Initial Catalog=Practial;User ID=sa;Pwd=12345"))
+            {
+                return con.Query<T>(proc, par, commandType: System.Data.CommandType.StoredProcedure).FirstOrDefault();
             }
         }
     }

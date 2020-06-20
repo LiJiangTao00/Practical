@@ -31,7 +31,7 @@
                 <ul class="layui-nav layui-layout-right" lay-filter="layadmin-layout-right">
                     <li class="layui-nav-item" lay-unselect>
                         <a href="javascript:;">
-                            <div id="Name"></div>
+                            <label id="Name">登录人</label>
                         </a>
                     </li>
                     <li class="layui-nav-item layui-hide-xs" lay-unselect>
@@ -295,6 +295,7 @@
 <script src="~/lib/jquery/dist/jquery.js"></script>
 <script>
     $(function () {
+        console.log(localStorage["Name"]);
         $('#Name').html(localStorage["Name"]);
     })
 </script>

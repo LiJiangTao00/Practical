@@ -40,9 +40,24 @@ namespace PC.API.Controllers.UserInfo
             return _bll.ShowDepartment();
         }
         [HttpGet]
-        public List<UserShowModel> ShowUser()
+        public List<PlaceTableModel> ShowProvince(int pid=0)
         {
-            return _bll.ShowUser();
+            return _bll.ShowProvince(pid);
+        }
+        [HttpGet]
+        public List<UserShowModel> ShowUser(int did,int pid,int cid,int dis,int jid,string name)
+        {
+            return _bll.ShowUser(did,pid,cid,dis,jid,name);
+        }
+        [HttpGet]
+        public List<UserShowModel> SelectUser(int id)
+        {
+            return _bll.SelectUser(id);
+        }
+        [HttpGet]
+        public List<JobTableModel> ShowJob()
+        {
+            return _bll.ShowJob();
         }
     }
 }

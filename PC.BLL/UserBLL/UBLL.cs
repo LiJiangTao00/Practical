@@ -31,13 +31,29 @@ namespace PC.BLL.UserBLL
             return _dal.SelectName(user_Phone);
         }
 
+        public List<UserShowModel> SelectUser(int id)
+        {
+            return _dal.SelectUser(id);
+        }
+
         public List<DepartmentTableModel> ShowDepartment()
         {
             return _dal.ShowDepartment();
         }
-        public List<UserShowModel> ShowUser()
+
+        public List<JobTableModel> ShowJob()
         {
-            return _dal.ShowUser();
+            return _dal.ShowJob();
+        }
+
+        public List<PlaceTableModel> ShowProvince(int id)
+        {
+            return _dal.ShowProvince(id);
+        }
+
+        public List<UserShowModel> ShowUser(int did, int pid, int cid, int dis, int jid, string name)
+        {
+            return _dal.ShowUser(did, pid, cid, dis, jid, name);
         }
     }
 }
