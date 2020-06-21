@@ -45,9 +45,15 @@ namespace PC.API.Controllers.UserInfo
             return _bll.ShowProvince(pid);
         }
         [HttpGet]
-        public List<UserShowModel> ShowUser(int did,int pid,int cid,int dis,int jid,string name)
+        public GetPage<UserShowModel> ShowUser(int product,int did,int pid,int cid,int dis,int jid,string name)
         {
-            return _bll.ShowUser(did,pid,cid,dis,jid,name);
+            List<UserShowModel> list = _bll.ShowUser(product, did, pid, cid, dis, jid, name);
+            GetPage<UserShowModel> page = new GetPage<UserShowModel>
+            {
+                Model = list1,
+                Total = list.Count()
+            };
+            return page;
         }
         [HttpGet]
         public List<UserShowModel> SelectUser(int id)

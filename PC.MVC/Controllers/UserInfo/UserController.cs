@@ -16,5 +16,9 @@ namespace PC.MVC.Controllers.UserInfo
         {
             return View();
         }
+        public IActionResult AddUser()
+        {
+            return View();
+        }
     }
 }

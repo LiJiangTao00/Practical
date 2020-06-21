@@ -52,7 +52,7 @@ namespace PC.DAL.UserDAL
             return pla.Query(sql);
         }
 
-        public List<UserShowModel> ShowUser(int did, int pid, int cid, int dis, int jid, string name)
+        public List<UserShowModel> ShowUser(int product, int did, int pid, int cid, int dis, int jid, string name)
         {
             DapperHelper<UserShowModel> helper = new DapperHelper<UserShowModel>();
             string sql = "select u.Id,u.User_Phone,u.User_Name,u.User_Id,u.User_AddTime,d.Department_Name,j.Job_Name,p.Product_Name from UserTable u join DepartmentTable d on u.User_Department = d.Id join JobTable j on u.User_Job = j.Id join ProductTable p on u.User_ProductId = p.Id";
@@ -92,6 +92,10 @@ namespace PC.DAL.UserDAL
                         sql += " and User_Id like '%" + name + "%'";
                         break;
                 }
+            }
+            if (product!=0)
+            {
+                sql += " and User_ProductId = "+product;
             }
             return helper.Query(sql);
         }

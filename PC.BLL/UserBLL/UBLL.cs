@@ -51,9 +51,9 @@ namespace PC.BLL.UserBLL
             return _dal.ShowProvince(id);
         }
 
-        public List<UserShowModel> ShowUser(int did, int pid, int cid, int dis, int jid, string name)
+        public List<UserShowModel> ShowUser(int product, int did, int pid, int cid, int dis, int jid, string name)
         {
-            return _dal.ShowUser(did, pid, cid, dis, jid, name);
+            return _dal.ShowUser(product,did, pid, cid, dis, jid, name);
         }
     }
 }
