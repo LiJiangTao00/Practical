@@ -36,10 +36,10 @@
             <input type="button" value="冻结用户" class="layui-btn layui-btn-primary" onclick="Freeze()"/>
         </div>
         <div>
-            <input type="button" value="全部" onclick="" style="background-color: Transparent; border-style: none;" />
-            <input type="button" value="CV组" onclick="" style="background-color: Transparent; border-style: none;" />
-            <input type="button" value="DIA组" onclick="" style="background-color: Transparent; border-style: none;" />
-            <input type="button" value="社区组" onclick="" style="background-color: Transparent; border-style: none;" />
+            <input type="text" value="全部" onclick="ShowAll(0)" style="background-color: Transparent; border-style: none;"/>全部
+            <input type="button" value="CV组" onclick="ShowAll(1)" style="background-color: Transparent; border-style: none;" />
+            <input type="button" value="DIA组" onclick="ShowAll(2)" style="background-color: Transparent; border-style: none;" />
+            <input type="button" value="社区组" onclick="ShowAll(3)" style="background-color: Transparent; border-style: none;" />
         </div>
         <table>
             <tr>
@@ -67,9 +67,13 @@
 <script>
     var str = "";
     var tab = "";
+    var total = 0;
     layui.use('layer', function () {
         var layer = layui.layer;
     });
+    function ShowAll(id) {
+        ShowList(id);
+    }
     $(function () {
         ShowDepartment();
     })
@@ -131,7 +135,7 @@
                 $('#ShowJob').append(str);
             }
         })
-        ShowList();
+        ShowList(0);
     }
     function ProvinceChange() {
         var pid = $('#ShowProvince').val();
@@ -165,7 +169,7 @@
             }
         })
     }
-    function ShowList() {
+    function ShowList(product) {
         var txt_Sel = $('#txt_Sel').val();
         var ShowDepartment = $('#ShowDepartment').val() == null ? 0 : $('#ShowDepartment').val();
         var ShowProvince = $('#ShowProvince').val() == null ? 0 : $('#ShowDepartment').val();
@@ -173,14 +177,15 @@
         var ShowDistrict = parseInt($('#ShowDistrict').val());
         var ShowJob = $('#ShowJob').val() == null ? 0 : $('#ShowDepartment').val();
         $.ajax({
-            url: "http://localhost:49764/api/user/ShowUser?did=" + ShowDepartment + "&pid=" + ShowCity + "&cid=" + ShowCity + "&dis=" + ShowDistrict + "&jid=" + ShowJob + "&name=" + txt_Sel,
+            url: "http://localhost:49764/api/user/ShowUser?product=" + product+"&did=" + ShowDepartment + "&pid=" + ShowCity + "&cid=" + ShowCity + "&dis=" + ShowDistrict + "&jid=" + ShowJob + "&name=" + txt_Sel,
             type: "get",
             dataType: "json",
             success: function (data) {
                 $('#tb').empty();
                 console.log(data);
+                total = data.total;
                 var str = '';
-                $.each(data, function (i, n) {
+                $.each(data.model, function (i, n) {
                     str += '<tr><td><input class="chk" type="checkbox" value="' + n.id
                         + '" /></td><td>' + n.user_Phone + '</td><td>' + n.user_Name + '</td><td>' + n.product_Name
                         + '</td><td>' + n.department_Name + '</td><td>' + n.job_Name + '</td><td>' + n.user_AddTime
@@ -189,9 +194,10 @@
                 $('#tb').append(str);
             }
         })
+        PageShow(total);
     }
     function Select() {
-        ShowList();
+        ShowList(0);
     }
     function Lok(id) {
         $.ajax({
@@ -231,5 +237,11 @@
             default:
                 break;
         }
+    }
+    function PageShow(total) {
+
+    }
+    function Add() {
+        location.href = "/user/AddUser";
     }
 </script>
