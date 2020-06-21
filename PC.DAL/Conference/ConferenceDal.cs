@@ -36,11 +36,11 @@ namespace PC.DAL.Conference
         /// <param name="conname">要查询的会议名称关键字</param>
         /// <param name="conproduct">要查询的会议产品组</param>
         /// <returns></returns>
-        public List<ConferenceShow> SearchConference(DateTime condate, string conplace, string constate, string conname, int conproduct=-1)
+        public SearchPageShowConference SearchConference(DateTime condate, string conplace, string constate, string conname, int conproduct=-1, int pageindex=1, int pagesize=2)
         {
             DapperHelper<ConferenceShow> SearchConferenceDapper = new DapperHelper<ConferenceShow>();
 
-            string sql = "select * from ConferenceTable join ConferenceTypeTable ct on Con_TypeId=ct.Id join ProductTable p on p.Id=Con_ProductId where 1=1";
+            string sql = "select * from(select ROW_NUMBER() over(order by ConferenceTable.ID) orderid,ConferenceTable.ID,Con_Name,Con_Place,Con_StartTime,Con_EndTime,Con_State,Con_ProductId,Product_Name from ConferenceTable join ConferenceTypeTable ct on Con_TypeId=ct.Id join ProductTable p on p.Id=Con_ProductId where 1=1";
             
             if (condate!=null)
             {
@@ -70,7 +70,14 @@ namespace PC.DAL.Conference
             {
                 sql += "and Con_ProductId=" + conproduct;
             }
-            return SearchConferenceDapper.Query(sql);
+            sql += "and where orderid between" + (pageindex - 1) * pagesize + 1 + " and  " + pageindex * pagesize;
+            List<ConferenceShow> list = new List<ConferenceShow>();
+            list = SearchConferenceDapper.Query(sql);
+            SearchPageShowConference PageShowData = new SearchPageShowConference();
+            PageShowData.PageShowConferenceList = list;
+            PageShowData.DataCount = list.Count;
+            PageShowData.PageSize = pagesize;
+            return PageShowData;
         }
 
 

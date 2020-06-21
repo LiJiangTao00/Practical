@@ -1,0 +1,122 @@
+﻿
+@{
+    Layout = null;
+}
+<script src="~/PlugIn/My97DatePicker/My97DatePicker/WdatePicker.js"></script>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<style>
+    table, table tr th, table tr td {
+        border: 1px solid black;
+    }
+
+        table tr td {
+            text-align: center;
+        }
+</style>
+<h1>筛选</h1>
+<div>
+    <table>
+        <tr>
+            <td>
+                <input id="Txt_condate" type="text" onclick="WdatePicker()" placeholder="输入会议日期" />
+            </td>
+            <td>
+                <input id="Txt_conplace" type="text" placeholder="输入会议地点" />
+            </td>
+            <td>
+                <select id="Sel_constate">
+                    <option data="">==请选择会议状态==</option>
+                    <option data="进行中">进行中</option>
+                    <option data="已结束">已结束</option>
+                    <option data="未开始">未开始</option>
+                </select>
+            </td>
+            <td>
+                <input id="Txt_conname" type="text" placeholder="输入会议名称关键字" />
+            </td>
+            <td>
+                <input id="Button1" type="button" value="筛选" />
+            </td>
+        </tr>
+    </table>
+</div>
+<table class="table table-hover" style="font-size: small;">
+    <tr>
+        <td><a href="#">全部</a></td>
+        <td colspan="2"><a href="#">CV组</a></td>
+        <td colspan="2"><a href="#">DIA组</a></td>
+        <td colspan="2"><a href="#">社区组</a></td>
+    </tr>
+    <tr>
+        <td>选择</td>
+        <td>会议名称</td>
+        <td>会议地点</td>
+        <td>会议日期</td>
+        <td>会议状态</td>
+        <td>产品组</td>
+        <td>操作</td>
+    </tr>
+    <tbody id="tb">
+    </tbody>
+
+</table>
+<script>
+    //显示物料信息
+    $(function () {
+        Show();
+    })
+    //ajax显示物料信息
+    function Show() {
+        $.ajax({
+            url: "http://localhost:49764/api/Conference/SearchConference",
+            data: {
+                condate: $("#Txt_condate").val(),                
+                conplace: $("#Txt_conplace").val(),
+                constate: $("#Sel_constate").val(),
+                conname: $("#Txt_conname").val(),
+                conproduct: -1,
+                pageindex: 2,
+                pagesize: 1,
+            },
+            dataType: "json",
+            type: "post",
+            success: function (d) {
+                console.log(d);
+                $("#tb").empty();
+                var myDate = new Date();
+                let nowTime = myDate.getTime();
+                console.log(nowTime)
+                $(d).each(function (i, k) {
+                    var newDateStart = new Date(k.con_StartTime);
+                    newDateStart = newDateStart.getTime();
+                    var newDateEnd = new Date(k.con_EndTime);
+                    newDateEndnewDate2 = newDateEnd.getTime();
+
+                    var list = `<tr> `
+                        + `<td><input id="Checkbox1" type="checkbox" name="ck_id" data="${k.id}" /></td>`
+                        + `<td>${k.con_Name}</td>`
+                        + `<td>${k.con_Place}</td>`
+                        + `<td>${k.con_StartTime}到${k.con_EndTime}</td>`
+                        + `<td>${nowTime > newDateEnd ? "已结束" : nowTime < newDateStart ? "未开始" : "进行中"}</td>`
+                        + `<td>${k.product_Name}</td>`
+                        + `<td><a lerf="#" OnClick="s(${k.id})">查看详情</a>
+                               <a lerf="#" OnClick="s(${k.id})">编辑</a>
+                               <a lerf="#" OnClick="s(${k.id})">删除</a>
+                               <a lerf="#" OnClick="s(${k.id})">分配名额</a>
+                               <a lerf="#" OnClick="s(${k.id})">修改名额</a>
+                               <a lerf="#" OnClick="s(${k.id})">审批名单</a>
+                               <a lerf="#" OnClick="s(${k.id})">查看返还记录</a>
+                           </td>`
+                        + `</tr>`
+                    $("#tb").append(list);
+                })
+            }
+        })
+    }
+    function PageShow_Search() {
+
+    }
+</script>
+
+

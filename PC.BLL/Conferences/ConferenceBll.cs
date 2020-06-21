@@ -36,10 +36,10 @@ namespace PC.BLL.Conferences
         /// <param name="conname">要查询的会议名称关键字</param>
         /// <param name="conproduct">要查询的会议产品组</param>
         /// <returns></returns>
-        public List<ConferenceShow> SearchConference(DateTime condate, string conplace, string constate, string conname, int conproduct)
+        public SearchPageShowConference SearchConference(DateTime condate, string conplace, string constate, string conname, int conproduct, int pageindex = 1, int pagesize = 2)
         {
            
-            return _dal.SearchConference(condate, conplace, constate, conname, conproduct);
+            return _dal.SearchConference(condate, conplace, constate, conname, conproduct, pageindex, pagesize);
         }
 
     }

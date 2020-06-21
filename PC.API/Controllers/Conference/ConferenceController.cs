@@ -31,11 +31,12 @@ namespace PC.API.Controllers.Conference
             return _bll.ShowConference();
 
         }
+        
         [HttpPost]
-        public List<ConferenceShow> SearchConference(DateTime condate, string conplace, string constate, string conname, int conproduct)
+        public SearchPageShowConference SearchConference(DateTime condate, string conplace, string constate, string conname, int conproduct, int pageindex = 1, int pagesize = 2)
         {
 
-            return _bll.SearchConference(condate, conplace, constate, conname, conproduct);
+            return _bll.SearchConference(condate, conplace, constate, conname, conproduct, pageindex, pagesize);
 
         }
         /// <summary>
