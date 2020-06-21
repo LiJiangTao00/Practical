@@ -50,7 +50,7 @@ namespace PC.API.Controllers.UserInfo
             List<UserShowModel> list = _bll.ShowUser(product, did, pid, cid, dis, jid, name);
             GetPage<UserShowModel> page = new GetPage<UserShowModel>
             {
-                Model = list1,
+                Model = list,
                 Total = list.Count()
             };
             return page;
