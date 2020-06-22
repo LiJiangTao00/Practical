@@ -13,6 +13,7 @@ namespace PC.IDAL.UserIDAL
         string SelectName(string user_Phone);
         List<DepartmentTableModel> ShowDepartment();
         List<UserShowModel> ShowUser(int product, int did, int pid, int cid, int dis, int jid, string name);
+        int AddSingleUser(UserTableModel m);
         List<PlaceTableModel> ShowProvince(int id);
         List<JobTableModel> ShowJob();
         List<UserShowModel> SelectUser(int id);

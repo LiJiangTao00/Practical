@@ -65,5 +65,24 @@ namespace PC.API.Controllers.UserInfo
         {
             return _bll.ShowJob();
         }
+        [HttpPost]
+        public int AddSingleUser(UserTableModel m)
+        {
+            return _bll.AddSingleUser(m);
+        }
+        [HttpGet]
+        public GetPage<JobTableModel> ShowJob(int page,int limit)
+        {
+            List<JobTableModel> list = _bll.ShowJob();
+            List<JobTableModel> linq = _bll.ShowJob().Skip((page-1)*limit).Take(limit).ToList();
+            GetPage<JobTableModel> model = new GetPage<JobTableModel>
+            {
+                code=0,
+                msg="",
+                Model = linq,
+                Total = list.Count()
+            };
+            return model;
+        }
     }
 }

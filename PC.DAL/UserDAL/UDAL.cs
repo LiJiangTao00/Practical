@@ -44,7 +44,12 @@ namespace PC.DAL.UserDAL
             string sql = "select * from JobTable";
             return dep.Query(sql);
         }
-
+        public List<JobTableModel> ShowJob()
+        {
+            DapperHelper<JobTableModel> dep = new DapperHelper<JobTableModel>();
+            string sql = "select * from JobTable";
+            return dep.Query(sql);
+        }
         public List<PlaceTableModel> ShowProvince(int id)
         {
             DapperHelper<PlaceTableModel> pla = new DapperHelper<PlaceTableModel>();
@@ -127,6 +132,12 @@ namespace PC.DAL.UserDAL
             DapperHelper<UserShowModel> helper = new DapperHelper<UserShowModel>();
             string sql = "select * from UserTable u join DepartmentTable d on u.User_Department = d.Id join JobTable j on u.User_Job = j.Id join ProductTable p on u.User_ProductId = p.Id where u.Id =" + id;
             return helper.Query(sql);
+        }
+
+        public int AddSingleUser(UserTableModel m)
+        {
+            string sql = $"insert into UserTable values('"+m.User_Id+"','"+m.User_Name+"','"+m.User_Pwd+"',"+m.User_Sex+",'"+m.User_Phone+"','"+m.User_Email+"','"+m.User_Wechat+"','"+m.User_QQ+"',"+m.User_Department+","+m.User_Job+","+m.User_Province+","+m.User_City+","+m.User_District+",'"+m.User_Area+"','"+m.User_Address+"',"+m.User_ProductId+",'"+m.User_Photo+"','"+m.User_AddTime+"',"+m.User_State+",'"+m.User_Desc+"',"+m.User_DelState+")";
+            return dapper.Execute(sql);
         }
     }
 }

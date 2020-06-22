@@ -16,5 +16,6 @@ namespace PC.IBLL.UserIBLL
         List<PlaceTableModel> ShowProvince(int id);
         List<JobTableModel> ShowJob();
         List<UserShowModel> SelectUser(int id);
+        int AddSingleUser(UserTableModel m);
     }
 }

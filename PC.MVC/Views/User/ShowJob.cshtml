@@ -11,64 +11,43 @@
     <title>ShowJob</title>
 </head>
 <body>
-    <form class="layui-form" action="">
-
-
-        <button id="test" type="button" class="layui-btn" onclick="Lok(1)">弹出</button>
-        @*<div><div style="float:left;"><img src="~/img/7.png" style="width:50px;height:70px"/></div><table><tr><td>姓名：</td><td>工号：</td><td>性别：</td></tr><tr><td>联系方式：</td><td>邮箱：</td><td>微信账号：</td></tr><tr><td>QQ号码：</td><td>部门：</td><td>职位：</td></tr><tr><td>所在区域：</td><td>联系地址：</td><td></td></tr><tr><td>产品组：</td><td></td><td></td></tr></table></div>*@
-        <link href="~/layuiadmin/style/admin.css" rel="stylesheet" />
-        <link href="~/layuiadmin/layui/css/layui.css" rel="stylesheet" />
-    </form>
+    @*<table id="demo" lay-filter="test">
+    </table>
+    <div id="laypage"></div>
+    <script type="text/html" id="barDemo">
+        <a href="#">编辑</a>
+        <a href="#">删除</a>
+        <a href="#">设置权限</a>
+    </script>*@
 </body>
 </html>
-@*//jquery放在layer前面*@
+@*jquery放在layer前面*@
 <script src="~/lib/jquery/dist/jquery.js"></script>
 <script src="~/layer/layer.js"></script>
 <script src="~/layuiadmin/layui/layui.js"></script>
 <script>
-    var str = "";
-    var tab = "";
-
-    function Lok(id) {
-        $.ajax({
-            url: "http://localhost:49764/api/user/SelectUser?id=" + id,
-            type: "get",
-            dataType: "json",
-            success: function (data) {
-                $.each(data, function (m, n) {
-                    str += '<div><div style="float:left;"><img src="' + n.user_Photo + '" style="width:50px;height:70px"/></div>';
-                    tab += '<table><tr><td>姓名：' + n.user_Name + '</td><td>工号：' + n.user_Id + '</td><td>性别：' + IsBoy(n.user_Sex) + '</td></tr><tr><td>联系方式：' + n.user_Phone + '</td><td>邮箱：' + n.user_Email + '</td><td>微信账号：' + n.user_Wechat + '</td></tr><tr><td>QQ号码：' + n.user_QQ + '</td><td>部门：' + n.department_Name + '</td><td>职位：' + n.job_Name + '</td></tr><tr><td>所在区域：' + n.user_Area + '</td><td>联系地址：' + n.user_Address + '</td><td></td></tr><tr><td>产品组：' + n.product_Name + '</td><td></td><td></td></tr></table></div>';
-                })
-            }
-        })
-        var html = str + tab;
-        layui.use('layer', function () {
-            var layer = layui.layer;
-            layer.ready(function () {
-                layer.open({
-                    type: 1,
-                    skin: 'layui-layer-rim',
-                    content: html, //这里content是一个普通的String
-                    area: ['500px', '300px']
-                });
-            });
-        });
-        str = "";
-        tab = "";
-    }
-    function IsBoy(id) {
-        switch (id) {
-            case 0:
-                return "保密";
-                break;
-            case 1:
-                return "男";
-                break;
-            case 2:
-                return "女";
-                break;
-            default:
-                break;
-        }
-    }
+    //var limitcount = 3;
+    //var curnum = 1;
+    //$(function () {
+    //    JobList();
+    //})
+    //function JobList() {
+    //    layui.use(['table', 'laypage', 'laydate'], function () {
+    //        var table = layui.table
+    //        table.render({
+    //            elem: "#demo",
+    //            url: 'http://localhost:49764/api/user/ShowJob',
+    //            page: true,
+    //            cols: [[
+    //                { field: '', title: '职务名称', },
+    //                { field: '', title: '职务描述' },
+    //                { field: '', title: '职务状态'  },
+    //                { field: '', title: '添加时间' },
+    //                { fixed: '', title: '操作', toolbar: '#barDemo', width: 150 }
+    //            ]],
+    //            limit:3
+    //        })
+    //    })
+    //}
 </script>
+    

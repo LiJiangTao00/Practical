@@ -47,7 +47,7 @@
 </body>
 </html>
 <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
-<script src="~/lib/jquery/dist/jquery.js"></script>
+
 <style>
     table {
         margin: auto;
@@ -57,6 +57,7 @@
         text-align: center;
     }
 </style>
+<script src="~/lib/jquery/dist/jquery.js"></script>
 <script>
     function Login() {
         var User_Phone = $('#User_Phone').val();
@@ -66,7 +67,7 @@
             type: "get",
             success: function (data) {
                 console.log(data);
-                if (data >0) {
+                if (data > 0) {
                     alert("OK");
                     ShowName(User_Phone);
                     if (localStorage["Name"] != "") {
@@ -80,7 +81,7 @@
         $.ajax({
             url: "http://localhost:49764/api/user/SelectName?User_Phone=" + phone,
             type: "get",
-            dataType:"json",
+            dataType: "json",
             success: function (data) {
                 console.log(data);
                 if (data != null || data != "") {

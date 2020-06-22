@@ -16,6 +16,11 @@ namespace PC.BLL.UserBLL
             _dal = dal;
         }
 
+        public int AddSingleUser(UserTableModel m)
+        {
+            return _dal.Forget(m);
+        }
+
         public int Forget(UserTableModel m)
         {
             return _dal.Forget(m);
