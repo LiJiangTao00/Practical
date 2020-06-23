@@ -28,6 +28,13 @@ namespace PC.MVC.Controllers.UserInfo
         {
             return View();
         }
-        
+        public IActionResult Test()
+        {
+            return View();
+        }
+        public IActionResult Test1()
+        {
+            return View();
+        }
     }
 }

@@ -2,6 +2,7 @@
 using PC.Model.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Text;
 
 namespace PC.IDAL.UserIDAL
@@ -17,5 +18,8 @@ namespace PC.IDAL.UserIDAL
         List<PlaceTableModel> ShowProvince(int id);
         List<JobTableModel> ShowJob();
         List<UserShowModel> SelectUser(int id);
+        int DelSingleUser(int id);
+        DataTable ShowUser(); 
+        List<UserShowModel> ShowSome(string ids);
     }
 }

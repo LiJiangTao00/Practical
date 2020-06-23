@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -7,6 +8,9 @@ using Microsoft.AspNetCore.Mvc;
 using PC.IBLL.UserIBLL;
 using PC.Model.Models;
 using PC.Model.ViewModel;
+using Newtonsoft.Json;
+using PC.Common.Helpers;
+using PublicToolsLib.HelpExcel;
 
 namespace PC.API.Controllers.UserInfo
 {
@@ -56,9 +60,9 @@ namespace PC.API.Controllers.UserInfo
             return page;
         }
         [HttpGet]
-        public List<UserShowModel> SelectUser(int id)
+        public UserShowModel SelectUser(int id)
         {
-            return _bll.SelectUser(id);
+            return _bll.SelectUser(id).FirstOrDefault();
         }
         [HttpGet]
         public List<JobTableModel> ShowJob()
@@ -70,19 +74,69 @@ namespace PC.API.Controllers.UserInfo
         {
             return _bll.AddSingleUser(m);
         }
-        [HttpGet]
-        public GetPage<JobTableModel> ShowJob(int page,int limit)
+        //[HttpGet]
+        //public GetPage<JobTableModel> ShowJob(int page,int limit)
+        //{
+        //    List<JobTableModel> list = _bll.ShowJob();
+        //    List<JobTableModel> linq = _bll.ShowJob().Skip((page-1)*limit).Take(limit).ToList();
+        //    GetPage<JobTableModel> model = new GetPage<JobTableModel>
+        //    {
+        //        code=0,
+        //        msg="",
+        //        Model = linq,
+        //        Total = list.Count()
+        //    };
+        //    return model;
+        //}
+        [HttpDelete]
+        public int DelUser(string id)
         {
-            List<JobTableModel> list = _bll.ShowJob();
-            List<JobTableModel> linq = _bll.ShowJob().Skip((page-1)*limit).Take(limit).ToList();
-            GetPage<JobTableModel> model = new GetPage<JobTableModel>
+            if (!id.Contains(','))
             {
-                code=0,
-                msg="",
-                Model = linq,
-                Total = list.Count()
-            };
-            return model;
+                return _bll.DelSingleUser(int.Parse(id));
+            }
+            else
+            {
+                string[] pid = id.Split(',');
+                int i = 0;
+                foreach (string cid in pid)
+                {
+                     i = _bll.DelSingleUser(int.Parse(cid));
+                }
+                if (i==pid.Length)
+                {
+                    return 1;
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+        }
+        [HttpPost]
+        public void PutOut([FromBody]string path)
+        {
+            DataTable tb = _bll.ShowUser();
+            OledbExcelHelper.DataTableToExcel(path, tb);
+        }
+        [HttpGet]
+        public List<UserShowModel> SelectSomeUser(string id)
+        {
+            if (!id.Contains(','))
+            {
+                return _bll.SelectUser(int.Parse(id));
+            }
+            else
+            {
+                string[] pid = id.Split(',');
+                string ids = " where ";
+                foreach (string cid in pid)
+                {
+                    ids += " u.Id ="+int.Parse(cid)+" or";
+                }
+                ids = ids.Substring(0, (ids.Length - 2));
+                return _bll.ShowSome(ids);
+            }
         }
     }
 }

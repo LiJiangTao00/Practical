@@ -1,0 +1,78 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Test</title>
+</head>
+<body>
+    <button id="test" type="button" class="btn btn-default" style="width:80px;color:blue;border:1px solid blue;font-size:6px" onclick="Lok()">查看详情</button>
+    <div id="Zw" style="width:400px;height:600px">
+        <div style="width:400px;height:100px">
+            <div style="margin:20px;float:left">已选用户</div>
+            <div style="border:1px solid #000;float:right;width:250px;height:100px">
+                <div style="float:left;width:100px;margin-right:20px">张三&nbsp;&nbsp;&nbsp;大区经理</div>
+            </div>
+        </div>
+        <div style="width:400px;height:60px">
+            <div style="margin:20px;float:left">修改职务</div>
+            <div style="float:left;margin:25px;margin-left:50px">
+                <select id="Select1">
+                </select>
+            </div>
+        </div>
+        <div style="width:400px;height:130px;float:left">
+            <div style="margin:20px;float:left">修改原因</div>
+            <div style="border:1px solid #000;float:right;width:250px;height:100px">
+
+            </div>
+        </div>
+        <div>
+            <div style="margin-left:150px;">
+                <input class="btn btn-primary" style="width:80px" type="button" value="提交" />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <input class="btn btn-default" style="width:80px;color:blue;border:1px solid blue" type="button" value="重置" />
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+<link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<link href="~/layuiadmin/layui/css/layui.css" rel="stylesheet" />
+<link href="~/layuiadmin/style/admin.css" rel="stylesheet" />
+<script src="~/layer/layer.js"></script>
+<script src="~/layuiadmin/layui/layui.js"></script>
+<script>
+    function Lok() {
+        var str = "1,2";
+        $.ajax({
+            url: "http://localhost:49764/api/user/SelectSomeUser?id=" + str,
+            type: "get",
+            dataType: "json",
+            success: function (data) {
+                $.each(data, function (m, n) {
+                    str += '';
+                })
+            }
+        })
+        var html = str + tab;
+        layer.ready(function () {
+            layer.open({
+                type: 1,
+                title: "修改职务",
+                content: html, //这里content是一个普通的String
+                area: ['600px', '400px']
+            });
+        });
+        str = "";
+        tab = "";
+    }
+
+</script>

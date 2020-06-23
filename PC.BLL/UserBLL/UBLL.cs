@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Text;
 using PC.IBLL.UserIBLL;
 using PC.IDAL.UserIDAL;
@@ -59,6 +60,19 @@ namespace PC.BLL.UserBLL
         public List<UserShowModel> ShowUser(int product, int did, int pid, int cid, int dis, int jid, string name)
         {
             return _dal.ShowUser(product,did, pid, cid, dis, jid, name);
+        }
+        public int DelSingleUser(int id)
+        {
+            return _dal.DelSingleUser(id);
+        }
+        public DataTable ShowUser()
+        {
+            return _dal.ShowUser();
+        }
+
+        public List<UserShowModel> ShowSome(string ids)
+        {
+            return _dal.ShowSome(ids);
         }
     }
 }

@@ -2,6 +2,7 @@
 using PC.Model.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Text;
 
 namespace PC.IBLL.UserIBLL
@@ -17,5 +18,8 @@ namespace PC.IBLL.UserIBLL
         List<JobTableModel> ShowJob();
         List<UserShowModel> SelectUser(int id);
         int AddSingleUser(UserTableModel m);
+        int DelSingleUser(int id);
+        DataTable ShowUser();
+        List<UserShowModel> ShowSome(string ids);
     }
 }
