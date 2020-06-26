@@ -19,7 +19,7 @@ namespace PC.BLL.UserBLL
 
         public int AddSingleUser(UserTableModel m)
         {
-            return _dal.Forget(m);
+            return _dal.AddSingleUser(m);
         }
 
         public int Forget(UserTableModel m)
@@ -73,6 +73,16 @@ namespace PC.BLL.UserBLL
         public List<UserShowModel> ShowSome(string ids)
         {
             return _dal.ShowSome(ids);
+        }
+
+        public int UpdateSome(string gid, int sid, string action)
+        {
+            return _dal.UpdateSome(gid, sid, action);
+        }
+
+        public int UpdateSingleUser(UserTableModel m)
+        {
+            return _dal.UpdateSingleUser(m);
         }
     }
 }

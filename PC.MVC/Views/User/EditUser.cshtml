@@ -8,7 +8,7 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>添加用户</title>
+    <title>编辑用户</title>
 </head>
 <body>
     <table>
@@ -117,6 +117,7 @@
     $(function () {
         ShowDepartment();
     })
+    
     function ShowDepartment() {
         $.ajax({
             url: "http://localhost:49764/api/user/ShowDepartment",
@@ -147,7 +148,7 @@
                 $('#User_Job').html(str);
             }
         })
-        ShowProvince();
+        ShowProvince()
     }
     function ShowProvince() {
         $.ajax({
@@ -163,18 +164,92 @@
                 $('#User_Province').html(str);
             }
         })
-        ShowCity();
+        GetData();
     }
-    function ShowCity() {
-        $('#User_City').empty();
-        var str = '<option value="0">请选择</option>';
-        $('#User_City').html(str);
-        ShowDistrict();
+    function ShowCity(pid) {
+        //var pid = $('#User_Province').val();
+        $.ajax({
+            url: "http://localhost:49764/api/user/ShowProvince?pid=" + pid,
+            type: "get",
+            dataType: "json",
+            success: function (data) {
+                $('#User_City').empty();
+                var str = '<option value="0">请选择</option>';
+                $.each(data, function (i, n) {
+                    str += '<option value="' + n.id + '">' + n.place_Name + '</option>';
+                })
+                $('#User_City').html(str);
+            }
+        })
+        $('#User_City').val(pid);
     }
-    function ShowDistrict() {
-        $('#User_District').empty();
-        var str = '<option value="0">请选择</option>';
-        $('#User_District').html(str);
+    function ShowDistrict(pid) {
+        //var pid = $('#User_City').val();
+        $.ajax({
+            url: "http://localhost:49764/api/user/ShowProvince?pid=" + pid,
+            type: "get",
+            dataType: "json",
+            success: function (data) {
+                $('#User_District').empty();
+                var str = '<option value="0">请选择</option>';
+                $.each(data, function (i, n) {
+                    str += '<option value="' + n.id + '">' + n.place_Name + '</option>';
+                })
+                $('#User_District').html(str);
+            }
+        })
+        $('#User_District').val(pid);
+    }
+    function GetData() {
+        var id = localStorage["editid"];
+        var cid = "";
+        var did = "";
+        $.ajax({
+            url: "http://localhost:49764/api/user/SelectUser?id=" + id,
+            type: "get",
+            dataType: "json",
+            success: function (data) {
+                console.log(data);
+                $('#User_Id').val(data.user_Id);
+                $('#User_Name').val(data.user_Name);
+                $('#User_Pwd').val(data.user_Pwd);
+                switch (data.user_Sex) {
+                    case 0:
+                        $("input[name='User_Sex']").get(0).checked = true;
+                        break;
+                    case 1:
+                        $("input[name='User_Sex']").get(1).checked = true;
+                        break;
+                    case 2:
+                        $("input[name='User_Sex']").get(2).checked = true;
+                        break;
+                    default: break;
+                }
+                $('#User_Phone').val(data.user_Phone);
+                $('#User_Email').val(data.user_Email);
+                $('#User_Wechat').val(data.user_Wechat);
+                $('#User_QQ').val(data.user_QQ);
+                $('#User_Department').val(data.user_Department);
+                $('#User_Job').val(data.user_Job);
+                $('#User_Province').val(data.user_Province);
+                ShowCity(data.user_Province);
+                ShowDistrict(data.user_City);
+                $('#User_Address').val(data.user_Address);
+                switch (data.user_ProductId) {
+                    case 1:
+                        $("input[name='User_ProductId']").get(0).checked = true;
+                        break;
+                    case 2:
+                        $("input[name='User_ProductId']").get(1).checked = true;
+                        break;
+                    case 3:
+                        $("input[name='User_ProductId']").get(2).checked = true;
+                        break;
+                    default: break;
+                }
+            }
+        })
+       
     }
     function ProvinceChange() {
         var pid = $('#User_Province').val();
@@ -209,6 +284,7 @@
         })
     }
     function Save() {
+        var Id = localStorage["editid"];
         var User_Id = $('#User_Id').val();
         var User_Name = $('#User_Name').val();
         var User_Pwd = $('#User_Pwd').val();
@@ -226,6 +302,7 @@
         var User_ProductId = $("input[name='User_ProductId']:checked").val();
         var User_Area = $("#User_Province").find("option:selected").text() + $("#User_City").find("option:selected").text() + $("#User_District").find("option:selected").text();
         var obj = {};
+        obj.Id = Id;
         obj.User_Id = User_Id;
         obj.User_Name = User_Name;
         obj.User_Sex = parseInt(User_Sex);
@@ -243,9 +320,9 @@
         obj.User_ProductId = parseInt(User_ProductId);
         obj.User_Area = User_Area;
         $.ajax({
-            url: "http://localhost:49764/api/user/AddSingleUser",
+            url: "http://localhost:49764/api/user/UpdateSingleUser",
             data: JSON.stringify(obj),
-            type: "post",
+            type: "put",
             contentType: "application/json",
             success: function (data) {
                 if (data > 0) {

@@ -24,7 +24,7 @@ namespace PC.API.Controllers.UserInfo
             _bll = bll;
         }
         [HttpGet]
-        public int Login(string User_Phone,string User_Pwd)
+        public int Login(string User_Phone, string User_Pwd)
         {
             return _bll.Login(User_Phone, User_Pwd);
         }
@@ -44,12 +44,12 @@ namespace PC.API.Controllers.UserInfo
             return _bll.ShowDepartment();
         }
         [HttpGet]
-        public List<PlaceTableModel> ShowProvince(int pid=0)
+        public List<PlaceTableModel> ShowProvince(int pid = 0)
         {
             return _bll.ShowProvince(pid);
         }
         [HttpGet]
-        public GetPage<UserShowModel> ShowUser(int product,int did,int pid,int cid,int dis,int jid,string name)
+        public GetPage<UserShowModel> ShowUser(int product, int did, int pid, int cid, int dis, int jid, string name)
         {
             List<UserShowModel> list = _bll.ShowUser(product, did, pid, cid, dis, jid, name);
             GetPage<UserShowModel> page = new GetPage<UserShowModel>
@@ -101,9 +101,9 @@ namespace PC.API.Controllers.UserInfo
                 int i = 0;
                 foreach (string cid in pid)
                 {
-                     i = _bll.DelSingleUser(int.Parse(cid));
+                    i = _bll.DelSingleUser(int.Parse(cid));
                 }
-                if (i==pid.Length)
+                if (i == pid.Length)
                 {
                     return 1;
                 }
@@ -114,7 +114,7 @@ namespace PC.API.Controllers.UserInfo
             }
         }
         [HttpPost]
-        public void PutOut([FromBody]string path)
+        public void PutOut([FromBody] string path)
         {
             DataTable tb = _bll.ShowUser();
             OledbExcelHelper.DataTableToExcel(path, tb);
@@ -132,11 +132,21 @@ namespace PC.API.Controllers.UserInfo
                 string ids = " where ";
                 foreach (string cid in pid)
                 {
-                    ids += " u.Id ="+int.Parse(cid)+" or";
+                    ids += " u.Id =" + int.Parse(cid) + " or";
                 }
                 ids = ids.Substring(0, (ids.Length - 2));
                 return _bll.ShowSome(ids);
             }
+        }
+        [HttpGet]
+        public int UpdateSome(string gid, int sid, string desc, string action)
+        {
+            return _bll.UpdateSome(gid, sid, action);
+        }
+        [HttpPut]
+        public int UpdateSingleUser(UserTableModel m)
+        {
+            return _bll.UpdateSingleUser(m);
         }
     }
 }

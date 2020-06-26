@@ -21,5 +21,7 @@ namespace PC.IDAL.UserIDAL
         int DelSingleUser(int id);
         DataTable ShowUser(); 
         List<UserShowModel> ShowSome(string ids);
+        int UpdateSome(string gid, int sid, string action);
+        int UpdateSingleUser(UserTableModel m);
     }
 }

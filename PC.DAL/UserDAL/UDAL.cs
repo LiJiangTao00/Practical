@@ -33,7 +33,7 @@ namespace PC.DAL.UserDAL
         /// <returns></returns>
         public int Login(string user_Phone, string user_Pwd)
         {
-            string sql = $"select * from UserTable where User_Phone={user_Phone} and User_Pwd = {user_Pwd}";
+            string sql = $"select * from UserTable where User_Phone={user_Phone} and User_Pwd = {user_Pwd} and User_State = 0 and User_DelState = 0 ";
             return dapper.Query(sql).ToList().Count();
         }
         /// <summary>
@@ -44,7 +44,8 @@ namespace PC.DAL.UserDAL
         public string SelectName(string user_Phone)
         {
             string sql = $"select * from UserTable where User_Phone={user_Phone}";
-            return dapper.Query(sql).ToList()[0].User_Name;
+            string name = dapper.Query(sql).ToList()[0].User_Name;
+            return name;
         }
         /// <summary>
         /// 显示部门
@@ -91,8 +92,8 @@ namespace PC.DAL.UserDAL
         public List<UserShowModel> ShowUser(int product, int did, int pid, int cid, int dis, int jid, string name)
         {
             DapperHelper<UserShowModel> helper = new DapperHelper<UserShowModel>();
-            string sql = "select u.Id,u.User_Phone,u.User_Name,u.User_Id,u.User_AddTime,d.Department_Name,j.Job_Name,p.Product_Name from UserTable u join DepartmentTable d on u.User_Department = d.Id join JobTable j on u.User_Job = j.Id join ProductTable p on u.User_ProductId = p.Id";
-            sql += " where 1=1 ";
+            string sql = "select u.Id,u.User_Phone,u.User_Name,u.User_Id,u.User_AddTime,d.Department_Name,j.Job_Name,p.Product_Name from UserTable u join DepartmentTable d on u.User_Department = d.Id join JobTable j on u.User_Job = j.Id join ProductTable p on u.User_ProductId = p.Id where User_State = 0 and User_DelState = 0";
+            sql += "  ";
             if (did != 0)
             {
                 sql += " and User_Department=" + did;
@@ -170,7 +171,7 @@ namespace PC.DAL.UserDAL
         public List<UserShowModel> SelectUser(int id)
         {
             DapperHelper<UserShowModel> helper = new DapperHelper<UserShowModel>();
-            string sql = "select * from UserTable u join DepartmentTable d on u.User_Department = d.Id join JobTable j on u.User_Job = j.Id join ProductTable p on u.User_ProductId = p.Id where u.Id =" + id;
+            string sql = "select * from UserTable u join DepartmentTable d on u.User_Department = d.Id join JobTable j on u.User_Job = j.Id join ProductTable p on u.User_ProductId = p.Id where User_State = 0 and User_DelState = 0 and u.Id =" + id;
             return helper.Query(sql);
         }
         /// <summary>
@@ -180,14 +181,23 @@ namespace PC.DAL.UserDAL
         /// <returns></returns>
         public int AddSingleUser(UserTableModel m)
         {
-            string sql = $"insert into UserTable values('" + m.User_Id + "','" + m.User_Name + "','" + m.User_Pwd + "'," + m.User_Sex + ",'" + m.User_Phone + "','" + m.User_Email + "','" + m.User_Wechat + "','" + m.User_QQ + "'," + m.User_Department + "," + m.User_Job + "," + m.User_Province + "," + m.User_City + "," + m.User_District + ",'" + m.User_Area + "','" + m.User_Address + "'," + m.User_ProductId + ",'" + m.User_Photo + "','" + m.User_AddTime + "'," + m.User_State + ",'" + m.User_Desc + "'," + m.User_DelState + ")";
+            string sql = $"insert into UserTable values('" + m.User_Id + "','" + m.User_Name + "','" + m.User_Pwd + "'," + m.User_Sex + ",'" + m.User_Phone + "','" + m.User_Email + "','" + m.User_Wechat + "','" + m.User_QQ + "'," + m.User_Department + "," + m.User_Job + "," + m.User_Province + "," + m.User_City + "," + m.User_District + ",'" + m.User_Area + "','" + m.User_Address + "'," + m.User_ProductId + ",'" + m.User_Photo + "','" + DateTime.Now + "',0,'" + m.User_Desc + "',0)";
             return dapper.Execute(sql);
         }
+        /// <summary>
+        /// 删除单个
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public int DelSingleUser(int id)
         {
-            string sql = " delete from UserTable where Id =" + id;
+            string sql = " update UserTable set User_DelState=1 where Id =" + id;
             return dapper.Execute(sql);
         }
+        /// <summary>
+        /// datatable 显示用户
+        /// </summary>
+        /// <returns></returns>
         public DataTable ShowUser()
         {
             DataTable tb = new DataTable();
@@ -195,7 +205,7 @@ namespace PC.DAL.UserDAL
             {
                 string sql = "select u.Id,u.User_Phone,u.User_Name,u.User_Id,u.User_AddTime,d.Department_Name,j.Job_Name,p.Product_Name from UserTable u join DepartmentTable d on u.User_Department = d.Id join JobTable j on u.User_Job = j.Id join ProductTable p on u.User_ProductId = p.Id";
                 con.Open();
-                using (SqlCommand com = new SqlCommand(sql,con))
+                using (SqlCommand com = new SqlCommand(sql, con))
                 {
                     SqlDataAdapter sqlData = new SqlDataAdapter();
                     sqlData.SelectCommand = com;
@@ -205,7 +215,7 @@ namespace PC.DAL.UserDAL
             return tb;
         }
         /// <summary>
-        /// 显示一些
+        /// 显示一些用户
         /// </summary>
         /// <param name="ids"></param>
         /// <returns></returns>
@@ -214,6 +224,49 @@ namespace PC.DAL.UserDAL
             DapperHelper<UserShowModel> helper = new DapperHelper<UserShowModel>();
             string sql = "select u.Id,u.User_Name,d.Department_Name,j.Job_Name,p.Product_Name from UserTable u join DepartmentTable d on u.User_Department = d.Id join JobTable j on u.User_Job = j.Id join ProductTable p on u.User_ProductId = p.Id " + ids;
             return helper.Query(sql);
+        }
+        /// <summary>
+        /// 弹出层  修改
+        /// </summary>
+        /// <param name="gid"></param>
+        /// <param name="sid"></param>
+        /// <param name="action"></param>
+        /// <returns></returns>
+        public int UpdateSome(string gid, int sid, string action)
+        {
+            string sql = " update UserTable set ";
+            switch (action)
+            {
+                case "job":
+                    sql += " User_Job= "+sid;
+                    break;
+                case "department":
+                    sql += " User_Department= " + sid;
+                    break;
+                case "Dead":
+                    sql += " User_State= " + sid;
+                    break;
+                case "Freeze":
+                    sql += " User_State= " + sid;
+                    break;
+                default:
+                    break;
+            }
+            string[] pid = gid.Split(',');
+            string ids = " where ";
+            foreach (string cid in pid)
+            {
+                ids += " Id =" + int.Parse(cid) + " or";
+            }
+            ids = ids.Substring(0, (ids.Length - 2));
+            sql = sql + ids;
+            return dapper.Execute(sql);
+        }
+
+        public int UpdateSingleUser(UserTableModel m)
+        {
+            string sql = "update UserTable set User_Id='" + m.User_Id + "',User_Name='" + m.User_Name + "',User_Pwd='" + m.User_Pwd + "',User_Sex=" + m.User_Sex + ",User_Phone='" + m.User_Phone + "',User_Email='" + m.User_Email + "',User_Wechat='" + m.User_Wechat + "',User_QQ='" + m.User_QQ + "',User_Department=" + m.User_Department + ",User_Job=" + m.User_Job + ",User_Province=" + m.User_Province + ",User_City=" + m.User_City + ",User_District=" + m.User_District + ",User_Area='" + m.User_Area + "',User_Address='" + m.User_Address + "',User_ProductId=" + m.User_ProductId + ",User_Photo='" + m.User_Photo + "'";
+            return dapper.Execute(sql);
         }
     }
 }

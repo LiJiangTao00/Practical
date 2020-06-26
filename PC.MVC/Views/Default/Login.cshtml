@@ -19,22 +19,29 @@
                 <span class="input-group-addon"><img src="~/img/u12.svg" style="width:30px;height:30px" /></span>
                 <input id="User_Phone" type="text" class="form-control" placeholder="twitterhandle" style="width:50px">
             </div>
-            <div class="input-group" style="margin-top:30px">
-                <span class="input-group-addon">
-                    <img src="~/img/u13.svg" style="width:30px;height:30px;background-color: Transparent; border-style: none;" />
-                </span>
-                <input id="MessageText" type="text" class="form-control" style="background-color: Transparent; border-style: none;" >
-                <button type="button" class="btn btn-default" style="width:80px;color:blue;border:1px solid blue;font-size:6px" onclick="">发送验证码</button>
-            </div>
+            @*<div class="input-group" style="margin-top:30px">
+                    <span class="input-group-addon">
+                        <img src="~/img/u13.svg" style="width:30px;height:30px;background-color: Transparent; border-style: none;" />
+                    </span>
+                    <input id="MessageText" type="text" class="form-control" style="background-color: Transparent; border-style: none;" >
+                    <button type="button" class="btn btn-default" style="width:80px;color:blue;border:1px solid blue;font-size:6px" onclick="">发送验证码</button>
+                </div>*@
             <div class="input-group" style="margin-top:30px">
                 <span class="input-group-addon">
                     <img src="~/img/u17.svg" style="width:30px;height:30px" />
                 </span>
                 <input id="User_Pwd" type="password" class="form-control" style="background-color: Transparent; border-style: none;">
-                
+
             </div>
+            @*<div class="input-group" style="margin-top:30px">
+                <div class="drag">
+                    <div class="bg"></div>
+                    <div class="text" onselectstart="return false;">请拖动滑块解锁</div>
+                    <div class="btn">&gt;&gt;</div>
+                </div>
+            </div>*@
             <div style="margin-top:20px">
-                <input class="btn btn-primary" style="width:200px;margin-left:100px" type="button" value="登录" onclick="Login()" />
+                <input class="btn btn-primary" style="width:200px;margin-left:100px" type="button" value="登录" id="btn_log" onclick="Login()" />
             </div>
             <div style="float:right">
                 <a href="Default/forget">忘记密码</a>
@@ -43,9 +50,6 @@
     </div>
 </body>
 </html>
-<link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
-
-
 <style>
     #main {
         position: absolute;
@@ -56,14 +60,142 @@
         margin-left: -300px;
         margin-top: -200px;
     }
+
+    .drag {
+        width: 300px;
+        height: 40px;
+        line-height: 40px;
+        background-color: #e8e8e8;
+        position: relative;
+        margin: 0 auto;
+    }
+
+    .bg {
+        width: 40px;
+        height: 100%;
+        position: absolute;
+        background-color: #75CDF9;
+    }
+
+    .text {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        user-select: none;
+    }
+
+    .btn {
+        width: 40px;
+        height: 38px;
+        position: absolute;
+        border: 1px solid #ccc;
+        cursor: move;
+        font-family: "宋体";
+        text-align: center;
+        background-color: #fff;
+        user-select: none;
+        color: #666;
+    }
 </style>
-<link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
 <script src="~/lib/jquery/dist/jquery.js"></script>
+<link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
 <link href="~/layuiadmin/layui/css/layui.css" rel="stylesheet" />
 <link href="~/layuiadmin/style/admin.css" rel="stylesheet" />
 <script src="~/layer/layer.js"></script>
 <script src="~/layuiadmin/layui/layui.js"></script>
 <script>
+
+    ////一、定义一个获取DOM元素的方法
+    //var $ = function (selector) {
+    //    return document.querySelector(selector);
+    //},
+    //    box = $(".drag"),//容器
+    //    bg = $(".bg"),//背景
+    //    text = $(".text"),//文字
+    //    btn = $(".btn"),//滑块
+    //    success = false,//是否通过验证的标志
+    //    distance = box.offsetWidth - btn.offsetWidth;//滑动成功的宽度（距离）
+
+    ////二、给滑块注册鼠标按下事件
+    //btn.onmousedown = function (e) {
+
+    //    //1.鼠标按下之前必须清除掉后面设置的过渡属性
+    //    btn.style.transition = "";
+    //    bg.style.transition = "";
+
+    //    //说明：clientX 事件属性会返回当事件被触发时，鼠标指针向对于浏览器页面(或客户区)的水平坐标。
+
+    //    //2.当滑块位于初始位置时，得到鼠标按下时的水平位置
+    //    var e = e || window.event;
+    //    var downX = e.clientX;
+
+    //    //三、给文档注册鼠标移动事件
+    //    document.onmousemove = function (e) {
+
+    //        var e = e || window.event;
+    //        //1.获取鼠标移动后的水平位置
+    //        var moveX = e.clientX;
+
+    //        //2.得到鼠标水平位置的偏移量（鼠标移动时的位置 - 鼠标按下时的位置）
+    //        var offsetX = moveX - downX;
+
+    //        //3.在这里判断一下：鼠标水平移动的距离 与 滑动成功的距离 之间的关系
+    //        if (offsetX > distance) {
+    //            offsetX = distance;//如果滑过了终点，就将它停留在终点位置
+    //        } else if (offsetX < 0) {
+    //            offsetX = 0;//如果滑到了起点的左侧，就将它重置为起点位置
+    //        }
+
+    //        //4.根据鼠标移动的距离来动态设置滑块的偏移量和背景颜色的宽度
+    //        btn.style.left = offsetX + "px";
+    //        bg.style.width = offsetX + "px";
+
+    //        //如果鼠标的水平移动距离 = 滑动成功的宽度
+    //        if (offsetX == distance) {
+
+    //            //1.设置滑动成功后的样式
+    //            text.innerHTML = "验证通过";
+    //            text.style.color = "#fff";
+    //            btn.innerHTML = "&radic;";
+    //            btn.style.color = "green";
+    //            bg.style.backgroundColor = "lightgreen";
+
+    //            //2.设置滑动成功后的状态
+    //            success = true;
+    //            //成功后，清除掉鼠标按下事件和移动事件（因为移动时并不会涉及到鼠标松开事件）
+    //            btn.onmousedown = null;
+    //            document.onmousemove = null;
+
+    //            //3.成功解锁后的回调函数
+    //            setTimeout(function () {
+    //                // alert('解锁成功！');
+    //                $('#btn_log').attr("disabled", false);
+    //            }, 100);
+    //        }
+    //    }
+
+    //    //四、给文档注册鼠标松开事件
+    //    document.onmouseup = function (e) {
+
+    //        //如果鼠标松开时，滑到了终点，则验证通过
+    //        if (success) {
+    //            return;
+    //        } else {
+    //            //反之，则将滑块复位（设置了1s的属性过渡效果）
+    //            btn.style.left = 0;
+    //            bg.style.width = 0;
+    //            btn.style.transition = "left 1s ease";
+    //            bg.style.transition = "width 1s ease";
+    //        }
+    //        //只要鼠标松开了，说明此时不需要拖动滑块了，那么就清除鼠标移动和松开事件。
+    //        document.onmousemove = null;
+    //        document.onmouseup = null;
+    //    }
+
+
+    //}
+    var Uname = "";
     function Login() {
         var User_Phone = $('#User_Phone').val();
         var User_Pwd = $('#User_Pwd').val();
@@ -71,13 +203,8 @@
             url: "http://localhost:49764/api/user/Login?User_Phone=" + User_Phone + "&User_Pwd=" + User_Pwd,
             type: "get",
             success: function (data) {
-                console.log(data);
                 if (data > 0) {
-                    alert("OK");
                     ShowName(User_Phone);
-                    if (localStorage["Name"] != "") {
-                        location.href = "/default/index";
-                    }
                 }
             }
         })
@@ -86,11 +213,12 @@
         $.ajax({
             url: "http://localhost:49764/api/user/SelectName?User_Phone=" + phone,
             type: "get",
-            dataType: "json",
+            dataType: "text",
             success: function (data) {
                 console.log(data);
-                if (data != null || data != "") {
-                    localStorage["Name"] = data;
+                localStorage["Name"] = data;
+                if (localStorage["Name"]!="") {
+                    location.href = "/default/index";
                 }
             }
         })

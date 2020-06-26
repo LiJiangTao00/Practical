@@ -28,6 +28,10 @@ namespace PC.MVC.Controllers.UserInfo
         {
             return View();
         }
+        public IActionResult EditUser()
+        {
+            return View();
+        }
         public IActionResult Test()
         {
             return View();

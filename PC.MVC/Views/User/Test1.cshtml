@@ -11,41 +11,19 @@
     <title>Test1</title>
 </head>
 <body>
-    <img width="100%" height="100%" src="~/img/Login.jpg" style="position:absolute; left:0; top:0; z-index:-1;" />
-    <div id="main" style="background-color:white">
-        <div style="padding:50px 20px 50px 20px">
-            <h2 style="color:blue;font-weight:800;margin-left:50px">药企内部管理平台</h2>
-            <div class="input-group" style="margin-top:30px">
-                <span class="input-group-addon"><img src="~/img/u12.svg" style="width:30px;height:30px" /></span>
-                <input type="text" class="form-control" placeholder="twitterhandle" style="width:50px">
-            </div>
-            <div class="input-group" style="margin-top:30px">
-                <span class="input-group-addon">
-                    <img src="~/img/u13.svg" style="width:30px;height:30px" />
-                </span>
-                <input type="text" class="form-control">
-            </div>
-            <div class="input-group" style="margin-top:30px">
-                <span class="input-group-addon">
-                    <img src="~/img/u17.svg" style="width:30px;height:30px" />
-                </span>
-                <input type="text" class="form-control">
-            </div>
-        </div>
-    </div>
+    <table style="width:400px;height:100px;margin-top:20px">
+        <tr style="width:400px;height:110px">
+            <td><span style="margin:20px;float:left"> 已选用户</span></td>
+            <td><div id="Zw" style="border:1px solid #000;float:right;width:280px;height:100px"></div> </td>
+        </tr>
+        <tr style="width:400px;height:130px;">
+            <td><div style="margin:20px;width:80px;">原因备注</div> </td>
+            <td><textarea id="Desc" type="text" style="border:1px solid #000;float:right;width:280px;height:100px"></textarea></td>
+        </tr>
+    </table>
 </body>
 </html>
-<style>
-    #main {
-        position: absolute;
-        width: 450px;
-        height: 400px;
-        left: 50%;
-        top: 50%;
-        margin-left: -300px;
-        margin-top: -200px;
-    }
-</style>
+
 <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
 <script src="~/lib/jquery/dist/jquery.js"></script>
 <link href="~/layuiadmin/layui/css/layui.css" rel="stylesheet" />
