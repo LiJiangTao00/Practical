@@ -10,10 +10,13 @@ using PC.DAL.MaterialDal;
 using PC.IBLL.MaterialBLL;
 using PC.BLL.MaterialBll;
 using Microsoft.AspNetCore.Routing;
+using PC.Model.ViewModel;
+using Newtonsoft.Json;
+using System.IO;
 
 namespace PC.API.Controllers.MaterialManagement
 {
-    [Route("api/[controller]")]
+    [Route("api/[Controller]/[Action]")]
     [ApiController]
     public class MaterialController : ControllerBase
     {
@@ -30,7 +33,6 @@ namespace PC.API.Controllers.MaterialManagement
         /// 显示物料信息
         /// </summary>
         /// <returns></returns>
-        [Route("ShowMaterial")]
         [HttpGet]
         public List<MaterialTableModel> ShowMaterial()
         {
@@ -41,7 +43,6 @@ namespace PC.API.Controllers.MaterialManagement
         /// 显示物料下拉信息
         /// </summary>
         /// <returns></returns>
-        [Route("GetTypes")]
         [HttpGet]
         public List<MaterialTypeTableModel> GetTypes()
         {
@@ -55,11 +56,23 @@ namespace PC.API.Controllers.MaterialManagement
         /// <param name="materialname"></param>
         /// <param name="materialprice"></param>
         /// <returns></returns>
-        [Route("SelMaterial")]
         [HttpGet]
-        public List<MaterialTableModel> SelMaterial(string Materialid, string Materialname, float Materialprice, float Materialprice1)
+        public PageShowMaterial SelMaterial(string Materialid, string Materialname, float Materialprice, float Materialprice1, int PageIndex = 1, int PageSize = 3)
         {
-            return _bll.SelMaterial(Materialid, Materialname, Materialprice,Materialprice1);
+            return _bll.SelMaterial(Materialid, Materialname, Materialprice,Materialprice1, PageIndex, PageSize);
         }
+
+        /// <summary>
+        /// 添加物料
+        /// </summary>
+        /// <param name="mod"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public int AddMaterial(MaterialTableModel mod)
+        {
+            return _bll.AddMaterial(mod);
+        }
+
+
     }
 }

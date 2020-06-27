@@ -4,6 +4,7 @@ using System.Text;
 using PC.Model.Models;
 using PC.DAL.MaterialDal;
 using PC.IDAL.IMaterialDAL;
+using PC.Model.ViewModel;
 
 namespace PC.IBLL.MaterialBLL
 {
@@ -25,6 +26,13 @@ namespace PC.IBLL.MaterialBLL
         /// 多条件查询物料
         /// </summary>
         /// <returns></returns>
-        List<MaterialTableModel> SelMaterial(string Materialid, string Materialname, float Materialprice,float Materialprice1);
+        PageShowMaterial SelMaterial(string Materialid, string Materialname, float Materialprice,float Materialprice1, int PageIndex = 1, int PageSize = 3);
+
+        /// <summary>
+        /// 添加物料
+        /// </summary>
+        /// <param name="mod"></param>
+        /// <returns></returns>
+        int AddMaterial(MaterialTableModel mod);
     }
 }

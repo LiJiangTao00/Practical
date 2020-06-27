@@ -7,6 +7,7 @@ using PC.DAL.MaterialDal;
 using Dapper;
 using System.Data.SqlClient;
 using PC.IBLL.MaterialBLL;
+using PC.Model.ViewModel;
 
 namespace PC.BLL.MaterialBll
 {
@@ -43,9 +44,19 @@ namespace PC.BLL.MaterialBll
         /// <param name="materialname"></param>
         /// <param name="materialprice"></param>
         /// <returns></returns>
-        public List<MaterialTableModel> SelMaterial(string Materialid, string Materialname, float Materialprice, float Materialprice1)
+        public PageShowMaterial SelMaterial(string Materialid, string Materialname, float Materialprice, float Materialprice1, int PageIndex = 1, int PageSize = 3)
         {
-            return _dal.SelMaterial(Materialid, Materialname, Materialprice,Materialprice1);
+            return _dal.SelMaterial(Materialid, Materialname, Materialprice,Materialprice1, PageIndex, PageSize);
+        }
+
+        /// <summary>
+        /// 添加物料
+        /// </summary>
+        /// <param name="mod"></param>
+        /// <returns></returns>
+        public int AddMaterial(MaterialTableModel mod)
+        {
+            return _dal.AddMaterial(mod);
         }
     }
 }

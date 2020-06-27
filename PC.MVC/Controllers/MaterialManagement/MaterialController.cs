@@ -18,5 +18,14 @@ namespace PC.MVC.Controllers.MaterialManagement
         {
             return View();
         }
+
+        /// <summary>
+        /// 添加物料
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult AddMaterial()
+        {
+            return View();
+        }
     }
 }

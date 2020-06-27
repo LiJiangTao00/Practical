@@ -1,0 +1,145 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>AddMaterial</title>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+</head>
+<body>
+    <h2>添加物料</h2> <input id="btnFH" type="button" value="返回" onclick="Fanhui()" />
+    <table class="table table-bordered">
+        <tr>
+            <td>物料分类：</td>
+            <td>
+                <select id="type">
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>区域：</td>
+            <td>
+                <select id="place">
+                    <option>==请选择==</option>
+                    <option>北中国</option>
+                    <option>南中国</option>
+                    <option>西中国</option>
+                    <option>全国</option>
+                    <option>社区</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>物料编号：</td>
+            <td>
+                <input id="Material_Id" type="text" />
+            </td>
+        </tr>
+        <tr>
+            <td>物料名称：</td>
+            <td>
+                <input id="Material_Name" type="text" />
+            </td>
+        </tr>
+        <tr>
+            <td>描述：</td>
+            <td>
+                <textarea id="Material_Desc" rows="2" cols="20"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td>图片：</td>
+            <td>
+                <input type="file" id="P_Photo" style="height:20px;width:200px;" name="username" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
+            </td>
+        </tr>
+        <tr>
+            <td>单价：</td>
+            <td>
+                <input id="Material_Price" type="text" />元
+            </td>
+        </tr>
+        <tr>
+            <td>数量：</td>
+            <td>
+                <input id="Material_Number" type="text" />个
+            </td>
+        </tr>
+        <tr>
+            <td>物料状态：</td>
+            <td>
+                <input id="Material_State" type="text" />
+            </td>
+        </tr>
+        <tr>
+            <td><input id="btnTJ" type="button" value="提交" onclick="addmaterial()" /></td>
+            <td><input id="btnCZ" type="button" value="重置" onclick="czmaterial()" /></td>
+        </tr>
+    </table>
+</body>
+</html>
+
+<script>
+    $(function () {
+        //物料类型下拉绑定
+        Typedrop();
+    })
+    //绑定下拉（物料信息）
+    function Typedrop() {
+        $.ajax({
+            url: "http://localhost:49764/api/material/GetTypes",
+            type: "Get",
+            success: function (data) {
+                console.log(data);
+                $("#type").empty();
+                $(data).each(function () {
+                    var list = '<option value=' + this.Id + '>' + this.mType_Name + '</option>'
+                    $("#type").append(list);
+                })
+            }
+        })
+    }
+
+    //添加物料信息
+    function addmaterial() {
+        var obj = {
+            Material_TypeId: $("#type").val(),
+            Material_Id: $("#Material_Id").val(),
+            Material_Name: $("#Material_Name").val(),
+            Material_Desc: $("#Material_Desc").val(),
+            Material_Image: $("#P_Photo"),
+            Material_Price: $("#Material_Price").val(),
+            Material_Number: $("#Material_Number").val(),
+            Material_State: $("#Material_State").val()
+        }
+        $.ajax({
+            url: "http://localhost:49764/api/material/SelMaterial",
+            type: "Post",
+            data: obj,
+            success: function (data) {
+                if (data > 0) {
+                    alert("添加成功!");
+                    location.href = '/material/SelMaterial';
+                }
+                else {
+                    alert("添加失败!");
+                }
+            }
+        })
+    }
+
+    function Fanhui() {
+        location.href = '/material/SelMaterial';
+    }
+</script>
+
+
+

@@ -12,30 +12,29 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
 </head>
 <body>
     <div>
         <table>
             <tr>
-                <td>筛选</td>
+                <td><h2>筛选</h2></td>
             </tr>
             <tr>
                 <td><input id="Materialid" type="text" /></td>
                 <td><input id="Materialname" type="text" /></td>
-                <td><input id="Materialprice" type="text" />——</td>
+                <td><input id="Materialprice" type="text" /> —— </td>
                 <td><input id="Materialprice1" type="text" /></td>
-                <td><input id="screen" type="button" value="筛选" onclick="Screen()"/></td>
+                <td><input id="screen" type="button" value="筛选" onclick="Screen('all')" /></td>
+                <td>
+                    <input id="btnAdd" type="button" value="添加" onclick="AddMaterial()" />
+                </td>
             </tr>
         </table>
     </div>
     <div>
         <table class="table table-bordered">
             <thead>
-                <tr>
-                    <td>
-                        <input id="btnAdd" type="button" value="添加" onclick="AddMaterial()" />
-                    </td>
-                </tr>
                 <tr>
                     <td>物料编号</td>
                     <td>物料名称</td>
@@ -51,9 +50,20 @@
             <tbody id="tb"></tbody>
         </table>
     </div>
+    <div>
+        <input id="btn_First" type="button" value="首页" onclick="Screen('first')"/>
+        <input id="btn_Prev" type="button" value="上一页" onclick="Screen('prv')"/>
+        当前第<label id="pageindex">1</label>页/每页<label id="pagesize">3</label>
+        总共<label id="totalcount"></label>条/总共<label id="pagetotal"></label>页
+        <input id="btn_Next" type="button" value="下一页" onclick="Screen('next')"/>
+        <input id="btn_Last" type="button" value="尾页" onclick="Screen('last')"/>
+    </div>
 </body>
 </html>
 <script>
+    //var PageIndex = 1; //页码
+    //var PageSize = 3;  //页大小
+    //var PageCount = 0; //总页数
     //显示物料信息
     $(function () {
         Show();
@@ -61,12 +71,20 @@
     //ajax显示物料信息
     function Show() {
         $.ajax({
-            url: "http://localhost:49764/api/Material/ShowMaterial",
-            dataType:"json",
-            type: "Get",
+            url: "http://localhost:49764/api/material/SelMaterial",
+            dataType: "json",
+            data: {
+                Materialprice: -1,
+                Materialprice1: -1,
+                PageIndex: "1",
+                PageSize: "3"
+            },
+            type: "get",
             success: function (d) {
+                $("#totalcount").text(d.dataCount);
+                $("#pagetotal").text(d.pageCount);
                 $("#tb").empty();
-                $(d).each(function () {
+                $(d.pageShowMateriallist).each(function () {
                     var list = '<tr>' +
                         '<td>' + this.material_Id + '</td>' +
                         '<td>' + this.material_Name + '</td>' +
@@ -75,7 +93,7 @@
                         '<td>' + this.material_Price + '</td>' +
                         '<td>' + this.material_Number + '</td>' +
                         '<td>' + this.material_LastNumber + '</td>' +
-                        '<td>' + this.material_State + '</td>' +
+                        '<td>' + (this.material_State==1?"上架":"下架") + '</td>' +
                         '<td><input id="Detail" type="button" value="查看详情" oclick="detail()"/><input id="edit" type="button" value="编辑" oclick="Edit()"/><input id="Recycle" type="button" value="加入回收站" oclick="recycle()"/></td>' +
                         '</tr>'
                     $("#tb").append(list);
@@ -84,25 +102,72 @@
         })
     }
 
-    function Screen() {
+    //多条件查询物料信息
+    function Screen(names) {
+        var PageIndex = Number($("#pageindex").text());
+        var pageCount = Number($("#pagetotal").text());
+        switch (names) {
+            case 'all':
+                PageIndex = -1;
+                break;
+            case 'first':
+                $("#pageindex").text(1);
+                
+                break;
+            case 'prv':
+                if (PageIndex > 1) {
+                    $("#pageindex").text(Number($("#pageindex").text()) - Number(1));
+                }
+
+                break;
+            case 'next':
+                if (PageIndex < pageCount) {
+                    $("#pageindex").text(Number($("#pageindex").text()) + Number(1));
+                }
+
+                break;
+            case 'last':
+                $("#pageindex").text(pageCount);
+                break;
+               
+
+            default:
+
+                break;
+        }
         var Materialid = $("#Materialid").val();
         var Materialname = $("#Materialname").val();
-        var Materialprice = $("#Materialprice").val();
-        var Materialprice1 = $("#Materialprice1").val(); 
+        var Materialprice = -1;
+        if ($("#Materialprice").val()!="") {
+            Materialprice = $("#Materialprice").val();
+        }    
+        var Materialprice1 = -1;
+        if ($("#Materialprice1").val()!= "") {
+            Materialprice1 = $("#Materialprice1").val();
+        }
+
+        var PageIndex = $("#pageindex").text(); //页码
+
+        var PageSize = $("#pagesize").text();  //页大小
+       // var PageCount = 0; //总页数
         $.ajax({
-            url: "http://localhost:49764/api/Material/SelMaterial",
-            type: "Get",
-            data: {
+            url: "http://localhost:49764/api/material/SelMaterial",
+            type: "get",
+            data: {                
                 Materialid: Materialid,
                 Materialname: Materialname,
                 Materialprice: Materialprice,
-                Materialprice1: Materialprice1
-
+                Materialprice1: Materialprice1,
+                PageIndex: PageIndex,
+                PageSize: PageSize
             },
             dataType:"json",
             success: function (d) {
+                $("#pagetotal").text(d.pageCount);
+                $("#totalcount").text(d.dataCount);
+                $("#pageCount").text(d.pageCount);
                 $("#tb").empty();
-                $(d).each(function () {
+                $(d.pageShowMateriallist).each(function () {
                     var list = '<tr>' +
                         '<td>' + this.material_Id + '</td>' +
                         '<td>' + this.material_Name + '</td>' +
@@ -111,7 +176,7 @@
                         '<td>' + this.material_Price + '</td>' +
                         '<td>' + this.material_Number + '</td>' +
                         '<td>' + this.material_LastNumber + '</td>' +
-                        '<td>' + this.material_State + '</td>' +
+                        '<td>' + (this.material_State == 1 ? "上架" : "下架")+ '</td>' +
                         '<td><input id="Detail" type="button" value="查看详情" oclick="detail()"/><input id="edit" type="button" value="编辑" oclick="Edit()"/><input id="Recycle" type="button" value="加入回收站" oclick="recycle()"/></td>' +
                         '</tr>'
                     $("#tb").append(list);
@@ -119,4 +184,12 @@
             }
         })
     }
+    function AddMaterial() {
+        location.href = '/material/AddMaterial';
+    }
+
+    function detail() {
+
+    }
+ 
 </script>

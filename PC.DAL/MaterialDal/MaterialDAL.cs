@@ -6,6 +6,7 @@ using PC.IDAL.IMaterialDAL;
 using Dapper;
 using System.Data.SqlClient;
 using System.Linq;
+using PC.Model.ViewModel;
 
 namespace PC.DAL.MaterialDal
 {
@@ -39,35 +40,51 @@ namespace PC.DAL.MaterialDal
         /// <param name="materialname"></param>
         /// <param name="materialprice"></param>
         /// <returns></returns>
-        public List<MaterialTableModel> SelMaterial(string Materialid, string Materialname, float Materialprice, float Materialprice1)
+        public PageShowMaterial SelMaterial(string Materialid, string Materialname, float Materialprice = -1, float Materialprice1 = -1,int PageIndex = 1, int PageSize = 3)
+       {
+
+            string sql = "select * from MaterialTable where 1=1";
+            if (Materialid!= null)
+            {
+                sql += " and Material_Id like '%" + Materialid + "%'";
+            }
+            if (Materialname!=null)
+            {
+                sql += " and Material_Name like '%" + Materialname + "%'";
+            }
+            if (Materialprice!=-1)
+            {
+                sql += " and Material_Price >"+Materialprice;
+            }
+               
+
+            if (Materialprice1 != -1)
+            {
+                sql += " and Material_Price <" + Materialprice1;
+            }
+           // sql += " and Id between" + (PageIndex - 1) * PageSize + 1 + " and  " + PageIndex * PageSize;
+
+            List<MaterialTableModel> list = new List<MaterialTableModel>();
+            list= conn.Query<MaterialTableModel>(sql).ToList();
+
+            var pagelist = list.Skip((PageIndex - 1) * PageSize).Take(PageSize).ToList();
+
+            PageShowMaterial PageShowData= new PageShowMaterial();
+            PageShowData.PageShowMateriallist = pagelist;
+            PageShowData.DataCount = list.Count();
+            PageShowData.PageSize = PageSize;
+
+            return PageShowData;
+        }
+
+        /// <summary>
+        /// 添加物料
+        /// </summary>
+        /// <param name="mod"></param>
+        /// <returns></returns>
+        public int AddMaterial(MaterialTableModel mod)
         {
-            List<MaterialTableModel> list1 = conn.Query<MaterialTableModel>($"select * from MaterialTable").ToList();
-            
-            if (Materialprice!=0)
-            {
-                list1 = conn.Query<MaterialTableModel>($"select * from MaterialTable where Material_Price between {Materialprice} and {Materialprice1} ").ToList();
-            }
-            else
-            {
-                list1 = conn.Query<MaterialTableModel>($"select * from MaterialTable").ToList();
-            }
-            if (Materialid != null)
-            {
-                list1 = list1.Where(m => m.Material_Id.Contains(Materialid) && m.Material_Name.Contains(Materialname) && m.Material_Price.Equals(Materialprice)).ToList();
-            }
-            if(Materialid == null && Materialname == null && Materialprice == 0)
-            {
-                list1 = conn.Query<MaterialTableModel>("select * from MaterialTable").ToList();
-            }
-            if (Materialid == null || Materialname == null || Materialprice == 0)
-            {
-                list1 = conn.Query<MaterialTableModel>("select * from MaterialTable").ToList();
-            }
-            if (Materialname != null)
-            {
-                list1 = list1.Where(m => m.Material_Id.Contains(Materialid) && m.Material_Name.Contains(Materialname) && m.Material_Price.Equals(Materialprice)).ToList();
-            }
-            return list1;
+            return conn.Execute($"insert into MaterialTable values('{mod.Material_TypeId}','{mod.Material_Id}','{mod.Material_Name}','{mod.Material_Desc}','{mod.Material_Image}','{mod.Material_Price}','{mod.Material_Number}','{mod.Material_State}')");
         }
     }
 }
