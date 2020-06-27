@@ -27,7 +27,20 @@ namespace PC.BLL.Conferences
 
             return _dal.AddConference(c);
         }
-
+        /// <summary>
+        /// 查询会议
+        /// </summary>
+        /// <param name="condate">要查询的时间点</param>
+        /// <param name="conplace">要查询的会议地址</param>
+        /// <param name="constate">要查询的会议状态</param>
+        /// <param name="conname">要查询的会议名称关键字</param>
+        /// <param name="conproduct">要查询的会议产品组</param>
+        /// <returns></returns>
+        public SearchPageShowConference SearchConference(DateTime condate, string conplace, string constate, string conname, int conproduct, int pageindex = 1, int pagesize = 2)
+        {
+           
+            return _dal.SearchConference(condate, conplace, constate, conname, conproduct, pageindex, pagesize);
+        }
 
     }
 }

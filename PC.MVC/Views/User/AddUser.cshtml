@@ -1,0 +1,255 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>添加用户</title>
+</head>
+<body>
+    <form class="layui-form" action="">
+        <div class="layui-form-item">
+            <label class="layui-form-label">姓名</label>
+            <div class="layui-input-block">
+                <input type="text" name="User_Name" required lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">密码</label>
+            <div class="layui-input-inline">
+                <input type="password" name="User_Pwd" required lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input">
+            </div>
+            <div class="layui-form-mid layui-word-aux">辅助文字</div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">工号</label>
+            <div class="layui-input-block">
+                <input type="text" name="User_Id" required lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">性别</label>
+            <div class="layui-input-block">
+                <input type="radio" name="User_Sex" value="0" title="保密" checked>
+                <input type="radio" name="User_Sex" value="1" title="男">
+                <input type="radio" name="User_Sex" value="2" title="女">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">联系方式</label>
+            <div class="layui-input-block">
+                <input type="text" name="User_Phone" required lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">email</label>
+            <div class="layui-input-block">
+                <input type="text" name="User_Email" required lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">微信账号</label>
+            <div class="layui-input-block">
+                <input type="text" name="User_Wechat" required lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">QQ号码</label>
+            <div class="layui-input-block">
+                <input type="text" name="User_QQ" required lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">部门</label>
+            <div class="layui-input-block">
+                <select name="User_Department" id="User_Department" lay-verify="required">
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">职位</label>
+            <div class="layui-input-block">
+                <select name="User_Job" id="User_Job" lay-verify="required">
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">所在区域</label>
+            <div class="layui-input-block">
+                <select name="User_Province" id="ShowProvince" lay-verify="required" lay-filter="test">
+                </select>
+                <select name="User_City" id="ShowCity" lay-verify="required" lay-filter="city">
+                </select>
+                <select name="User_District" id="ShowDistrict" lay-verify="required">
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">联系地址</label>
+            <div class="layui-input-block">
+                <input type="text" name="User_Address" required lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">产品组</label>
+            <div class="layui-input-block">
+                <input type="radio" name="User_ProductId" value="1" title="CV">
+                <input type="radio" name="User_ProductId" value="2" title="DIA">
+                <input type="radio" name="User_ProductId" value="3" title="社区">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+</body>
+</html>
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<link href="~/layuiadmin/layui/css/layui.css" rel="stylesheet" />
+<link href="~/layuiadmin/style/admin.css" rel="stylesheet" />
+<script src="~/layer/layer.js"></script>
+<script src="~/layuiadmin/layui/layui.js"></script>
+<script>
+    $(function () {
+        ShowDepartment();
+    })
+    // { "User_Name": "13295272130", "User_Pwd": "123", "User_Id": "CP10005", "User_Sex": "0", 
+    //"User_Phone": "111111", "User_Email": "111111", "User_Wechat": "111111", "User_QQ": "111111", 
+    //"User_Department": "1", "User_Job": "1", "User_Province": "1", "User_City": "5", "User_District": "12", 
+    //"User_Address": "1231213", "User_ProductId": "1" }
+    //Demo
+    layui.use('form', function () {
+        var form = layui.form;
+        //监听提交
+        form.on('submit(formDemo)', function (data) {
+            console.log(data.field);
+            var obj = data.field;
+            layer.msg(JSON.stringify(data.field));
+            return false;
+        });
+        form.on('select(test)', function (data) {
+            console.log(data.elem); //得到select原始DOM对象
+            console.log(data.value); //得到被选中的值
+            console.log(data.othis); //得到美化后的DOM对象
+            ProvinceChange(data.value);
+        });
+        form.on('select(city)', function (data) {
+            console.log(data.elem); //得到select原始DOM对象
+            console.log(data.value); //得到被选中的值
+            console.log(data.othis); //得到美化后的DOM对象
+            CityChange(data.value);
+        });
+    });
+    function ShowDepartment() {
+        $.ajax({
+            url: "http://localhost:49764/api/user/ShowDepartment",
+            type: "get",
+            dataType: "json",
+            success: function (data) {
+                $('#User_Department').empty();
+                var str = '<option value="0">请选择</option>';
+                $.each(data, function (i, n) {
+                    str += '<option value="' + n.id + '">' + n.department_Name + '</option>';
+                })
+                $('#User_Department').html(str);
+            }
+        })
+        ShowJob();
+    }
+    function ShowJob() {
+        $.ajax({
+            url: "http://localhost:49764/api/user/ShowJob",
+            type: "get",
+            dataType: "json",
+            success: function (data) {
+                $('#User_Job').empty();
+                var str = '<option value="0">请选择</option>';
+                $.each(data, function (i, n) {
+                    str += '<option value="' + n.id + '">' + n.job_Name + '</option>';
+                })
+                $('#User_Job').html(str);
+            }
+        })
+        ShowProvince();
+    }
+    function ShowProvince() {
+        $.ajax({
+            url: "http://localhost:49764/api/user/ShowProvince",
+            type: "get",
+            dataType: "json",
+            success: function (data) {
+                $('#ShowProvince').empty();
+                var str = '<option value="0">请选择</option>';
+                $.each(data, function (i, n) {
+                    str += '<option value="' + n.id + '">' + n.place_Name + '</option>';
+                })
+                $('#ShowProvince').html(str);
+            }
+        })
+        layui.use('form', function () {
+            var form = layui.form;
+            form.render();
+        });
+        ShowCity();
+    }
+    function ShowCity() {
+        $('#ShowCity').empty();
+        var str = '<option value="0">请选择</option>';
+        $('#ShowCity').html(str);
+        ShowDistrict();
+    }
+    function ShowDistrict() {
+        $('#ShowDistrict').empty();
+        var str = '<option value="0">请选择</option>';
+        $('#ShowDistrict').html(str);
+        layui.use('form', function () {
+            var form = layui.form;
+            form.render();
+        });
+    }
+    function ProvinceChange(pid) {
+        $.ajax({
+            url: "http://localhost:49764/api/user/ShowProvince?pid=" + pid,
+            type: "get",
+            dataType: "json",
+            success: function (data) {
+                $('#ShowCity').empty();
+                var str = '<option value="0">请选择</option>';
+                $.each(data, function (i, n) {
+                    str += '<option value="' + n.id + '">' + n.place_Name + '</option>';
+                })
+                $('#ShowCity').html(str);
+            }
+        })
+        layui.use('form', function () {
+            var form = layui.form;
+            form.render();
+        });
+    }
+    function CityChange(pid) {
+        $.ajax({
+            url: "http://localhost:49764/api/user/ShowProvince?pid=" + pid,
+            type: "get",
+            dataType: "json",
+            success: function (data) {
+                $('#ShowDistrict').empty();
+                var str = '<option value="0">请选择</option>';
+                $.each(data, function (i, n) {
+                    str += '<option value="' + n.id + '">' + n.place_Name + '</option>';
+                })
+                $('#ShowDistrict').html(str);
+            }
+        })
+        layui.use('form', function () {
+            var form = layui.form;
+            form.render();
+        });
+    }
+</script>

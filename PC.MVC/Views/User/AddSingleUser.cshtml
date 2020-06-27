@@ -1,0 +1,257 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>添加用户</title>
+</head>
+<body>
+    <table>
+        <tr>
+            <td>姓名</td>
+            <td>
+                <input id="User_Name" type="text" />
+            </td>
+        </tr>
+        <tr>
+            <td>密码</td>
+            <td>
+                <input id="User_Pwd" type="text" value="12345" disabled="disabled" />
+            </td>
+        </tr>
+        <tr>
+            <td>工号</td>
+            <td>
+                <input id="User_Id" type="text" />
+            </td>
+        </tr>
+        <tr>
+            <td>性别</td>
+            <td>
+                <input name="User_Sex" value="0" type="radio" />保密
+                <input name="User_Sex" value="1" type="radio" />男
+                <input name="User_Sex" value="2" type="radio" />女
+            </td>
+        </tr>
+        <tr>
+            <td>联系方式</td>
+            <td>
+                <input id="User_Phone" type="text" />
+            </td>
+        </tr>
+        <tr>
+            <td>email</td>
+            <td>
+                <input id="User_Email" type="text" />
+            </td>
+        </tr>
+        <tr>
+            <td>微信账号</td>
+            <td>
+                <input id="User_Wechat" type="text" />
+            </td>
+        </tr>
+        <tr>
+            <td>QQ账号</td>
+            <td>
+                <input id="User_QQ" type="text" />
+            </td>
+        </tr>
+        <tr>
+            <td>部门</td>
+            <td>
+                <select id="User_Department">
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>职位</td>
+            <td>
+                <select id="User_Job">
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>所在区域</td>
+            <td>
+                <select id="User_Province" onchange="ProvinceChange()">
+                </select>
+                <select id="User_City" onchange="CityChange()">
+                </select>
+                <select id="User_District">
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>联系地址</td>
+            <td>
+                <input id="User_Address" type="text" />
+            </td>
+        </tr>
+        <tr>
+            <td>产品组</td>
+            <td>
+                <input name="User_ProductId" value="1" type="radio" />CV
+                <input name="User_ProductId" value="2" type="radio" />DIA
+                <input name="User_ProductId" value="3" type="radio" />社区
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+                <input id="Button1" type="button" value="提交" onclick="Save()" />
+                <input id="Button1" type="button" value="重置" />
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+<script>
+    $(function () {
+        ShowDepartment();
+    })
+    function ShowDepartment() {
+        $.ajax({
+            url: "http://localhost:49764/api/user/ShowDepartment",
+            type: "get",
+            dataType: "json",
+            success: function (data) {
+                $('#User_Department').empty();
+                var str = '<option value="0">请选择</option>';
+                $.each(data, function (i, n) {
+                    str += '<option value="' + n.id + '">' + n.department_Name + '</option>';
+                })
+                $('#User_Department').html(str);
+            }
+        })
+        ShowJob();
+    }
+    function ShowJob() {
+        $.ajax({
+            url: "http://localhost:49764/api/user/ShowJob",
+            type: "get",
+            dataType: "json",
+            success: function (data) {
+                $('#User_Job').empty();
+                var str = '<option value="0">请选择</option>';
+                $.each(data, function (i, n) {
+                    str += '<option value="' + n.id + '">' + n.job_Name + '</option>';
+                })
+                $('#User_Job').html(str);
+            }
+        })
+        ShowProvince();
+    }
+    function ShowProvince() {
+        $.ajax({
+            url: "http://localhost:49764/api/user/ShowProvince",
+            type: "get",
+            dataType: "json",
+            success: function (data) {
+                $('#User_Province').empty();
+                var str = '<option value="0">请选择</option>';
+                $.each(data, function (i, n) {
+                    str += '<option value="' + n.id + '">' + n.place_Name + '</option>';
+                })
+                $('#User_Province').html(str);
+            }
+        })
+        ShowCity();
+    }
+    function ShowCity() {
+        $('#User_City').empty();
+        var str = '<option value="0">请选择</option>';
+        $('#User_City').html(str);
+        ShowDistrict();
+    }
+    function ShowDistrict() {
+        $('#User_District').empty();
+        var str = '<option value="0">请选择</option>';
+        $('#User_District').html(str);
+    }
+    function ProvinceChange() {
+        var pid = $('#User_Province').val();
+        $.ajax({
+            url: "http://localhost:49764/api/user/ShowProvince?pid=" + pid,
+            type: "get",
+            dataType: "json",
+            success: function (data) {
+                $('#User_City').empty();
+                var str = '<option value="0">请选择</option>';
+                $.each(data, function (i, n) {
+                    str += '<option value="' + n.id + '">' + n.place_Name + '</option>';
+                })
+                $('#User_City').html(str);
+            }
+        })
+    }
+    function CityChange() {
+        var pid = $('#User_City').val();
+        $.ajax({
+            url: "http://localhost:49764/api/user/ShowProvince?pid=" + pid,
+            type: "get",
+            dataType: "json",
+            success: function (data) {
+                $('#User_District').empty();
+                var str = '<option value="0">请选择</option>';
+                $.each(data, function (i, n) {
+                    str += '<option value="' + n.id + '">' + n.place_Name + '</option>';
+                })
+                $('#User_District').html(str);
+            }
+        })
+    }
+    function Save() {
+        var User_Id = $('#User_Id').val();
+        var User_Name = $('#User_Name').val();
+        var User_Pwd = $('#User_Pwd').val();
+        var User_Sex = $("input[name='User_Sex']:checked").val();
+        var User_Phone = $('#User_Phone').val();
+        var User_Email = $('#User_Email').val();
+        var User_Wechat = $('#User_Wechat').val();
+        var User_QQ = $('#User_QQ').val();
+        var User_Department = $('#User_Department').val();
+        var User_Job = $('#User_Job').val();
+        var User_Province = $('#User_Province').val();
+        var User_City = $('#User_City').val();
+        var User_District = $('#User_District').val();
+        var User_Address = $('#User_Address').val();
+        var User_ProductId = $("input[name='User_ProductId']:checked").val();
+        var User_Area = $("#User_Province").find("option:selected").text() + $("#User_City").find("option:selected").text() + $("#User_District").find("option:selected").text();
+        var obj = {};
+        obj.User_Id = User_Id;
+        obj.User_Name = User_Name;
+        obj.User_Sex = parseInt(User_Sex);
+        obj.User_Pwd = User_Pwd;
+        obj.User_Phone = User_Phone;
+        obj.User_Email = User_Email;
+        obj.User_Wechat = User_Wechat;
+        obj.User_QQ = User_QQ;
+        obj.User_Department = parseInt(User_Department);
+        obj.User_Job = parseInt(User_Job);
+        obj.User_Province = parseInt(User_Province);
+        obj.User_City = parseInt(User_City);
+        obj.User_District = parseInt(User_District);
+        obj.User_Address = User_Address;
+        obj.User_ProductId = parseInt(User_ProductId);
+        obj.User_Area = User_Area;
+        $.ajax({
+            url: "http://localhost:49764/api/user/AddSingleUser",
+            data: JSON.stringify(obj),
+            type: "post",
+            contentType: "application/json",
+            success: function (data) {
+                if (data > 0) {
+                    location.href = "/user/showlist";
+                }
+            }
+        })
+    }
+</script>

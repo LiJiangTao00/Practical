@@ -30,17 +30,17 @@
                 </ul>
                 <ul class="layui-nav layui-layout-right" lay-filter="layadmin-layout-right">
                     <li class="layui-nav-item" lay-unselect>
-                        <a href="javascript:;">
-                            <div id="Name"></div>
+                        <a href="">
+                            <label id="Name">登录人</label>
                         </a>
                     </li>
                     <li class="layui-nav-item layui-hide-xs" lay-unselect>
-                        <a href="javascript:;">
+                        <a href="">
                             <cite>首页</cite>
                         </a>
                     </li>
                     <li class="layui-nav-item" lay-unselect>
-                        <a href="javascript:;">
+                        <a href="/default/login">
                             <cite>退出</cite>
                         </a>
                     </li>
@@ -52,7 +52,7 @@
             <div class="layui-side layui-side-menu">
                 <div class="layui-side-scroll">
                     <div class="layui-logo" lay-href="home/console.html">
-                        <span>layuiAdmin</span>
+                        <span>药企内部管理系统</span>
                     </div>
 
                     <ul class="layui-nav layui-nav-tree" lay-shrink="all" id="LAY-system-side-menu" lay-filter="layadmin-system-side-menu">
@@ -69,7 +69,7 @@
                             </a>
                             <dl class="layui-nav-child">
                                 <dd data-name="console" class="layui-this">
-                                    <a lay-href="">国际会议</a>
+                                    <a lay-href="/Conference/ShowConference">国际会议</a>
                                 </dd>
                                 <dd data-name="console">
                                     <a lay-href="">国内会议</a>
@@ -295,6 +295,7 @@
 <script src="~/lib/jquery/dist/jquery.js"></script>
 <script>
     $(function () {
+        console.log(localStorage["Name"]);
         $('#Name').html(localStorage["Name"]);
     })
 </script>

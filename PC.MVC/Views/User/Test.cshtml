@@ -1,0 +1,120 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Test</title>
+</head>
+<body>
+    <button id="test" type="button" class="btn btn-default" style="width:80px;color:blue;border:1px solid blue;font-size:6px" onclick="GetData()">查看详情</button>
+    <div style="margin-top:20px"></div>
+</body>
+</html>
+<link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<link href="~/layuiadmin/layui/css/layui.css" rel="stylesheet" />
+<link href="~/layuiadmin/style/admin.css" rel="stylesheet" />
+<script src="~/layer/layer.js"></script>
+<script src="~/layuiadmin/layui/layui.js"></script>
+<script>
+    function GetData() {
+        var ids = location.search.split('?')[1].split('=')[1];
+        var str = '<table style="width:400px;height:100px;margin-top:20px">' +
+            '<tr style = "width:400px;height:110px" >' +
+            '<td>' +
+            '<span style="margin:20px;float:left"> 已选用户</span>' +
+            '</td>' +
+            ' <td>' +
+            '<div id="Zw" style="border:1px solid #000;float:right;width:280px;height:100px"></div>' +
+            ' </td>' +
+            '</tr >';
+        var select = '<select id="ShowJob"></select>';
+        var last = '<tr style="width:400px;height:60px">' +
+            '<td>' +
+            '<span style="margin:20px;margin-top:65px;">修改职务</span>' +
+            '</td>' +
+            '<td>' +
+            '<div style="margin-left:50px"><select id="ShowJob"></select></div>' +
+            '</td>' +
+            '</tr>' +
+            '<tr style="width:400px;height:130px;">' +
+            '<td>' +
+            '<div style="margin:20px;width:80px;">修改原因</div> ' +
+            '</td>' +
+            '<td>' +
+            '<textarea id="Desc" type="text" style="border:1px solid #000;float:right;width:280px;height:100px"></textarea>' +
+            '</td>' +
+            '</tr>    ' +
+            '</table >';
+
+        $.ajax({
+            url: "http://localhost:49764/api/user/ShowJob",
+            type: "get",
+            dataType: "json",
+            success: function (data) {
+                $('#ShowJob').empty();
+                var se = '<option value="0">请选择</option>';
+                $.each(data, function (i, n) {
+                    se += '<option value="' + n.id + '">' + n.job_Name + '</option>';
+                })
+                $('#ShowJob').append(se);
+            }
+        });
+        $.ajax({
+            url: "http://localhost:49764/api/user/SelectSomeUser?id=" + ids,
+            type: "get",
+            dataType: "json",
+            success: function (data) {
+                var div = '';
+                $.each(data, function (m, n) {
+                    div += '<div style="float:left;width:110px;margin-right:20px">' + n.user_Name + '&nbsp;&nbsp;&nbsp;' + n.job_Name + '</div>' +
+                        '<input class="Id" type="hidden" value="' + n.id + '"/></div>'
+                    $('#Zw').html(div);
+                })
+            }
+        })
+        var html = str + last;
+        console.log(html);
+        layui.use('layer', function () {
+            layer.open({
+                type: 1,
+                title: "修改职务",
+                area: ['500px', '400px'],
+                btnAlign: 'c', //按钮居中
+                content: html,//这里content是一个普通的String
+                btn: ['提交', '关闭'],
+                yes: function () {
+                    var tags = [];
+                    $(".Id").each(function (i, e) {
+                        tags[i] = $(this).val();
+                    });
+                    var jid = tags.toString();
+                    var job = $('#ShowJob').val();
+                    var desc = $('#Desc').val();
+                    $.ajax({
+                        url: "http://localhost:49764/api/user/UpdateSome?jid=" + jid + "&job=" + job + "&desc="+desc+"&action=job",
+                        type: "get",
+                        contentType:"application/json",
+                        success: function (data) {
+                            if (data > 0) {
+                                layer.closeAll();
+                                layer.msg('修改完成');
+                                
+                            } else {
+                                layer.msg('修改失败');
+                            }
+                        }
+                    })
+                }
+                , btn2: function () {
+                    layer.closeAll();
+                }
+            });
+        });
+    }
+</script>

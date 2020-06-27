@@ -12,44 +12,80 @@
 </head>
 <body>
     <div>
-        <select id="ShowDepartment">
-        </select>
-        <select id="ShowProvince">
-        </select>
-        <select id="ShowCity">
-        </select>
-        <select id="ShowDistrict">
-        </select>
-        <select id="ShowJob">
-        </select>
-        <input id="txt_Sel" type="text" placeholder="输入手机号或姓名或工号" />
-        <input type="button" value="筛选" onclick="Select()" />
-    </div>
-    <div>
-        <div>
-            <input type="button" value="添加" />
-            <input type="button" value="导入" />
-            <input type="button" value="导出" />
-            <input type="button" value="修改职务" />
-            <input type="button" value="修改部门" />
-            <input type="button" value="停用用户" />
-            <input type="button" value="冻结用户" />
+        <div style="margin:20px">
+            <div style="border: 1px solid #808080;height:55px;padding-top:5px;">
+                <div style="float:left;padding-bottom:5px">
+                    <select id="ShowDepartment"  class="btn btn-default dropdown-toggle">
+                    </select>
+                    <select id="ShowProvince" onchange="ProvinceChange()"  class="btn btn-default dropdown-toggle">
+                    </select>
+                    <select id="ShowCity" onchange="CityChange()"  class="btn btn-default dropdown-toggle">
+                    </select>
+                    <select id="ShowDistrict"  class="btn btn-default dropdown-toggle">
+                    </select>
+                    <select id="ShowJob"  class="btn btn-default dropdown-toggle">
+                    </select>
+                </div>
+                <input id="txt_Sel" type="text" placeholder="输入手机号或姓名或工号" class="form-control" style="width:200px;height:40px;float:left;" />
+                <input type="button" value="筛选" class="layui-btn layui-btn-warm" style="margin-left:20px" onclick="Select()" />
+            </div>
         </div>
         <div>
-            <input type="button" value="全部" style="background-color: Transparent; border-style: none;" />
-            <input type="button" value="CV组" style="background-color: Transparent; border-style: none;" />
-            <input type="button" value="DIA组" style="background-color: Transparent; border-style: none;" />
-            <input type="button" value="社区组" style="background-color: Transparent; border-style: none;" />
+            <div>
+                <input type="button" value="添加" class="layui-btn layui-btn-normal" onclick="Add()" />
+                <input type="button" value="导入" class="layui-btn layui-btn-primary" onclick="Insert()" />
+                <input type="button" value="导出" class="layui-btn layui-btn-primary" onclick="Derive()" />
+                <input id="File1" type="file" />
+                <input type="button" value="修改职务" class="layui-btn layui-btn-primary" onclick="UpdateJob()" />
+                <input type="button" value="修改部门" class="layui-btn layui-btn-primary" onclick="UpdateDepartment()" />
+                <input type="button" value="停用用户" class="layui-btn layui-btn-primary" onclick="Dead()" />
+                <input type="button" value="冻结用户" class="layui-btn layui-btn-primary" onclick="Freeze()" />
+            </div>
+            <div>
+                <input type="button" value="全部" onclick="ShowAll(0)" class="btn btn-block" style="background-color: Transparent; border-style: none;width:200px;float:left;margin-top:8px" />
+                <input type="button" value="CV组" onclick="ShowAll(1)" class="btn btn-block" style="background-color: Transparent; border-style: none;width:200px;float:left" />
+                <input type="button" value="DIA组" onclick="ShowAll(2)" class="btn btn-block" style="background-color: Transparent; border-style: none;width:200px;float:left" />
+                <input type="button" value="社区组" onclick="ShowAll(3)" class="btn btn-block" style="background-color: Transparent; border-style: none;width:200px;float:left" />
+            </div>
+            <table id="thistb" class="table table-hover">
+                <tr>
+                    <td>选择</td>
+                    <td>用户名（手机号）</td>
+                    <td>姓名</td>
+                    <td>工号</td>
+                    <td>产品组</td>
+                    <td>部门</td>
+                    <td>职位</td>
+                    <td>添加时间</td>
+                    <td>操作</td>
+                </tr>
+                <tbody id="tb">
+                </tbody>
+            </table>
+            <div>
+                <input id="chk" type="checkbox" onclick="GetChk()" />全选
+                <input type="button" value="批量删除" onclick="PiDel()" />
+            </div>
         </div>
-        <table class="layui-hide" id="test"></table>
     </div>
 </body>
 </html>
+<link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
 <script src="~/lib/jquery/dist/jquery.js"></script>
 <link href="~/layuiadmin/layui/css/layui.css" rel="stylesheet" />
 <link href="~/layuiadmin/style/admin.css" rel="stylesheet" />
+<script src="~/layer/layer.js"></script>
 <script src="~/layuiadmin/layui/layui.js"></script>
 <script>
+    var str = "";
+    var tab = "";
+    var total = 0;
+    layui.use('layer', function () {
+        var layer = layui.layer;
+    });
+    function ShowAll(id) {
+        ShowList(id);
+    }
     $(function () {
         ShowDepartment();
     })
@@ -59,8 +95,576 @@
             type: "get",
             dataType: "json",
             success: function (data) {
-                console.log(data);
+                $('#ShowDepartment').empty();
+                var str = '<option value="0">请选择</option>';
+                $.each(data, function (i, n) {
+                    str += '<option value="' + n.id + '">' + n.department_Name + '</option>';
+                })
+                $('#ShowDepartment').append(str);
             }
         })
+        ShowProvince();
+    }
+    function ShowProvince() {
+        $.ajax({
+            url: "http://localhost:49764/api/user/ShowProvince",
+            type: "get",
+            dataType: "json",
+            success: function (data) {
+                $('#ShowProvince').empty();
+                var str = '<option value="0">请选择</option>';
+                $.each(data, function (i, n) {
+                    str += '<option value="' + n.id + '">' + n.place_Name + '</option>';
+                })
+                $('#ShowProvince').append(str);
+            }
+        })
+        ShowCity();
+
+    }
+    function ShowCity() {
+        $('#ShowCity').empty();
+        var str = '<option value="0">请选择</option>';
+        $('#ShowCity').append(str);
+        ShowDistrict();
+    }
+    function ShowDistrict() {
+        $('#ShowDistrict').empty();
+        var str = '<option value="0">请选择</option>';
+        $('#ShowDistrict').append(str);
+        ShowJob();
+    }
+    function ShowJob() {
+        $.ajax({
+            url: "http://localhost:49764/api/user/ShowJob",
+            type: "get",
+            dataType: "json",
+            success: function (data) {
+                $('#ShowJob').empty();
+                var str = '<option value="0">请选择</option>';
+                $.each(data, function (i, n) {
+                    str += '<option value="' + n.id + '">' + n.job_Name + '</option>';
+                })
+                $('#ShowJob').append(str);
+            }
+        })
+        ShowList(0);
+    }
+    function ProvinceChange() {
+        var pid = $('#ShowProvince').val();
+        $.ajax({
+            url: "http://localhost:49764/api/user/ShowProvince?pid=" + pid,
+            type: "get",
+            dataType: "json",
+            success: function (data) {
+                $('#ShowCity').empty();
+                var str = '<option value="0">请选择</option>';
+                $.each(data, function (i, n) {
+                    str += '<option value="' + n.id + '">' + n.place_Name + '</option>';
+                })
+                $('#ShowCity').append(str);
+            }
+        })
+    }
+    function CityChange() {
+        var pid = $('#ShowCity').val();
+        $.ajax({
+            url: "http://localhost:49764/api/user/ShowProvince?pid=" + pid,
+            type: "get",
+            dataType: "json",
+            success: function (data) {
+                $('#ShowDistrict').empty();
+                var str = '<option value="0">请选择</option>';
+                $.each(data, function (i, n) {
+                    str += '<option value="' + n.id + '">' + n.place_Name + '</option>';
+                })
+                $('#ShowDistrict').append(str);
+            }
+        })
+    }
+    function ShowList(product) {
+        var txt_Sel = $('#txt_Sel').val();
+        var ShowDepartment = $('#ShowDepartment').val() == null ? 0 : $('#ShowDepartment').val();
+        var ShowProvince = $('#ShowProvince').val() == null ? 0 : $('#ShowProvince').val();
+        var ShowCity = parseInt($('#ShowCity').val());
+        var ShowDistrict = parseInt($('#ShowDistrict').val());
+        var ShowJob = $('#ShowJob').val() == null ? 0 : $('#ShowJob').val();
+        $.ajax({
+            url: "http://localhost:49764/api/user/ShowUser?product=" + product + "&did=" + ShowDepartment + "&pid=" + ShowProvince + "&cid=" + ShowCity + "&dis=" + ShowDistrict + "&jid=" + ShowJob + "&name=" + txt_Sel,
+            type: "get",
+            dataType: "json",
+            success: function (data) {
+                $('#tb').empty();
+                total = data.total;
+                var str = '';
+                $.each(data.model, function (i, n) {
+                    str += '<tr><td><input class="chk" type="checkbox" value="' + n.id
+                        + '" /></td><td>' + n.user_Phone + '</td><td>' + n.user_Name + '</td><td>' + n.user_Id + '</td><td>' + n.product_Name
+                        + '</td><td>' + n.department_Name + '</td><td>' + n.job_Name + '</td><td>' + n.user_AddTime
+                        + '</td><td><button id="test" type="button" class="layui-btn" onclick="Lok(' + n.id + ')">查看详情</button><input type="button" value="编辑" class="layui-btn layui-btn-primary" onclick="Edit(' + n.id + ')" /><input type="button" value="删除" class="layui-btn layui-btn-primary" onclick="Del(' + n.id + ')" /></td></tr>';
+                })
+                $('#tb').append(str);
+            }
+        })
+        $('input[type="checkbox"]').prop("checked", false);
+        PageShow(total);
+    }
+    function Select() {
+        ShowList(0);
+    }
+    function Lok(id) {
+        var html = '<div id="upt"></div>';
+        $.ajax({
+            url: "http://localhost:49764/api/user/SelectUser?id=" + id,
+            type: "get",
+            dataType: "json",
+            success: function (data) {
+
+                str = '<div style="float:left;"><img src="' + data.user_Photo + '" style="width:50px;height:70px"/></div>';
+                tab = '<table><tr><td>姓名：' + data.user_Name + '</td>' +
+                    '<td> 工号：' + data.user_Id + '</td>' +
+                    '<td>性别：' + IsBoy(data.user_Sex) + '</td></tr >' +
+                    '<tr><td>联系方式：' + data.user_Phone + '</td>' +
+                    '<td>邮箱：' + data.user_Email + '</td>' +
+                    '<td>微信账号：' + data.user_Wechat + '</td></tr >' +
+                    '<tr><td>QQ号码：' + data.user_QQ + '</td>' +
+                    '<td>部门：' + data.department_Name + '</td>' +
+                    '<td>职位：' + data.job_Name + '</td></tr >' +
+                    '<tr><td>所在区域：' + data.user_Area + '</td>' +
+                    '<td>联系地址：' + data.user_Address + '</td>' +
+                    '<td></td></tr > <tr><td>产品组：' + data.product_Name + '</td>' +
+                    '<td></td><td></td></tr ></table >';
+                $("#upt").append(str + tab);
+            }
+        })
+        layui.use('layer', function () {
+            layer.open({
+                type: 1,
+                title: "用户详情",
+                area: ['500px', '400px'],
+                content: html, //这里content是一个普通的String
+                success: function () {
+                }
+            });
+        });
+    }
+    function IsBoy(id) {
+        switch (id) {
+            case 0:
+                return "保密";
+                break;
+            case 1:
+                return "男";
+                break;
+            case 2:
+                return "女";
+                break;
+            default:
+                break;
+        }
+    }
+    function PageShow(total) {
+
+    }
+    function Add() {
+        location.href = "/user/AddsingleUser";
+    }
+    function Insert() {
+        location.href = "/user/InsertUser";
+    }
+    function GetChk() {
+        if ($('#chk').prop("checked")) {
+            $('.chk').each(function () {
+                $(this).prop("checked", true);
+            })
+        } else {
+            $('.chk').each(function () {
+                $(this).prop("checked", false);
+            })
+        }
+    }
+    function PiDel() {
+        var che = [];
+        $.each($("input[class='chk']:checked"), function (i) {
+            che.push($(this).val());
+        });
+        var pid = che.join(',');
+        Del(pid);
+    }
+    function Del(id) {
+        $.ajax({
+            url: "http://localhost:49764/api/user/DelUser?id=" + id,
+            type: "delete",
+            dataType: "json",
+            success: function (data) {
+                console.log(data);
+                if (data > 0) {
+
+                }
+            }
+        })
+        ShowList(0);
+    }
+    function Derive() {///导出报错
+        var path = $('#File1').val();
+        $.ajax({
+            url: "http://localhost:49764/api/user/PutOut",
+            type: "post",
+            data: JSON.stringify(path),
+            contentType: "application/json",
+            success: function () {
+
+            }
+        })
+    }
+    function GetChkId() {
+        var che = [];
+        $.each($("input[class='chk']:checked"), function (i) {
+            che.push($(this).val());
+        });
+        var pid = che.join(',');
+        var ids = pid;
+        return ids;
+    }
+    function UpdateJob() {
+        var ids = GetChkId();
+        var str = '<table style="width:400px;height:100px;margin-top:20px">' +
+            '<tr style = "width:400px;height:110px" >' +
+            '<td>' +
+            '<span style="margin:20px;float:left"> 已选用户</span>' +
+            '</td>' +
+            ' <td>' +
+            '<div id="Zw" style="border:1px solid #000;float:right;width:280px;height:100px"></div>' +
+            ' </td>' +
+            '</tr >';
+        var select = '<select id="TanJob"></select>';
+        var last = '<tr style="width:400px;height:60px">' +
+            '<td>' +
+            '<span style="margin:20px;margin-top:65px;">修改职务</span>' +
+            '</td>' +
+            '<td>' +
+            '<div style="margin-left:50px">' + select + '</div>' +
+            '</td>' +
+            '</tr>' +
+            '<tr style="width:400px;height:130px;">' +
+            '<td>' +
+            '<div style="margin:20px;width:80px;">修改原因</div> ' +
+            '</td>' +
+            '<td>' +
+            '<textarea id="Desc" type="text" style="border:1px solid #000;float:right;width:280px;height:100px"></textarea>' +
+            '</td>' +
+            '</tr>    ' +
+            '</table >';
+        $.ajax({
+            url: "http://localhost:49764/api/user/ShowJob",
+            type: "get",
+            dataType: "json",
+            success: function (data) {
+                $('#TanJob').empty();
+                var se = '<option value="0">请选择</option>';
+                $.each(data, function (i, n) {
+                    se += '<option value="' + n.id + '">' + n.job_Name + '</option>';
+                })
+                $('#TanJob').append(se);
+            }
+        });
+        $.ajax({
+            url: "http://localhost:49764/api/user/SelectSomeUser?id=" + ids,
+            type: "get",
+            dataType: "json",
+            success: function (data) {
+                var div = '';
+                $.each(data, function (m, n) {
+                    div += '<div style="float:left;width:110px;margin-right:20px">' + n.user_Name + '&nbsp;&nbsp;&nbsp;' + n.job_Name + '</div>' +
+                        '<input class="Id" type="hidden" value="' + n.id + '"/></div>'
+                    $('#Zw').html(div);
+                })
+            }
+        })
+        var html = str + last;
+        console.log(html);
+        layui.use('layer', function () {
+            layer.open({
+                type: 1,
+                title: "修改职务",
+                area: ['500px', '400px'],
+                btnAlign: 'c', //按钮居中
+                content: html,//这里content是一个普通的String
+                btn: ['提交', '关闭'],
+                yes: function () {
+                    var tags = [];
+                    $(".Id").each(function (i, e) {
+                        tags[i] = $(this).val();
+                    });
+                    var jid = tags.toString();
+                    var job = $('#TanJob').val();
+                    var desc = $('#Desc').val();
+                    $.ajax({
+                        url: "http://localhost:49764/api/user/UpdateSome?gid=" + jid + "&sid=" + job + "&desc=" + desc + "&action=job",
+                        type: "get",
+                        contentType: "application/json",
+                        success: function (data) {
+                            if (data > 0) {
+                                layer.closeAll();
+                                layer.msg('修改完成');
+
+
+                            } else {
+                                layer.msg('修改失败');
+                            }
+                        }
+                    })
+                }
+                , btn2: function () {
+                    layer.closeAll();
+                }
+            });
+        });
+        ShowList(0);
+    }
+    function UpdateDepartment() {
+        var ids = GetChkId();
+        var str = '<table style="width:400px;height:100px;margin-top:20px">' +
+            '<tr style = "width:400px;height:110px" >' +
+            '<td>' +
+            '<span style="margin:20px;float:left"> 已选用户</span>' +
+            '</td>' +
+            ' <td>' +
+            '<div id="Zw" style="border:1px solid #000;float:right;width:280px;height:100px"></div>' +
+            ' </td>' +
+            '</tr >';
+        var select = '<select id="TanDepartment"></select>';
+        var last = '<tr style="width:400px;height:60px">' +
+            '<td>' +
+            '<span style="margin:20px;margin-top:65px;">修改部门</span>' +
+            '</td>' +
+            '<td>' +
+            '<div style="margin-left:50px">' + select + '</div>' +
+            '</td>' +
+            '</tr>' +
+            '<tr style="width:400px;height:130px;">' +
+            '<td>' +
+            '<div style="margin:20px;width:80px;">修改原因</div> ' +
+            '</td>' +
+            '<td>' +
+            '<textarea id="Desc" type="text" style="border:1px solid #000;float:right;width:280px;height:100px"></textarea>' +
+            '</td>' +
+            '</tr>    ' +
+            '</table >';
+        $.ajax({
+            url: "http://localhost:49764/api/user/ShowDepartment",
+            type: "get",
+            dataType: "json",
+            success: function (data) {
+                console.log(data);
+                $('#TanDepartment').empty();
+                var se = '<option value="0">请选择</option>';
+                $.each(data, function (i, n) {
+                    se += '<option value="' + n.id + '">' + n.department_Name + '</option>';
+                })
+                $('#TanDepartment').append(se);
+            }
+        })
+        $.ajax({
+            url: "http://localhost:49764/api/user/SelectSomeUser?id=" + ids,
+            type: "get",
+            dataType: "json",
+            success: function (data) {
+                var div = '';
+                $.each(data, function (m, n) {
+                    div += '<div style="float:left;width:110px;margin-right:20px">' + n.user_Name + '&nbsp;&nbsp;&nbsp;' + n.department_Name + '</div>' +
+                        '<input class="Id" type="hidden" value="' + n.id + '"/></div>'
+                    $('#Zw').html(div);
+                })
+            }
+        })
+        var html = str + last;
+        console.log(html);
+        layui.use('layer', function () {
+            layer.open({
+                type: 1,
+                title: "修改部门",
+                area: ['500px', '400px'],
+                btnAlign: 'c', //按钮居中
+                content: html,//这里content是一个普通的String
+                btn: ['提交', '关闭'],
+                yes: function () {
+                    var tags = [];
+                    $(".Id").each(function (i, e) {
+                        tags[i] = $(this).val();
+                    });
+                    var jid = tags.toString();
+                    var job = $('#TanDepartment').val();
+                    var desc = $('#Desc').val();
+                    $.ajax({
+                        url: "http://localhost:49764/api/user/UpdateSome?gid=" + jid + "&sid=" + job + "&desc=" + desc + "&action=department",
+                        type: "get",
+                        contentType: "application/json",
+                        success: function (data) {
+                            if (data > 0) {
+                                layer.closeAll();
+                                layer.msg('修改完成');
+
+
+                            } else {
+                                layer.msg('修改失败');
+                            }
+                        }
+                    })
+                }
+                , btn2: function () {
+                    layer.closeAll();
+                }
+            });
+        });
+        ShowList(0);
+    }
+    function Dead() {
+        var ids = GetChkId();
+        var str = '<table style="width:400px;height:100px;margin-top:20px">' +
+            '<tr style = "width:400px;height:110px" >' +
+            '<td>' +
+            '<span style="margin:20px;float:left"> 已选用户</span>' +
+            '</td>' +
+            ' <td>' +
+            '<div id="Zw" style="border:1px solid #000;float:right;width:280px;height:100px"></div>' +
+            ' </td>' +
+            '</tr >';
+        var last = '<tr style="width:400px;height:130px;">' +
+            '<td>' +
+            '<div style="margin:20px;width:80px;">原因备注</div> ' +
+            '</td>' +
+            '<td>' +
+            '<textarea id="Desc" type="text" style="border:1px solid #000;float:right;width:280px;height:100px"></textarea>' +
+            '</td>' +
+            '</tr>' +
+            '</table >';
+        $.ajax({
+            url: "http://localhost:49764/api/user/SelectSomeUser?id=" + ids,
+            type: "get",
+            dataType: "json",
+            success: function (data) {
+                var div = '';
+                $.each(data, function (m, n) {
+                    div += '<div style="float:left;width:110px;margin-right:20px">' + n.user_Name + '&nbsp;&nbsp;&nbsp;' + n.job_Name + '</div>' +
+                        '<input class="Id" type="hidden" value="' + n.id + '"/></div>'
+                    $('#Zw').html(div);
+                })
+            }
+        })
+        var html = str + last;
+        console.log(html);
+        layui.use('layer', function () {
+            layer.open({
+                type: 1,
+                title: "终止用户",
+                area: ['500px', '400px'],
+                btnAlign: 'c', //按钮居中
+                content: html,//这里content是一个普通的String
+                btn: ['提交', '关闭'],
+                yes: function () {
+                    var tags = [];
+                    $(".Id").each(function (i, e) {
+                        tags[i] = $(this).val();
+                    });
+                    var jid = tags.toString();
+                    var desc = $('#Desc').val();
+                    $.ajax({
+                        url: "http://localhost:49764/api/user/UpdateSome?gid=" + jid + "&sid=1&desc=" + desc + "&action=Dead",
+                        type: "get",
+                        contentType: "application/json",
+                        success: function (data) {
+                            if (data > 0) {
+                                layer.closeAll();
+                                layer.msg('修改完成');
+                            } else {
+                                layer.msg('修改失败');
+                            }
+                        }
+                    })
+                }
+                , btn2: function () {
+                    layer.closeAll();
+                }
+            });
+        });
+        ShowList(0);
+    }
+    function Freeze() {
+        var ids = GetChkId();
+        var str = '<table style="width:400px;height:100px;margin-top:20px">' +
+            '<tr style = "width:400px;height:110px" >' +
+            '<td>' +
+            '<span style="margin:20px;float:left"> 已选用户</span>' +
+            '</td>' +
+            ' <td>' +
+            '<div id="Zw" style="border:1px solid #000;float:right;width:280px;height:100px"></div>' +
+            ' </td>' +
+            '</tr >';
+        var last = '<tr style="width:400px;height:130px;">' +
+            '<td>' +
+            '<div style="margin:20px;width:80px;">原因备注</div> ' +
+            '</td>' +
+            '<td>' +
+            '<textarea id="Desc" type="text" style="border:1px solid #000;float:right;width:280px;height:100px"></textarea>' +
+            '</td>' +
+            '</tr>' +
+            '</table >';
+        $.ajax({
+            url: "http://localhost:49764/api/user/SelectSomeUser?id=" + ids,
+            type: "get",
+            dataType: "json",
+            success: function (data) {
+                var div = '';
+                $.each(data, function (m, n) {
+                    div += '<div style="float:left;width:110px;margin-right:20px">' + n.user_Name + '&nbsp;&nbsp;&nbsp;' + n.job_Name + '</div>' +
+                        '<input class="Id" type="hidden" value="' + n.id + '"/></div>'
+                    $('#Zw').html(div);
+                })
+            }
+        })
+        var html = str + last;
+        console.log(html);
+        layui.use('layer', function () {
+            layer.open({
+                type: 1,
+                title: "冻结用户",
+                area: ['500px', '400px'],
+                btnAlign: 'c', //按钮居中
+                content: html,//这里content是一个普通的String
+                btn: ['提交', '关闭'],
+                yes: function () {
+                    var tags = [];
+                    $(".Id").each(function (i, e) {
+                        tags[i] = $(this).val();
+                    });
+                    var jid = tags.toString();
+                    var desc = $('#Desc').val();
+                    $.ajax({
+                        url: "http://localhost:49764/api/user/UpdateSome?gid=" + jid + "&sid=2&desc=" + desc + "&action=Freeze",
+                        type: "get",
+                        contentType: "application/json",
+                        success: function (data) {
+                            if (data > 0) {
+                                layer.closeAll();
+                                layer.msg('修改完成');
+
+
+                            } else {
+                                layer.msg('修改失败');
+                            }
+                        }
+                    })
+                }
+                , btn2: function () {
+                    layer.closeAll();
+                }
+            });
+        });
+        ShowList(0);
+    }
+    function Edit(id) {
+        location.href = "/user/EditUser";
+        localStorage["editid"] = id;
     }
 </script>
