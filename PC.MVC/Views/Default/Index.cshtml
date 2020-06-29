@@ -128,10 +128,10 @@
                             </a>
                             <dl class="layui-nav-child">
                                 <dd data-name="console" class="layui-this">
-                                    <a lay-href="/User/ShowList">用户列表</a>
+                                    <a href="/User/ShowList" target="main_self_frame">用户列表</a>
                                 </dd>
                                 <dd data-name="console">
-                                    <a lay-href="/User/ShowJob">职务权限</a>
+                                    <a href="/User/ShowJob" target="main_self_frame">职务权限</a>
                                 </dd>
 
                             </dl>
@@ -167,7 +167,7 @@
             <!-- 主体内容 -->
             <div class="layui-body" id="LAY_app_body">
                 <div class="layadmin-tabsbody-item layui-show">
-                    <iframe src="" frameborder="0" class="layadmin-iframe"></iframe>
+                    <iframe src="" frameborder="0" name="main_self_frame" class="layadmin-iframe"></iframe>
                 </div>
             </div>
 
@@ -191,6 +191,15 @@
         console.log(localStorage["Name"]);
         $('#Name').html(localStorage["Name"]);
     })
+    function refreshHighlight(url) {
+        $ = layui.jquery;
+        $(".layui-nav[lay-filter='navList'] a").each(function (ind, val) {
+            if ($(this).attr('href') === url) {
+                $('.layui-nav dd').removeClass('layui-this');
+                $(this).parent('dd').addClass('layui-this');
+            }
+        })
+    }
 </script>
 
 

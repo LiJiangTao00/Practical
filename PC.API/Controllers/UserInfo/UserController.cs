@@ -53,12 +53,13 @@ namespace PC.API.Controllers.UserInfo
             return _bll.ShowProvince(pid);
         }
         [HttpGet]
-        public GetPage<UserShowModel> ShowUser(int product, int did, int pid, int cid, int dis, int jid, string name)
+        public GetPage<UserShowModel> ShowUser(int product, int did, int pid, int cid, int dis, int jid, string name,int index=1,int size=3)
         {
             List<UserShowModel> list = _bll.ShowUser(product, did, pid, cid, dis, jid, name);
+            List<UserShowModel> pagelist = list.Skip((index - 1) * size).Take(size).ToList();
             GetPage<UserShowModel> page = new GetPage<UserShowModel>
             {
-                Model = list,
+                Model = pagelist,
                 Total = list.Count()
             };
             return page;
@@ -200,6 +201,11 @@ namespace PC.API.Controllers.UserInfo
         public int UpdateJobState(int id)
         {
             return _bll.UpdateJobState(id);
+        }
+        [HttpPost]
+        public int AddJob(JobTableModel m)
+        {
+            return _bll.AddJob(m);
         }
         [HttpPut]
         public int PutJob(JobTableModel m)

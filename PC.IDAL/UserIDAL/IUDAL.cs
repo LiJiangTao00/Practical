@@ -32,5 +32,6 @@ namespace PC.IDAL.UserIDAL
         List<PermissionRelationTableModel> ChkPid(int id);
         UserShowModel SelectUserPhone(string phone);
         int PutPwd(string phone, string oldpwd, string newPwd);
+        int AddJob(JobTableModel m);
     }
 }

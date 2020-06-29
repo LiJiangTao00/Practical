@@ -11,112 +11,118 @@
     <title>编辑用户</title>
 </head>
 <body>
-    <table>
-        <tr>
-            <td>姓名</td>
-            <td>
-                <input id="User_Name" type="text" />
-            </td>
-        </tr>
-        <tr>
-            <td>密码</td>
-            <td>
-                <input id="User_Pwd" type="text" value="12345" disabled="disabled" />
-            </td>
-        </tr>
-        <tr>
-            <td>工号</td>
-            <td>
-                <input id="User_Id" type="text" />
-            </td>
-        </tr>
-        <tr>
-            <td>性别</td>
-            <td>
-                <input name="User_Sex" value="0" type="radio" />保密
-                <input name="User_Sex" value="1" type="radio" />男
-                <input name="User_Sex" value="2" type="radio" />女
-            </td>
-        </tr>
-        <tr>
-            <td>联系方式</td>
-            <td>
-                <input id="User_Phone" type="text" />
-            </td>
-        </tr>
-        <tr>
-            <td>email</td>
-            <td>
-                <input id="User_Email" type="text" />
-            </td>
-        </tr>
-        <tr>
-            <td>微信账号</td>
-            <td>
-                <input id="User_Wechat" type="text" />
-            </td>
-        </tr>
-        <tr>
-            <td>QQ账号</td>
-            <td>
-                <input id="User_QQ" type="text" />
-            </td>
-        </tr>
-        <tr>
-            <td>部门</td>
-            <td>
-                <select id="User_Department">
-                </select>
-            </td>
-        </tr>
-        <tr>
-            <td>职位</td>
-            <td>
-                <select id="User_Job">
-                </select>
-            </td>
-        </tr>
-        <tr>
-            <td>所在区域</td>
-            <td>
-                <select id="User_Province" onchange="ProvinceChange()">
-                </select>
-                <select id="User_City" onchange="CityChange()">
-                </select>
-                <select id="User_District">
-                </select>
-            </td>
-        </tr>
-        <tr>
-            <td>联系地址</td>
-            <td>
-                <input id="User_Address" type="text" />
-            </td>
-        </tr>
-        <tr>
-            <td>个人照片</td>
-            <td>
-                <div class="layui-input-inline">
-                    <input type="file" id="User_Photo" style="height:20px;width:200px;" name="username" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td>产品组</td>
-            <td>
-                <input name="User_ProductId" value="1" type="radio" />CV
-                <input name="User_ProductId" value="2" type="radio" />DIA
-                <input name="User_ProductId" value="3" type="radio" />社区
-            </td>
-        </tr>
-        <tr>
-            <td></td>
-            <td>
-                <input id="Button1" type="button" value="提交" onclick="Save()" />
-                <input id="Button1" type="button" value="重置" />
-            </td>
-        </tr>
-    </table>
+    <div style="margin-left:100px;margin-left:20px">
+        <div>
+            <h3 style="font-weight:600;">添加用户</h3>
+            <input type="button" value="返回" onclick="GoBack()"/>
+        </div>
+        <table>
+            <tr>
+                <td>姓名</td>
+                <td>
+                    <input id="User_Name" type="text" />
+                </td>
+            </tr>
+            <tr>
+                <td>密码</td>
+                <td>
+                    <input id="User_Pwd" type="text" value="12345" disabled="disabled" />
+                </td>
+            </tr>
+            <tr>
+                <td>工号</td>
+                <td>
+                    <input id="User_Id" type="text" />
+                </td>
+            </tr>
+            <tr>
+                <td>性别</td>
+                <td>
+                    <input name="User_Sex" value="0" type="radio" />保密
+                    <input name="User_Sex" value="1" type="radio" />男
+                    <input name="User_Sex" value="2" type="radio" />女
+                </td>
+            </tr>
+            <tr>
+                <td>联系方式</td>
+                <td>
+                    <input id="User_Phone" type="text" />
+                </td>
+            </tr>
+            <tr>
+                <td>email</td>
+                <td>
+                    <input id="User_Email" type="text" />
+                </td>
+            </tr>
+            <tr>
+                <td>微信账号</td>
+                <td>
+                    <input id="User_Wechat" type="text" />
+                </td>
+            </tr>
+            <tr>
+                <td>QQ账号</td>
+                <td>
+                    <input id="User_QQ" type="text" />
+                </td>
+            </tr>
+            <tr>
+                <td>部门</td>
+                <td>
+                    <select id="User_Department">
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>职位</td>
+                <td>
+                    <select id="User_Job">
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>所在区域</td>
+                <td>
+                    <select id="User_Province" onchange="ProvinceChange()">
+                    </select>
+                    <select id="User_City" onchange="CityChange()">
+                    </select>
+                    <select id="User_District">
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>联系地址</td>
+                <td>
+                    <input id="User_Address" type="text" />
+                </td>
+            </tr>
+            <tr>
+                <td>个人照片</td>
+                <td>
+                    <div class="layui-input-inline">
+                        <input type="file" id="User_Photo" style="height:20px;width:200px;" name="username" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>产品组</td>
+                <td>
+                    <input name="User_ProductId" value="1" type="radio" />CV
+                    <input name="User_ProductId" value="2" type="radio" />DIA
+                    <input name="User_ProductId" value="3" type="radio" />社区
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <input id="Button1" type="button" value="提交" onclick="Save()" />
+                    <input id="Button1" type="button" value="重置" />
+                </td>
+            </tr>
+        </table>
+        </div>
 </body>
 </html>
 <script src="~/lib/jquery/dist/jquery.js"></script>
@@ -125,7 +131,9 @@
     $(function () {
         ShowDepartment();
     })
-    
+    function GoBack() {
+        window.history.back(-1);
+    }
     function ShowDepartment() {
         $.ajax({
             url: "http://localhost:49764/api/user/ShowDepartment",

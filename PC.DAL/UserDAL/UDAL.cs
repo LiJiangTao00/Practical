@@ -357,5 +357,10 @@ namespace PC.DAL.UserDAL
             }
             return 0;
         }
+        public int AddJob(JobTableModel m)
+        {
+            string sql = " insert into JobTable values ('" + m.Job_Name + "','" + m.Job_Desc + "',1,'"+DateTime.Now +"',0,0)";
+            return dapper.Execute(sql);
+        }
     }
 }

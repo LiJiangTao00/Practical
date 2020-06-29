@@ -11,24 +11,28 @@
     <title>职务权限</title>
 </head>
 <body>
+    <div style="margin-left:100px;margin-left:20px">
+        <div>
+            <h3 style="font-weight:600;">职务列表</h3>
+        </div>
 
-
-    <input type="button" value="添加职务" onclick="Add()" />
-    <table>
-        <tr>
-            <td>选择</td>
-            <td>职务名称</td>
-            <td>职务描述</td>
-            <td>职务状态</td>
-            <td>添加时间</td>
-            <td>操作</td>
-        </tr>
-        <tbody id="tb">
-        </tbody>
-    </table>
-    <div>
-        <input id="chk" type="checkbox" onclick="GetChk()" />全选
-        <input type="button" value="批量删除" onclick="PiDel()" />
+        <input type="button" value="添加职务" onclick="Add()" />
+        <table>
+            <tr>
+                <td>选择</td>
+                <td>职务名称</td>
+                <td>职务描述</td>
+                <td>职务状态</td>
+                <td>添加时间</td>
+                <td>操作</td>
+            </tr>
+            <tbody id="tb">
+            </tbody>
+        </table>
+        <div>
+            <input id="chk" type="checkbox" onclick="GetChk()" />全选
+            <input type="button" value="批量删除" onclick="PiDel()" />
+        </div>
     </div>
 </body>
 </html>
@@ -151,9 +155,9 @@
     }
     function State(chid, state) {
         if (state == 1) {
-            return '<label><input class="mui-switch" type="checkbox" checked onclick="PutState(' + chid+')"></label>';
+            return '<label><input class="mui-switch" type="checkbox" checked onclick="PutState(' + chid + ')"></label>';
         } else {
-            return '<label><input class="mui-switch" type="checkbox" onclick="PutState(' + chid +')"></label>';
+            return '<label><input class="mui-switch" type="checkbox" onclick="PutState(' + chid + ')"></label>';
         }
     }
     function PutState(id) {
@@ -188,17 +192,63 @@
         $.ajax({
             url: "http://localhost:49764/api/user/DelJob?id=" + id,
             type: "get",
-            dataType:"text",
+            dataType: "text",
             success: function (data) {
                 console.log(data);
-                if (data>0) {
+                if (data > 0) {
                     alert("删除成功");
                     ShowTb();
                 }
-                
+
             }
         })
-        
+    }
+    function Add() {
+        var html = '<table style="width:400px;height:300px;margin-top:20px" id="addTb">' +
+            '<tr>' +
+            '<td style="padding-left:40px"> 职务名称</td>' +
+            '<td>' +
+            '<input id="Job_Name" type="text" class="form-control" style="width:200px;height:40px;float:left;" />' +
+            '</td>' +
+            '</tr>' +
+            '<tr>' +
+            '<td style="padding-left:40px">职务描述</td>' +
+            '<td>' +
+            '<textarea id="Job_Desc" class="form-control" rows="2" cols="20" style="height:100px"  ></textarea>' +
+            '</td>' +
+            '</tr></table>';
+        layui.use('layer', function () {
+            layer.open({
+                type: 1,
+                title: "编辑职务",
+                area: ['500px', '400px'],
+                btnAlign: 'c', //按钮居中
+                content: html,//这里content是一个普通的String
+                btn: ['提交', '关闭'],
+                yes: function () {
+                    var obj = {};
+                    obj.Job_Name = $('#Job_Name').val();
+                    obj.Job_Desc = $('#Job_Desc').val();
+                    $.ajax({
+                        url: "http://localhost:49764/api/user/AddJob",
+                        type: "post",
+                        data: JSON.stringify(obj),
+                        contentType: "application/json",
+                        success: function (data) {
+                            if (data > 0) {
+                                layer.closeAll();
+                                layer.msg('添加完成');
+                            } else {
+                                layer.msg('添加失败');
+                            }
+                        }
+                    })
+                }
+                , btn2: function () {
+                    layer.closeAll();
+                }
+            });
+        });
     }
     function Edit(id) {
         var html = '<table style="width:400px;height:300px;margin-top:20px" id="uptTb"></table>';

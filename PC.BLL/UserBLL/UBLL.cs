@@ -123,5 +123,9 @@ namespace PC.BLL.UserBLL
         {
             return _dal.PutPwd(phone, oldpwd, newPwd);
         }
+        public int AddJob(JobTableModel m)
+        {
+            return _dal.AddJob(m);
+        }
     }
 }
