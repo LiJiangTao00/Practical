@@ -44,7 +44,7 @@ namespace PC.DAL.UserDAL
         public string SelectName(string user_Phone)
         {
             string sql = $"select * from UserTable where User_Phone={user_Phone}";
-            string name = dapper.Query(sql).ToList()[0].User_Name;
+            string name = dapper.Query(sql).FirstOrDefault().User_Name;
             return name;
         }
         /// <summary>
@@ -64,7 +64,7 @@ namespace PC.DAL.UserDAL
         public List<JobTableModel> ShowJob()
         {
             DapperHelper<JobTableModel> dep = new DapperHelper<JobTableModel>();
-            string sql = "select * from JobTable";
+            string sql = "select * from JobTable where Job_DelState = 0";
             return dep.Query(sql);
         }
         /// <summary>
@@ -238,7 +238,7 @@ namespace PC.DAL.UserDAL
             switch (action)
             {
                 case "job":
-                    sql += " User_Job= "+sid;
+                    sql += " User_Job= " + sid;
                     break;
                 case "department":
                     sql += " User_Department= " + sid;
@@ -267,6 +267,95 @@ namespace PC.DAL.UserDAL
         {
             string sql = "update UserTable set User_Id='" + m.User_Id + "',User_Name='" + m.User_Name + "',User_Pwd='" + m.User_Pwd + "',User_Sex=" + m.User_Sex + ",User_Phone='" + m.User_Phone + "',User_Email='" + m.User_Email + "',User_Wechat='" + m.User_Wechat + "',User_QQ='" + m.User_QQ + "',User_Department=" + m.User_Department + ",User_Job=" + m.User_Job + ",User_Province=" + m.User_Province + ",User_City=" + m.User_City + ",User_District=" + m.User_District + ",User_Area='" + m.User_Area + "',User_Address='" + m.User_Address + "',User_ProductId=" + m.User_ProductId + ",User_Photo='" + m.User_Photo + "'";
             return dapper.Execute(sql);
+        }
+        public int UpdateJobState(int id)
+        {
+            DapperHelper<JobTableModel> job = new DapperHelper<JobTableModel>();
+            string sql = "select * from JobTable where Id=" + id;
+            JobTableModel m = job.Query(sql).FirstOrDefault();
+            if (m.Job_State == 0)
+            {
+                sql = "update JobTable set Job_State=1 where id=" + id;
+            }
+            else if (m.Job_State == 1)
+            {
+                sql = "update JobTable set Job_State=0 where id=" + id;
+            }
+            else
+            {
+                return 0;
+            }
+            return job.Execute(sql);
+        }
+
+        public int DelJob(int v)
+        {
+            string sql = " update JobTable set Job_DelState=1 where Id =" + v;
+            return dapper.Execute(sql);
+        }
+        public int PutJob(JobTableModel m)
+        {
+            string sql = " update JobTable set Job_Name = '" + m.Job_Name + "', Job_Desc='" + m.Job_Desc + "' where Id=" + m.Id;
+            return dapper.Execute(sql);
+        }
+        public JobTableModel ShowJob(int id)
+        {
+            DapperHelper<JobTableModel> job = new DapperHelper<JobTableModel>();
+            string sql = "select * from JobTable where Id=" + id;
+            JobTableModel m = job.Query(sql).FirstOrDefault();
+            return m;
+        }
+        public List<ListPermission> ShowPermission()
+        {
+            DapperHelper<PermissionTableModel> per = new DapperHelper<PermissionTableModel>();
+            string sql = "select * from PermissionTable where Permission_Pid=0";
+            List<PermissionTableModel> m = per.Query(sql);
+            ListPermission lp = new ListPermission();
+
+            List<ListPermission> list = new List<ListPermission>();
+            foreach (PermissionTableModel model in m)
+            {
+                ListPermission pr =new ListPermission
+                {
+                    Id = model.Id,
+                    Permission_Name = model.Permission_Name,
+                    Permission_Pid = model.Permission_Pid,
+                    ModelList = per.Query("select * from PermissionTable where Permission_Pid=" + model.Id)
+                };
+                list.Add(pr);
+            }
+            return list;
+        }
+        public List<PermissionRelationTableModel> ShowSinglePermission(int id)
+        {
+            DapperHelper<PermissionRelationTableModel> pr = new DapperHelper<PermissionRelationTableModel>();
+            string sql = "select * from PermissionRelationTable pr where pr.Permission_Id =" + id;
+            List<PermissionRelationTableModel> m = pr.Query(sql);
+            return m;
+        }
+        public List<PermissionRelationTableModel> ChkPid(int id)
+        {
+            DapperHelper<PermissionRelationTableModel> pr = new DapperHelper<PermissionRelationTableModel>();
+            string sql = "select * from PermissionTable p where p.Permission_Pid = " + id;
+            List<PermissionRelationTableModel> m = pr.Query(sql);
+            return m;
+        }
+        public UserShowModel SelectUserPhone(string phone)
+        {
+            DapperHelper<UserShowModel> helper = new DapperHelper<UserShowModel>();
+            string sql = "select * from UserTable u join DepartmentTable d on u.User_Department = d.Id join JobTable j on u.User_Job = j.Id join ProductTable p on u.User_ProductId = p.Id where User_State = 0 and User_DelState = 0 and User_Phone =" + phone;
+            return helper.Query(sql).FirstOrDefault();
+        }
+        public int PutPwd(string phone, string oldpwd, string newPwd)
+        {
+            string sql = "select * from UserTable where User_Phone='"+ phone + "' and User_Pwd='"+oldpwd+"'";
+            UserTableModel m = dapper.Query(sql).FirstOrDefault();
+            if (m!=null)
+            {
+                sql = "update UserTable set User_Pwd='"+newPwd+ "' where User_Phone='"+ phone + "'";
+                return dapper.Execute(sql); 
+            }
+            return 0;
         }
     }
 }

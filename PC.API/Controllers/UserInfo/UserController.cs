@@ -11,6 +11,8 @@ using PC.Model.ViewModel;
 using Newtonsoft.Json;
 using PC.Common.Helpers;
 using PublicToolsLib.HelpExcel;
+using System.IO;
+using Microsoft.AspNetCore.Hosting;
 
 namespace PC.API.Controllers.UserInfo
 {
@@ -18,10 +20,12 @@ namespace PC.API.Controllers.UserInfo
     [ApiController]
     public class UserController : ControllerBase
     {
+        private IWebHostEnvironment _hostEnvironment;
         private IUBLL _bll;
-        public UserController(IUBLL bll)
+        public UserController(IUBLL bll, IWebHostEnvironment hostEnvironment)
         {
             _bll = bll;
+            _hostEnvironment = hostEnvironment;
         }
         [HttpGet]
         public int Login(string User_Phone, string User_Pwd)
@@ -69,9 +73,35 @@ namespace PC.API.Controllers.UserInfo
         {
             return _bll.ShowJob();
         }
-        [HttpPost]
-        public int AddSingleUser(UserTableModel m)
+        [HttpGet]
+        public JobTableModel ShowSingleJob(int id)
         {
+            return _bll.ShowJob(id);
+        }
+        [HttpPost]
+        public int AddSingleUser(string obj)
+        {
+            UserTableModel m = JsonConvert.DeserializeObject<UserTableModel>(obj);
+            var s = m.User_Photo;
+            if (Request.Form.Files.Count > 0)
+            {
+                //获取物理路径 webtootpath
+                string path = _hostEnvironment.ContentRootPath + "\\wwwroot\\img";
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
+                var file = Request.Form.Files[0];
+                string fileExt = file.FileName.Split('.')[file.FileName.Split('.').Length - 1];
+                string filename = Guid.NewGuid().ToString() + "." + fileExt;
+                string fileFullName = path + "\\" + filename;
+                using (FileStream fs = System.IO.File.Create(fileFullName))
+                {
+                    file.CopyTo(fs);
+                    fs.Flush();
+                }
+                m.User_Photo = "/img/" + filename;
+            }
             return _bll.AddSingleUser(m);
         }
         //[HttpGet]
@@ -88,6 +118,24 @@ namespace PC.API.Controllers.UserInfo
         //    };
         //    return model;
         //}
+        [HttpGet]
+        public int DelJob(string id)
+        {
+            string[] pid = id.Split(',');
+            int i = 0;
+            foreach (string cid in pid)
+            {
+                i = _bll.DelJob(int.Parse(cid));
+            }
+            if (i > 0)
+            {
+                return 1;
+            }
+            else
+            {
+                return 0;
+            }
+        }
         [HttpDelete]
         public int DelUser(string id)
         {
@@ -148,5 +196,42 @@ namespace PC.API.Controllers.UserInfo
         {
             return _bll.UpdateSingleUser(m);
         }
+        [HttpPut]
+        public int UpdateJobState(int id)
+        {
+            return _bll.UpdateJobState(id);
+        }
+        [HttpPut]
+        public int PutJob(JobTableModel m)
+        {
+            return _bll.PutJob(m);
+        }
+        [HttpGet]
+        public List<ListPermission> ShowPermission()
+        {
+            return _bll.ShowPermission();
+
+        }
+        [HttpGet]
+        public List<PermissionRelationTableModel> ShowSinglePermission(int id)
+        {
+            return _bll.ShowSinglePermission(id);
+        }
+        [HttpGet]
+        public List<PermissionRelationTableModel> ChkPid(int id)
+        {
+            return _bll.ChkPid(id);
+        }
+        [HttpGet]
+        public UserShowModel SelectUserPhone(string phone)
+        {
+            return _bll.SelectUserPhone(phone);       
+        }
+        [HttpGet]
+        public int PutPwd(string phone,string oldpwd,string newPwd)
+        {
+            return _bll.PutPwd(phone,oldpwd, newPwd);
+        }
+        
     }
 }

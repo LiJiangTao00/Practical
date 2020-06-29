@@ -94,6 +94,14 @@
             </td>
         </tr>
         <tr>
+            <td>个人照片</td>
+            <td>
+                <div class="layui-input-inline">
+                    <input type="file" id="User_Photo" style="height:20px;width:200px;" name="username" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
+                </div>
+            </td>
+        </tr>
+        <tr>
             <td>产品组</td>
             <td>
                 <input name="User_ProductId" value="1" type="radio" />CV
@@ -209,6 +217,10 @@
         })
     }
     function Save() {
+        var fileUpload = $("#User_Photo").get(0);
+        var file = fileUpload.files[0];
+        var data = new FormData();
+        data.append(file.name, file);
         var User_Id = $('#User_Id').val();
         var User_Name = $('#User_Name').val();
         var User_Pwd = $('#User_Pwd').val();
@@ -243,12 +255,14 @@
         obj.User_ProductId = parseInt(User_ProductId);
         obj.User_Area = User_Area;
         $.ajax({
-            url: "http://localhost:49764/api/user/AddSingleUser",
-            data: JSON.stringify(obj),
+            url: "http://localhost:49764/api/user/AddSingleUser?obj=" + JSON.stringify(obj),
+            data: data,
             type: "post",
-            contentType: "application/json",
+            contentType: false,
+            processData: false,
             success: function (data) {
                 if (data > 0) {
+                    alert("OK");
                     location.href = "/user/showlist";
                 }
             }

@@ -32,11 +32,19 @@ namespace PC.MVC.Controllers.UserInfo
         {
             return View();
         }
-        public IActionResult Test()
+        public IActionResult SetPermission()
+        {
+            return View();
+        }
+        public IActionResult SelectUser()
         {
             return View();
         }
         public IActionResult Test1()
+        {
+            return View();
+        }
+        public IActionResult Test()
         {
             return View();
         }

@@ -11,7 +11,9 @@
     <title>职务权限</title>
 </head>
 <body>
-    <input type="button" value="添加职务" onclick="Add()"/>
+
+
+    <input type="button" value="添加职务" onclick="Add()" />
     <table>
         <tr>
             <td>选择</td>
@@ -22,15 +24,243 @@
             <td>操作</td>
         </tr>
         <tbody id="tb">
-
         </tbody>
     </table>
+    <div>
+        <input id="chk" type="checkbox" onclick="GetChk()" />全选
+        <input type="button" value="批量删除" onclick="PiDel()" />
+    </div>
 </body>
 </html>
+<link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
 <script src="~/lib/jquery/dist/jquery.js"></script>
+<link href="~/layuiadmin/layui/css/layui.css" rel="stylesheet" />
+<link href="~/layuiadmin/style/admin.css" rel="stylesheet" />
 <script src="~/layer/layer.js"></script>
 <script src="~/layuiadmin/layui/layui.js"></script>
-<script>
+<style>
+    .mui-switch {
+        width: 52px;
+        height: 31px;
+        position: relative;
+        border: 1px solid #dfdfdf;
+        background-color: #fdfdfd;
+        box-shadow: #dfdfdf 0 0 0 0 inset;
+        border-radius: 20px;
+        border-top-left-radius: 20px;
+        border-top-right-radius: 20px;
+        border-bottom-left-radius: 20px;
+        border-bottom-right-radius: 20px;
+        background-clip: content-box;
+        display: inline-block;
+        -webkit-appearance: none;
+        user-select: none;
+        outline: none;
+    }
 
+        .mui-switch:before {
+            content: '';
+            width: 29px;
+            height: 29px;
+            position: absolute;
+            top: 0px;
+            left: 0;
+            border-radius: 20px;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+            background-color: #fff;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+        }
+
+        .mui-switch:checked {
+            border-color: #64bd63;
+            box-shadow: #64bd63 0 0 0 16px inset;
+            background-color: #64bd63;
+        }
+
+            .mui-switch:checked:before {
+                left: 21px;
+            }
+
+        .mui-switch.mui-switch-animbg {
+            transition: background-color ease 0.4s;
+        }
+
+            .mui-switch.mui-switch-animbg:before {
+                transition: left 0.3s;
+            }
+
+            .mui-switch.mui-switch-animbg:checked {
+                box-shadow: #dfdfdf 0 0 0 0 inset;
+                background-color: #64bd63;
+                transition: border-color 0.4s, background-color ease 0.4s;
+            }
+
+                .mui-switch.mui-switch-animbg:checked:before {
+                    transition: left 0.3s;
+                }
+
+        .mui-switch.mui-switch-anim {
+            transition: border cubic-bezier(0, 0, 0, 1) 0.4s, box-shadow cubic-bezier(0, 0, 0, 1) 0.4s;
+        }
+
+            .mui-switch.mui-switch-anim:before {
+                transition: left 0.3s;
+            }
+
+            .mui-switch.mui-switch-anim:checked {
+                box-shadow: #64bd63 0 0 0 16px inset;
+                background-color: #64bd63;
+                transition: border ease 0.4s, box-shadow ease 0.4s, background-color ease 1.2s;
+            }
+
+                .mui-switch.mui-switch-anim:checked:before {
+                    transition: left 0.3s;
+                }
+</style>
+<script>
+    $(function () {
+        ShowTb();
+    })
+    function ShowTb() {
+        $.ajax({
+            url: "http://localhost:49764/api/user/ShowJob",
+            type: "get",
+            dataType: "json",
+            success: function (data) {
+                $('#tb').empty();
+                var str = '';
+                $.each(data, function (i, n) {
+                    str += '<tr><td><input class="chk" type="checkbox" value="' + n.id + '" /></td>' +
+                        '<td>' + n.job_Name + '</td>' +
+                        '<td>' + n.job_Desc + '</td>' +
+                        '<td>' + State(n.id, n.job_State) + '</td>' +
+                        '<td>' + n.job_AddTime + '</td>' +
+                        '<td><button id="test" type="button" class="layui-btn" onclick="Edit(' + n.id + ')">编辑</button>' +
+                        '<input type="button" value="删除" class="layui-btn layui-btn-primary" onclick="Del(' + n.id + ')" />' +
+                        '<input type="button" value="设置权限" class="layui-btn layui-btn-primary" onclick="SetPem(' + n.id + ')" /></td></tr>';
+
+                })
+                $('#tb').append(str);
+            }
+        })
+        $('.chk').prop("checked", false);
+        $('#chk').prop("checked", false);
+    }
+    function State(chid, state) {
+        if (state == 1) {
+            return '<label><input class="mui-switch" type="checkbox" checked onclick="PutState(' + chid+')"></label>';
+        } else {
+            return '<label><input class="mui-switch" type="checkbox" onclick="PutState(' + chid +')"></label>';
+        }
+    }
+    function PutState(id) {
+        $.ajax({
+            url: "http://localhost:49764/api/user/UpdateJobState?id=" + id,
+            type: "put",
+            success: function (data) {
+                ShowTb();
+            }
+        })
+    }
+    function GetChk() {
+        if ($('#chk').prop("checked")) {
+            $('.chk').each(function () {
+                $(this).prop("checked", true);
+            })
+        } else {
+            $('.chk').each(function () {
+                $(this).prop("checked", false);
+            })
+        }
+    }
+    function PiDel() {
+        var che = [];
+        $.each($("input[class='chk']:checked"), function (i) {
+            che.push($(this).val());
+        });
+        var pid = che.join(',');
+        Del(pid);
+    }
+    function Del(id) {
+        $.ajax({
+            url: "http://localhost:49764/api/user/DelJob?id=" + id,
+            type: "get",
+            dataType:"text",
+            success: function (data) {
+                console.log(data);
+                if (data>0) {
+                    alert("删除成功");
+                    ShowTb();
+                }
+                
+            }
+        })
+        
+    }
+    function Edit(id) {
+        var html = '<table style="width:400px;height:300px;margin-top:20px" id="uptTb"></table>';
+        $.ajax({
+            url: "http://localhost:49764/api/user/ShowSingleJob?id=" + id,
+            type: "get",
+            dataType: "json",
+            success: function (data) {
+                $('#uptTb').empty();
+                console.log(data);
+                var str = '';
+                str = '<tr>' +
+                    '<td style="padding-left:40px"> 职务名称</td>' +
+                    '<td>' +
+                    '<input id="Job_Name" type="text" class="form-control" style="width:200px;height:40px;float:left;" value="' + data.job_Name + '" />' +
+                    '</td>' +
+                    '</tr>' +
+                    '<tr>' +
+                    '<td style="padding-left:40px">职务描述</td>' +
+                    '<td>' +
+                    '<textarea id="Job_Desc" class="form-control" rows="2" cols="20" style="height:100px"  >' + data.job_Desc + '</textarea>' +
+                    '</td>' +
+                    '</tr>';
+                $('#uptTb').append(str);
+            }
+        })
+        layui.use('layer', function () {
+            layer.open({
+                type: 1,
+                title: "编辑职务",
+                area: ['500px', '400px'],
+                btnAlign: 'c', //按钮居中
+                content: html,//这里content是一个普通的String
+                btn: ['提交', '关闭'],
+                yes: function () {
+                    var obj = {};
+                    obj.Id = id;
+                    obj.Job_Name = $('#Job_Name').val();
+                    obj.Job_Desc = $('#Job_Desc').val();
+                    $.ajax({
+                        url: "http://localhost:49764/api/user/PutJob",
+                        type: "put",
+                        data: JSON.stringify(obj),
+                        contentType: "application/json",
+                        success: function (data) {
+                            if (data > 0) {
+                                layer.closeAll();
+                                layer.msg('修改完成');
+                            } else {
+                                layer.msg('修改失败');
+                            }
+                        }
+                    })
+                }
+                , btn2: function () {
+                    layer.closeAll();
+                }
+            });
+        });
+    }
+    function SetPem(id) {
+        location.href = "/user/SetPermission";
+        localStorage["PermissionId"] = id;
+    }
 </script>
-    

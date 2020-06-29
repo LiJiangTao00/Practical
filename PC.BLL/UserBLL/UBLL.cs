@@ -84,5 +84,44 @@ namespace PC.BLL.UserBLL
         {
             return _dal.UpdateSingleUser(m);
         }
+        public int UpdateJobState(int id)
+        {
+            return _dal.UpdateJobState(id);
+        }
+
+        public int DelJob(int v)
+        {
+            return _dal.DelJob(v);
+        }
+        public int PutJob(JobTableModel m)
+        {
+            return _dal.PutJob(m);
+        }
+        public JobTableModel ShowJob(int id)
+        {
+            return _dal.ShowJob(id);
+        }
+        public List<ListPermission> ShowPermission()
+        {
+            return _dal.ShowPermission();
+
+        }
+        public List<PermissionRelationTableModel> ShowSinglePermission(int id)
+        {
+            return _dal.ShowSinglePermission(id);
+
+        }
+        public List<PermissionRelationTableModel> ChkPid(int id)
+        {
+            return _dal.ChkPid(id);
+        }
+        public UserShowModel SelectUserPhone(string phone)
+        {
+            return _dal.SelectUserPhone(phone);
+        }
+        public int PutPwd(string phone, string oldpwd, string newPwd)
+        {
+            return _dal.PutPwd(phone, oldpwd, newPwd);
+        }
     }
 }
