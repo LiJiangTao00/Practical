@@ -11,6 +11,7 @@ namespace PC.Common.Helpers
     {
         public List<T> Query(string sql)
         {
+            //1.109
             ///Data Source=192.168.43.93;Initial Catalog=Practial;User ID=sa;Pwd=12345
             using (SqlConnection con = new SqlConnection(@"Data Source=192.168.43.93;Initial Catalog=Practial;User ID=sa;Pwd=12345"))
             {

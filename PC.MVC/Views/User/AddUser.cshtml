@@ -66,35 +66,40 @@
         <div class="layui-form-item">
             <label class="layui-form-label">部门</label>
             <div class="layui-input-block">
-                <select name="city" lay-verify="required">
+                <select name="User_Department" id="User_Department" lay-verify="required">
                 </select>
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label">复选框</label>
+            <label class="layui-form-label">职位</label>
             <div class="layui-input-block">
-                <input type="checkbox" name="like[write]" title="写作">
-                <input type="checkbox" name="like[read]" title="阅读" checked>
-                <input type="checkbox" name="like[dai]" title="发呆">
+                <select name="User_Job" id="User_Job" lay-verify="required">
+                </select>
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label">开关</label>
+            <label class="layui-form-label">所在区域</label>
             <div class="layui-input-block">
-                <input type="checkbox" name="switch" lay-skin="switch">
+                <select name="User_Province" id="ShowProvince" lay-verify="required" lay-filter="test">
+                </select>
+                <select name="User_City" id="ShowCity" lay-verify="required" lay-filter="city">
+                </select>
+                <select name="User_District" id="ShowDistrict" lay-verify="required">
+                </select>
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label">单选框</label>
+            <label class="layui-form-label">联系地址</label>
             <div class="layui-input-block">
-                <input type="radio" name="sex" value="男" title="男">
-                <input type="radio" name="sex" value="女" title="女" checked>
+                <input type="text" name="User_Address" required lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input">
             </div>
         </div>
-        <div class="layui-form-item layui-form-text">
-            <label class="layui-form-label">文本域</label>
+        <div class="layui-form-item">
+            <label class="layui-form-label">产品组</label>
             <div class="layui-input-block">
-                <textarea name="desc" placeholder="请输入内容" class="layui-textarea"></textarea>
+                <input type="radio" name="User_ProductId" value="1" title="CV">
+                <input type="radio" name="User_ProductId" value="2" title="DIA">
+                <input type="radio" name="User_ProductId" value="3" title="社区">
             </div>
         </div>
         <div class="layui-form-item">
@@ -112,14 +117,139 @@
 <script src="~/layer/layer.js"></script>
 <script src="~/layuiadmin/layui/layui.js"></script>
 <script>
+    $(function () {
+        ShowDepartment();
+    })
+    // { "User_Name": "13295272130", "User_Pwd": "123", "User_Id": "CP10005", "User_Sex": "0", 
+    //"User_Phone": "111111", "User_Email": "111111", "User_Wechat": "111111", "User_QQ": "111111", 
+    //"User_Department": "1", "User_Job": "1", "User_Province": "1", "User_City": "5", "User_District": "12", 
+    //"User_Address": "1231213", "User_ProductId": "1" }
     //Demo
     layui.use('form', function () {
         var form = layui.form;
-
         //监听提交
         form.on('submit(formDemo)', function (data) {
+            console.log(data.field);
+            var obj = data.field;
             layer.msg(JSON.stringify(data.field));
             return false;
         });
+        form.on('select(test)', function (data) {
+            console.log(data.elem); //得到select原始DOM对象
+            console.log(data.value); //得到被选中的值
+            console.log(data.othis); //得到美化后的DOM对象
+            ProvinceChange(data.value);
+        });
+        form.on('select(city)', function (data) {
+            console.log(data.elem); //得到select原始DOM对象
+            console.log(data.value); //得到被选中的值
+            console.log(data.othis); //得到美化后的DOM对象
+            CityChange(data.value);
+        });
     });
+    function ShowDepartment() {
+        $.ajax({
+            url: "http://localhost:49764/api/user/ShowDepartment",
+            type: "get",
+            dataType: "json",
+            success: function (data) {
+                $('#User_Department').empty();
+                var str = '<option value="0">请选择</option>';
+                $.each(data, function (i, n) {
+                    str += '<option value="' + n.id + '">' + n.department_Name + '</option>';
+                })
+                $('#User_Department').html(str);
+            }
+        })
+        ShowJob();
+    }
+    function ShowJob() {
+        $.ajax({
+            url: "http://localhost:49764/api/user/ShowJob",
+            type: "get",
+            dataType: "json",
+            success: function (data) {
+                $('#User_Job').empty();
+                var str = '<option value="0">请选择</option>';
+                $.each(data, function (i, n) {
+                    str += '<option value="' + n.id + '">' + n.job_Name + '</option>';
+                })
+                $('#User_Job').html(str);
+            }
+        })
+        ShowProvince();
+    }
+    function ShowProvince() {
+        $.ajax({
+            url: "http://localhost:49764/api/user/ShowProvince",
+            type: "get",
+            dataType: "json",
+            success: function (data) {
+                $('#ShowProvince').empty();
+                var str = '<option value="0">请选择</option>';
+                $.each(data, function (i, n) {
+                    str += '<option value="' + n.id + '">' + n.place_Name + '</option>';
+                })
+                $('#ShowProvince').html(str);
+            }
+        })
+        layui.use('form', function () {
+            var form = layui.form;
+            form.render();
+        });
+        ShowCity();
+    }
+    function ShowCity() {
+        $('#ShowCity').empty();
+        var str = '<option value="0">请选择</option>';
+        $('#ShowCity').html(str);
+        ShowDistrict();
+    }
+    function ShowDistrict() {
+        $('#ShowDistrict').empty();
+        var str = '<option value="0">请选择</option>';
+        $('#ShowDistrict').html(str);
+        layui.use('form', function () {
+            var form = layui.form;
+            form.render();
+        });
+    }
+    function ProvinceChange(pid) {
+        $.ajax({
+            url: "http://localhost:49764/api/user/ShowProvince?pid=" + pid,
+            type: "get",
+            dataType: "json",
+            success: function (data) {
+                $('#ShowCity').empty();
+                var str = '<option value="0">请选择</option>';
+                $.each(data, function (i, n) {
+                    str += '<option value="' + n.id + '">' + n.place_Name + '</option>';
+                })
+                $('#ShowCity').html(str);
+            }
+        })
+        layui.use('form', function () {
+            var form = layui.form;
+            form.render();
+        });
+    }
+    function CityChange(pid) {
+        $.ajax({
+            url: "http://localhost:49764/api/user/ShowProvince?pid=" + pid,
+            type: "get",
+            dataType: "json",
+            success: function (data) {
+                $('#ShowDistrict').empty();
+                var str = '<option value="0">请选择</option>';
+                $.each(data, function (i, n) {
+                    str += '<option value="' + n.id + '">' + n.place_Name + '</option>';
+                })
+                $('#ShowDistrict').html(str);
+            }
+        })
+        layui.use('form', function () {
+            var form = layui.form;
+            form.render();
+        });
+    }
 </script>

@@ -8,5 +8,7 @@ namespace PC.Model.ViewModel
     {
         public List<T> Model { get; set; }
         public int Total { get; set; }
+        public int code { get; set; }
+        public string msg { get; set; }
     }
 }

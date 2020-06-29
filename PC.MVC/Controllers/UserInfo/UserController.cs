@@ -20,5 +20,33 @@ namespace PC.MVC.Controllers.UserInfo
         {
             return View();
         }
+        public IActionResult AddSingleUser()
+        {
+            return View();
+        }
+        public IActionResult InsertUser()
+        {
+            return View();
+        }
+        public IActionResult EditUser()
+        {
+            return View();
+        }
+        public IActionResult SetPermission()
+        {
+            return View();
+        }
+        public IActionResult SelectUser()
+        {
+            return View();
+        }
+        public IActionResult Test1()
+        {
+            return View();
+        }
+        public IActionResult Test()
+        {
+            return View();
+        }
     }
 }

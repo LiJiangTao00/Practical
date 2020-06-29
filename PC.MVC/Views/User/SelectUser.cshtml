@@ -1,0 +1,216 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>个人设置</title>
+</head>
+<body>
+    <div>
+        <h3>个人设置</h3>
+        <div class="btn-group" data-toggle="buttons-checkbox">
+            <button type="button" class="btn btn-primary" onclick="SelectData()">基本信息</button>
+            <button type="button" class="btn btn-primary" onclick="PutData()">修改资料</button>
+            <button type="button" class="btn btn-primary" onclick="PutPwd()">修改密码</button>
+        </div>
+    </div>
+    <div id="ShowDiv">
+
+    </div>
+</body>
+</html>
+<link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script>
+    $(function () {
+        SelectData();
+    })
+    function SelectData() {
+        var phone = localStorage["Phone"];
+        $.ajax({
+            url: "http://localhost:49764/api/user/SelectUserPhone?phone=" + phone,
+            type: "get",
+            dataType: "json",
+            success: function (data) {
+                $('#ShowDiv').empty();
+                console.log(data);
+                var str = '';
+                str += '<div style="float:left;"><img src="' + data.user_Photo + '" style="width:50px;height:70px"/></div>';
+                str += '<table><tr><td>姓名：' + data.user_Name + '</td>' +
+                    '<td> 工号：' + data.user_Id + '</td>' +
+                    '<td>性别：' + data.user_Sex + '</td></tr >' +
+                    '<tr><td>联系方式：' + data.user_Phone + '</td>' +
+                    '<td>邮箱：' + data.user_Email + '</td>' +
+                    '<td>微信账号：' + data.user_Wechat + '</td></tr >' +
+                    '<tr><td>QQ号码：' + data.user_QQ + '</td>' +
+                    '<td>部门：' + data.department_Name + '</td>' +
+                    '<td>职位：' + data.job_Name + '</td></tr >' +
+                    '<tr><td>所在区域：' + data.user_Area + '</td>' +
+                    '<td>联系地址：' + data.user_Address + '</td>' +
+                    '<td></td></tr > <tr><td>产品组：' + data.product_Name + '</td>' +
+                    '<td></td><td></td></tr ></table >';
+                console.log(str);
+                $("#ShowDiv").append(str);
+            }
+        })
+    }
+    function PutData() {
+        var phone = localStorage["Phone"];
+        $.ajax({
+            url: "http://localhost:49764/api/user/SelectUserPhone?phone=" + phone,
+            type: "get",
+            dataType: "json",
+            success: function (data) {
+                $('#ShowDiv').empty();
+                var str = '<table>' +
+                    '<tr>' +
+                    '<td>姓名</td>' +
+                    '<td>' +
+                    '<input id="User_Name" type="text" disabled value="' + data.user_Name + '" />' +
+                    '</td>' +
+                    '</tr>' +
+                    '<tr>' +
+                    ' <td>手机号</td>' +
+                    '<td>' +
+                    '<input id="User_Phone" type="text" value="' + data.user_Phone + '" />' +
+                    '</td>' +
+                    '</tr>' +
+                    '<tr>' +
+                    ' <td>工号</td>' +
+                    ' <td>' +
+                    '<input id="User_Id" type="text" disabled value="' + data.user_Id + '" />' +
+                    '</td>' +
+                    '</tr>' +
+                    '<tr>' +
+                    '<td>email</td>' +
+                    '<td>' +
+                    '<input id="User_Email" type="text" disabled  value="' + data.user_Email + '"/>' +
+                    '</td>' +
+                    '</tr>' +
+                    '<tr>' +
+                    '<td>部门</td>' +
+                    '<td>' +
+                    '<input id="User_Department" type="text" disabled value="' + data.department_Name + '"/>' +
+                    '</td>' +
+                    ' </tr>' +
+                    '<tr>' +
+                    '<td>职位</td>' +
+                    '<td>' +
+                    '<input id="User_Job" type="text" disabled value="' + data.job_Name + '"/>' +
+                    '</td>' +
+                    '</tr>' +
+                    '<tr>' +
+                    '<td>性别</td>' +
+                    '<td>' +
+                    '<input name="User_Sex" value="0" type="radio" />保密' +
+                    '<input name="User_Sex" value="1" type="radio" />男' +
+                    '<input name="User_Sex" value="2" type="radio" />女' +
+                    '</td>' +
+                    '</tr>' +
+                    ' <tr>' +
+                    '<td>所在区域</td>' +
+                    ' <td>' +
+                    '<input id="User_Area" type="text" value="' + data.user_Address + '"/>' +
+                    '</td>' +
+                    '</tr>' +
+                    '<tr>' +
+                    '<td>产品组</td>' +
+                    '<td>' +
+                    '<input name="User_ProductId" value="1" type="radio" disabled />CV' +
+                    '<input name="User_ProductId" value="2" type="radio" disabled />DIA' +
+                    '<input name="User_ProductId" value="3" type="radio" disabled />社区' +
+                    '</td>' +
+                    '</tr>' +
+                    '<tr>' +
+                    '<td>微信账号</td>' +
+                    '<td>' +
+                    '<input id="User_Wechat" type="text" value="' + data.user_Wechat + '"/>' +
+                    '</td>' +
+                    '</tr>' +
+                    '<tr>' +
+                    '<td></td>' +
+                    '<td>' +
+                    '<input id="Button1" type="button" value="提交" onclick="Save()" />' +
+                    '<input id="Button1" type="button" value="重置" />' +
+                    '</td>' +
+                    '</tr>' +
+                    '</table>';
+                $('#ShowDiv').append(str);
+                switch (data.user_Sex) {
+                    case 0:
+                        $("input[name='User_Sex']").get(0).checked = true;
+                        break;
+                    case 1:
+                        $("input[name='User_Sex']").get(1).checked = true;
+                        break;
+                    case 2:
+                        $("input[name='User_Sex']").get(2).checked = true;
+                        break;
+                    default: break;
+                }
+                switch (data.user_ProductId) {
+                    case 0:
+                        $("input[name='User_ProductId']").get(0).checked = true;
+                        break;
+                    case 1:
+                        $("input[name='User_ProductId']").get(1).checked = true;
+                        break;
+                    case 2:
+                        $("input[name='User_ProductId']").get(2).checked = true;
+                        break;
+                    default: break;
+                }
+            }
+        })
+    }
+    function PutPwd() {
+        var str = '';
+        str = '<table style="margin:90px">' +
+            '<tr>' +
+            '<td>原密码</td>' +
+            '<td><input id="oldPwd" type="text" /></td>' +
+            '</tr>' +
+            '<tr>' +
+            '<td>新密码</td>' +
+            '<td><input id="newPwd" type="password" /></td>' +
+            '</tr>' +
+            '<tr>' +
+            '<td>确认密码</td>' +
+            '<td><input id="RePwd" type="password" /></td>' +
+            '</tr>' +
+            '<tr>' +
+            '<td><input id="Button1" type="button" value="提交" /></td>' +
+            '<td><input id="Reset1" type="reset" value="重置" /></td>' +
+            '</tr>' +
+            '</table>';
+        $("#ShowDiv").append(str);
+    }
+    function Save() {
+        var phone = localStorage["Phone"];
+        var oldpwd = $('#oldPwd').val();
+        var newPwd = $('#newPwd').val();
+        var RePwd = $('#RePwd').val();
+        if (newPwd == RePwd) {
+            if (oldpwd == RePwd) {
+                alert("密码输入不正确");
+                return;
+            }
+            $.ajax({
+                url: "http://localhost:49764/api/user/PutPwd?phone=" + phone + "&oldpwd=" + oldpwd + "&newPwd=" + newPwd,
+                type: "get",
+                dataType: "json",
+                success: function (data) {
+                    if (data > 0) {
+                        location.href = "/default/login";
+                    }
+                }
+            })
+        }
+        
+    }
+</script>
