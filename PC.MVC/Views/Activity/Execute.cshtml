@@ -1,0 +1,133 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Execute</title>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <link href="~/layuiadmin/layui/css/layui.css" rel="stylesheet" />
+    <script src="~/layuiadmin/layui/layui.js"></script>
+</head>
+<body>
+    <div style="margin:20px">
+        <div style="border: 1px solid #808080;height:55px;padding-top:5px;">
+            <div style="float:left;padding-bottom:5px">
+                <select id="ShowDepartment" class="btn btn-default dropdown-toggle">
+                </select>
+                <select id="ShowProvince" onchange="ProvinceChange()" class="btn btn-default dropdown-toggle">
+                </select>
+                <select id="ShowCity" onchange="CityChange()" class="btn btn-default dropdown-toggle">
+                </select>
+                <select id="ShowDistrict" class="btn btn-default dropdown-toggle">
+                </select>
+            </div>
+            <input id="txt_Sel" type="text" placeholder="输入手机号或姓名或工号" class="form-control" style="width:200px;height:40px;float:left;" />
+            <input type="button" value="筛选" class="layui-btn layui-btn-warm" style="margin-left:20px" onclick="Select()" />
+        </div>
+    </div>
+</body>
+</html>
+<script>
+    $(function () {
+        ShowDepartment();
+    })
+    function ShowDepartment() {
+        $.ajax({
+            url: "http://localhost:49764/api/user/ShowDepartment",
+            type: "get",
+            dataType: "json",
+            success: function (data) {
+                $('#ShowDepartment').empty();
+                var str = '<option value="0">请选择</option>';
+                $.each(data, function (i, n) {
+                    str += '<option value="' + n.id + '">' + n.department_Name + '</option>';
+                })
+                $('#ShowDepartment').append(str);
+            }
+        })
+        ShowProvince();
+    }
+    function ShowProvince() {
+        $.ajax({
+            url: "http://localhost:49764/api/user/ShowProvince",
+            type: "get",
+            dataType: "json",
+            success: function (data) {
+                $('#ShowProvince').empty();
+                var str = '<option value="0">请选择</option>';
+                $.each(data, function (i, n) {
+                    str += '<option value="' + n.id + '">' + n.place_Name + '</option>';
+                })
+                $('#ShowProvince').append(str);
+            }
+        })
+        ShowCity();
+
+    }
+    function ShowCity() {
+        $('#ShowCity').empty();
+        var str = '<option value="0">请选择</option>';
+        $('#ShowCity').append(str);
+        ShowDistrict();
+    }
+    function ShowDistrict() {
+        $('#ShowDistrict').empty();
+        var str = '<option value="0">请选择</option>';
+        $('#ShowDistrict').append(str);
+        ShowJob();
+    }
+    function ShowJob() {
+        $.ajax({
+            url: "http://localhost:49764/api/user/ShowJob",
+            type: "get",
+            dataType: "json",
+            success: function (data) {
+                $('#ShowJob').empty();
+                var str = '<option value="0">请选择</option>';
+                $.each(data, function (i, n) {
+                    str += '<option value="' + n.id + '">' + n.job_Name + '</option>';
+                })
+                $('#ShowJob').append(str);
+            }
+        })
+    }
+    function ProvinceChange() {
+        var pid = $('#ShowProvince').val();
+        $.ajax({
+            url: "http://localhost:49764/api/user/ShowProvince?pid=" + pid,
+            type: "get",
+            dataType: "json",
+            success: function (data) {
+                $('#ShowCity').empty();
+                var str = '<option value="0">请选择</option>';
+                $.each(data, function (i, n) {
+                    str += '<option value="' + n.id + '">' + n.place_Name + '</option>';
+                })
+                $('#ShowCity').append(str);
+            }
+        })
+    }
+    function CityChange() {
+        var pid = $('#ShowCity').val();
+        $.ajax({
+            url: "http://localhost:49764/api/user/ShowProvince?pid=" + pid,
+            type: "get",
+            dataType: "json",
+            success: function (data) {
+                $('#ShowDistrict').empty();
+                var str = '<option value="0">请选择</option>';
+                $.each(data, function (i, n) {
+                    str += '<option value="' + n.id + '">' + n.place_Name + '</option>';
+                })
+                $('#ShowDistrict').append(str);
+            }
+        })
+    }
+</script>
