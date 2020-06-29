@@ -20,5 +20,11 @@ namespace PC.IBLL.MaterialBLL
         /// </summary>
         /// <returns></returns>
         List<MaterialTypeTableModel> GetTypes();
+
+        /// <summary>
+        /// 多条件查询物料
+        /// </summary>
+        /// <returns></returns>
+        List<MaterialTableModel> SelMaterial(string Materialid, string Materialname, float Materialprice,float Materialprice1);
     }
 }

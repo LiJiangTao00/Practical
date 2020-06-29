@@ -1,0 +1,92 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Forget</title>
+</head>
+<body>
+    <table>
+        <tr>
+            <td>手机号</td>
+            <td>
+                <input id="User_Phone" type="text" />
+            </td>
+        </tr>
+        <tr>
+            <td>验证码</td>
+            <td>
+                <input id="MessageText" type="text" />
+                <input type="button" value="发送验证码" />
+            </td>
+        </tr>
+        <tr>
+            <td>登录密码</td>
+            <td>
+                <input id="User_Pwd" type="password" />
+            </td>
+        </tr>
+        <tr>
+            <td>登录密码</td>
+            <td>
+                <input id="User_RePwd" type="password" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <input type="button" value="提交" onclick="GiveUp()" />
+            </td>
+            <td>
+                <input type="button" value="重置" onclick="ReBack()" />
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
+<link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+<style>
+    .div1 {
+        display: flex;
+        height: 100vh;
+    }
+</style>
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script>
+    function GiveUp() {
+        var User_Phone = $('#User_Phone').val();
+        var User_Pwd = $('#User_Pwd').val();
+        var User_RePwd = $('#User_RePwd').val();
+        var obj = {};
+        if (User_RePwd == User_Pwd) {
+            obj.User_Phone = User_Phone;
+            obj.User_Pwd = User_Pwd;
+            $.ajax({
+                url: "http://localhost:49764/api/user/Forget",
+                type: "put",
+                data: JSON.stringify(obj),
+                contentType:"application/json",
+                success: function (data) {
+                    console.log(data);
+                    if (data < 0) {
+                        alert("OK");
+                    }
+                }
+            })
+        } else {
+            alert("密码输入不一致");
+            return;
+        }
+    }
+
+    function ReBack() {
+        $('#User_Phone').val();
+        $('#MessageText').val(); 
+        $('#User_Pwd').val(); 
+        $('#User_RePwd').val(); 
+    }
+</script>

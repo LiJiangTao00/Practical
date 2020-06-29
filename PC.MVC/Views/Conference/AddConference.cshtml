@@ -1,0 +1,151 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+@using PC.Model.Models
+@model ConferenceTableModel
+
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+<script src="~/PlugIn/My97DatePicker/My97DatePicker/WdatePicker.js"></script>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    @Html.ValidationSummary(true)
+    <title>AddConference</title>
+</head>
+<body>
+    <form action="/" method="post">
+        <table style="width:70%">
+            <tr>
+                <td><h1>添加会议</h1></td>
+                <td></td>
+                <td><input id="Button1" type="button" value="返回" style="background-color:blue;color:white" onclick="location.href='ShowConference'" /></td>
+            </tr>
+            <tr>
+                <td>会议类型:</td>
+                <td><input id="Rad_2" type="radio" name="ConType" value="2" class="ConType" /> 国际会议 <input id="Rad_1" class="ConType" type="radio" name="ConType" value="1" checked="checked" />国内会议 </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>会议名称:</td>
+                <td>@Html.TextBoxFor(con => con.Con_Name, new { @id = "Txt_conname" })  *</td>
+                <td>@Html.ValidationMessageFor(con => con.Con_Name, "", new { @class = "Msg"})</td>
+            </tr>
+            <tr>
+            <tr>
+                <td>开始时间:</td>
+                <td>@Html.TextBoxFor(con => con.Con_StartTime, new { @id = "Txt_constarttime", onclick = "WdatePicker()"  }) 📅*</td>
+                <td>@Html.ValidationMessageFor(con => con.Con_StartTime, "", new { @class = "Msg"})</td>
+            </tr>
+            <tr>
+                <td>结束时间:</td>
+                <td>@Html.TextBoxFor(con => con.Con_EndTime, new {@id = "Txt_conendtime" ,onclick = "WdatePicker()" }) 📅*</td>
+                <td>@Html.ValidationMessageFor(con => con.Con_EndTime, "", new { @class = "Msg" })</td>
+            </tr>
+            <tr>
+                <td>会议地点:</td>
+                <td>@Html.TextBoxFor(con => con.Con_Place, new { @id = "Txt_conplace" }) *</td>
+                <td>@Html.ValidationMessageFor(con => con.Con_Place, "", new { @class = "Msg"})</td>
+            </tr>
+            <tr>
+                <td>组织单位:</td>
+                <td>@Html.TextBoxFor(con => con.Con_OrganizationalUnit, new { @id = "Txt_conorg" }) *</td>
+                <td>@Html.ValidationMessageFor(con => con.Con_OrganizationalUnit, "", new { @class = "Msg" })</td>
+            </tr>
+            <tr>
+                <td>支持单位:</td>
+                <td>@Html.TextBoxFor(con => con.Con_SupportUnit, new { @id = "Txt_consup" })</td>
+                <td>@Html.ValidationMessageFor(con => con.Con_SupportUnit)</td>
+            </tr>
+            <tr>
+                <td>参会名额:</td>
+                <td>@Html.TextBoxFor(con => con.Con_QuotaNumber,new { @id = "Txt_conquotanum" }) *</td>
+                <td>@Html.ValidationMessageFor(con => con.Con_QuotaNumber, "", new { @class = "Msg" })</td>
+            </tr>
+            <tr>
+                <td>名单提交截止时间:</td>
+                <td>@Html.TextBoxFor(con => con.Con_QuotaEndTime, new { @id = "Txt_conquotaend" ,onclick = "WdatePicker()" }) 📅*</td>
+                <td>@Html.ValidationMessageFor(con => con.Con_QuotaEndTime, "", new { @class = "Msg"})</td>
+            </tr>
+            <tr>
+                <td>上传会议资料:</td>
+                <td><input id="Txt_Path" type="text" /></td>
+                <td><input id="File1" type="file" /></td>
+            </tr>
+            <tr>
+                <td>备注:</td>
+                <td><textarea id="Txt_Desc" rows="2" cols="20"></textarea></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>所属产品组:</td>
+                <td>
+                    <input id="Rad_CV" type="radio" name="Con_Prod" value="1" checked="checked" class="radio_conprod" />CV
+                    <input id="Rad_DIA" type="radio" name="Con_Prod" value="2" class="radio_conprod"/>DIA
+                    <input id="Rad_Com" type="radio" name="Con_Prod" value="3" class="radio_conprod"/>社区
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><input id="Button1" type="button" value="下一步" style="background-color:blue;color:white" onclick="AddConference()" /></td>
+                <td><input id="Button1" type="button" value="重置" onclick="location.href=AddConference" /></td>
+            </tr>
+        </table>
+
+    </form>
+</body>
+</html>
+<script>
+    function AddConference() {
+        var con = {};
+        con.Con_Name = $("#Txt_conname").val();
+        con = {
+            "Con_TypeId": 1,
+            "Con_ProductId": 1,
+            "Con_Name": $("#Txt_conname").val(),
+            "Con_StartTime": $("#Txt_constarttime").val(),
+            "Con_EndTime": $("#Txt_conendtime").val(),
+            "Con_Place": $("#Txt_conplace").val(),
+            "Con_OrganizationalUnit": $("#Txt_conorg").val(),
+            "Con_QuotaEndTime": $("#Txt_conquotaend").val(),
+            "Con_QuotaNumber": Number($("#Txt_conquotanum").val()),
+            "Con_SupportUnit": $("#Txt_consup").val(),
+            //"Con_ConDataId": $("#Sel_constate").val(), 没做 后台默认是1
+            "Con_Desc": $("#Txt_Desc").val(),
+            "Con_Admin": "1",
+        };
+        $(".ConType").each(function () {
+            if ($(this).prop("checked")) {
+                con.Con_TypeId = Number($(this).val());
+            }
+        })
+        $(".radio_conprod").each(function () {
+            if ($(this).prop("checked")) {
+                con.Con_ProductId=Number($(this).val());
+            }
+        })
+        
+        console.log(con);
+        $.ajax({
+            type: "post",
+            url: "http://localhost:49764/api/Conference/AddConference",
+            data: con,
+            dataType: "json",
+            contentType: "application/x-www-form-urlencoded",
+            success: function (d) {
+                if (d>0) {
+                    alert("111111");
+                }
+            }
+        })
+
+    }
+
+
+
+</script>
