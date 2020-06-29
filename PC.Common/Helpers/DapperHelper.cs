@@ -28,7 +28,7 @@ namespace PC.Common.Helpers
         }
         public T ShowProc(string proc, DynamicParameters par)
         {
-            using (SqlConnection con = new SqlConnection(@"Data Source=192.168.1.117;Initial Catalog=Practial;User ID=sa;Pwd=12345"))
+            using (SqlConnection con = new SqlConnection(@"Data Source=192.168.43.93;Initial Catalog=Practial;User ID=sa;Pwd=12345"))
             {
                 return con.Query<T>(proc, par, commandType: System.Data.CommandType.StoredProcedure).FirstOrDefault();
             }
