@@ -370,10 +370,30 @@ namespace PC.DAL.UserDAL
                 case "UserTable":
                     sql += " and OperationTable='UserTable' ";
                     break;
+                case "ActivityTable":
+                    sql += " and OperationTable='ActivityTable' ";
+                    break;
+                case "MaterialTable":
+                    sql += " and OperationTable='MaterialTable' ";
+                    break;
                 default:
                     break;
             }
-            return 0;
+            switch (time)
+            {
+                case "week":
+                    sql += " and  (DATEPART(wk, OpertaionTime) = DATEPART(wk, GETDATE())) AND (DATEPART(yy, OpertaionTime) = DATEPART(yy, GETDATE())) ";
+                    break;
+                case "ActivityTable":
+                    sql += " and (DATEPART(yy, OpertaionTime) = DATEPART(yy, GETDATE())) AND (DATEPART(mm, OpertaionTime) = DATEPART(mm, GETDATE())) ";
+                    break;
+                case "MaterialTable":
+                    sql += " and DATEPART(qq, OpertaionTime) = DATEPART(qq, GETDATE()) and DATEPART(yy, OpertaionTime) = DATEPART(yy, GETDATE()) ";
+                    break;
+                default:
+                    break;
+            }
+            return dapper.Execute(sql);
         }
     }
 }
