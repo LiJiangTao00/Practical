@@ -17,7 +17,7 @@ namespace PC.Common.Helpers
             {
                 List<T> list = con.Query<T>(sql).ToList();
                 return list;
-            }
+            } 
         }
         public int Execute(string sql)
         {

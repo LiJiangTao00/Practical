@@ -9,6 +9,10 @@ namespace PC.Model.ViewModel
     {
         //数据
         public List<MaterialTableModel> PageShowMateriallist { get; set; }
+        //数据
+        public List<ShowMaterialApprove> PageShowMateriallist1 { get; set; }
+        //数据
+        public List<ApprovalMaterial> PageShowMateriallist2 { get; set; }
         //数据总条数
         public int DataCount { get; set; }
         //页含量

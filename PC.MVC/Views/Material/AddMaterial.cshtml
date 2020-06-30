@@ -56,12 +56,6 @@
             </td>
         </tr>
         <tr>
-            <td>图片：</td>
-            <td>
-                <input type="file" id="P_Photo" style="height:20px;width:200px;" name="username" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
-            </td>
-        </tr>
-        <tr>
             <td>单价：</td>
             <td>
                 <input id="Material_Price" type="text" />元
@@ -100,9 +94,10 @@
             success: function (data) {
                 console.log(data);
                 $("#type").empty();
+                var str = '<option value="0">请选择</option>';
                 $(data).each(function () {
-                    var list = '<option value=' + this.Id + '>' + this.mType_Name + '</option>'
-                    $("#type").append(list);
+                    str += '<option value=' + this.Id + '>' + this.mType_Name + '</option>'
+                    $("#type").append(str);
                 })
             }
         })
@@ -115,7 +110,6 @@
             Material_Id: $("#Material_Id").val(),
             Material_Name: $("#Material_Name").val(),
             Material_Desc: $("#Material_Desc").val(),
-            Material_Image: $("#P_Photo"),
             Material_Price: $("#Material_Price").val(),
             Material_Number: $("#Material_Number").val(),
             Material_State: $("#Material_State").val()
@@ -123,11 +117,12 @@
         $.ajax({
             url: "http://localhost:49764/api/material/SelMaterial",
             type: "Post",
-            data: obj,
+            data: JSON.stringify(obj),
+            contentType: "application/json",
             success: function (data) {
                 if (data > 0) {
                     alert("添加成功!");
-                    location.href = '/material/SelMaterial';
+                    location.href = '/material/ShowMaterial';
                 }
                 else {
                     alert("添加失败!");
@@ -137,7 +132,7 @@
     }
 
     function Fanhui() {
-        location.href = '/material/SelMaterial';
+        location.href = '/material/ShowMaterial';
     }
 </script>
 
