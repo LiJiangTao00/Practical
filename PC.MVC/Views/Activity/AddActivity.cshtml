@@ -1,4 +1,6 @@
-﻿
+﻿@{
+    Layout = null;
+}
 <!DOCTYPE html>
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
@@ -12,7 +14,8 @@
     <script src="~/layuiadmin/layui/layui.js"></script>
 </head>
 <body>
-
+    <button type="button" class="layui-btn layui-btn-primary" style="float:right;margin-right:30px;" onclick="location.href = '/activity/ShowActivity'">返回列表</button>
+    <h1 style="text-align: center;margin-top:30px;margin-bottom:30px;">活动添加</h1>
     @*  <form class="layui-form" action="">
             <div class="layui-form-item">
                 <label class="layui-form-label">活动分类</label>
@@ -53,7 +56,7 @@
                 <div class="layui-input-inline">
                     <select id="AcDepart">
                         <option>请选择</option>
-                    </select>
+                    </select>javascript:;
                 </div>
             </div>
             <div class="layui-form-item">
@@ -119,7 +122,7 @@
         <div class="layui-inline">
             <label class="layui-form-label">开始时间-结束时间</label>
             <div class="layui-input-inline">
-                <input type="text" name="Time"  class="layui-input" id="test-laydate-range-datetime" placeholder="" lay-key="12">
+                <input type="text" name="Time" class="layui-input" id="test-laydate-range-datetime" placeholder="" lay-key="12">
             </div>
         </div>
         <div class="layui-form-item">
@@ -138,7 +141,7 @@
     //    Type();
     //    Department();
     //})
-    layui.use(['form','laydate'], function () {
+    layui.use(['form', 'laydate'], function () {
         var form = layui.form;
         var layer = layui.layer;
         var laydate = layui.laydate;
@@ -147,7 +150,7 @@
         laydate.render({
             elem: '#test-laydate-range-datetime' //指定元素
             , type: 'datetime',
-            range:true
+            range: true
         });
         Type();
         Department();
@@ -184,7 +187,7 @@
 
             let arr = data.field.Time.split(' - ');
             console.log(data.field.Time);
-            data.field.TimeBegin = arr[0].replace(" ","T");
+            data.field.TimeBegin = arr[0].replace(" ", "T");
             data.field.TimeEnd = arr[1].replace(" ", "T");
             data.field.ActivityType_Id = Number(data.field.ActivityType_Id);
             data.field.Acticity_Department_Id = Number(data.field.Acticity_Department_Id);
@@ -195,11 +198,12 @@
             $.ajax({
                 url: "http://localhost:49764/api/activity/AddActivity",
                 type: "post",
-                contentType:"application/json",
+                contentType: "application/json",
                 data: JSON.stringify(data.field),
                 success: function (result) {
                     if (result > 0) {
                         alert('成功');
+                        location.href = "/activity/ShowActivity";
                     }
                     else {
                         alert('失败')
@@ -219,7 +223,7 @@
         //各种基于事件的操作，下面会有进一步介绍
     });
 
- 
+
     //function Add() {
 
     //    var list = {};

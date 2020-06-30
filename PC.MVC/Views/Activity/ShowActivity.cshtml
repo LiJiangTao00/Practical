@@ -306,14 +306,16 @@
             } else if (layEvent === 'edit') {
                 Edit(data.id);
             } else if (layEvent === 'sel') {
-                location.href = "/activity/Execute";
+                location.href = "/activity/Details";
                 layer.msg('查看执行情况');
             }
 
         });
 
 
-
+        function Edit(id) {
+            location.href = "/Activity/UpdActivity?id="+id;
+        };
         form.on('submit(add)', function (data) {
             table.reload('ShowData', {
                 url: "http://localhost:49764/api/activity/ShowActivity",
@@ -370,10 +372,7 @@
     function Add() {
         location.href = "/activity/AddActivity";
     }
-    function Edit(id) {
-        location.href = "/user/EditUser";
-        localStorage["editid"] = id;
-    }
+
     //删除的方法
     function recycle(id) {
         if (confirm("是否确认删除？")) {

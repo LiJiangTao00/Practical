@@ -11,9 +11,12 @@
     <title>UpdActivity</title>
     <link href="~/layuiadmin/layui/css/layui.css" rel="stylesheet" />
     <script src="~/layuiadmin/layui/layui.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
 </head>
 <body>
-    <form class="layui-form">
+    <button type="button" class="layui-btn layui-btn-primary" style="float:right;margin-right:30px;" onclick="location.href = '/activity/ShowActivity'">返回列表</button>
+    <h1 style="text-align: center;margin-top:30px;margin-bottom:30px;">活动内容修改</h1>
+    <form class="layui-form" lay-filter="Ju">
         <!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
 
         <div class="layui-form-item">
@@ -45,16 +48,16 @@
         <div class="layui-form-item">
             <label class="layui-form-label">所属产品组</label>
             <div class="layui-input-block">
-                <input type="radio" name="Activity_Product_Id" value="0" title="CV" checked>
-                <input type="radio" name="Activity_Product_Id" value="1" title="DIA">
-                <input type="radio" name="Activity_Product_Id" value="2" title="社区">
+                <input type="radio" name="Activity_Product_Id" id="Activity_Product_Id0" value="0" title="CV" checked>
+                <input type="radio" name="Activity_Product_Id" id="Activity_Product_Id1" value="1" title="DIA">
+                <input type="radio" name="Activity_Product_Id" id="Activity_Product_Id2" value="2" title="社区">
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">是否启用</label>
             <div class="layui-input-block">
-                <input type="radio" name="ActivityState_Id" value="1" title="是" checked>
-                <input type="radio" name="ActivityState_Id" value="0" title="否">
+                <input type="radio" name="ActivityState_Id" id="ActivityState_Id1" value="1" title="是" checked>
+                <input type="radio" name="ActivityState_Id" id="ActivityState_Id0" value="0" title="否">
             </div>
         </div>
         <div class="layui-inline">
@@ -74,70 +77,117 @@
 </body>
 </html>
 <script>
-    table.render({
-            elem: '#ShowData'
-            , height: 312
-            , url: 'http://localhost:49764/api/activity/UpdActivity?id=' //数据接口
-            , page: true //开启分页
-            ,totalRow: true //开启合计行
-            , cols: [[ //表头
-                { field: 'activity_Name', title: '活动名称', width: 150, sort: true, fixed: 'left' }
-                , {
-                    field: 'activityType_Id', title: '活动类型', width: 150}
-                , {
-                    field: 'activity_Product_Id', title: '产品组', width: 80, sort: true, templet: function (d) {
-                        if (d.activity_Product_Id == 0)
-                        {
-                            return "CV组";
-                        }
-                        else if (d.activity_Product_Id == 1)
-                        {
-                            return "DIA组";
-                        }
-                        else
-                        {
-                            return "社区组";
-                        }
-                    }
-                }
-                , {
-                    field: 'acticity_Department_Id', title: '部门', width: 80}
-                , {
-                    field: 'timeBegin', title: '开始时间', width: 180, templet: function (d) {
-                        var data = new Date(d.timeBegin);
-                        var year = data.getFullYear();  //获取年
-                        var month = data.getMonth() + 1;    //获取月
-                        var day = data.getDate(); //获取日
-                        time = year + "-" + month + "-" + day;
-                        return time;
-                    }
-                }
-                , { field: 'timeEnd', title: '结束时间', width: 180, sort: true, templet: function (d) {
-                        var data = new Date(d.timeBegin);
-                        var year = data.getFullYear();  //获取年
-                        var month = data.getMonth() + 1;    //获取月
-                        var day = data.getDate(); //获取日
-                        time = year + "-" + month + "-" + day;
-                        return time;
-                    } }
-                , {
-                    field: 'activityState_Id', title: '状态', width: 80, sort: true, templet: function (d) {
-                        if (d.activityState_Id == 0)
-                        {
-                            return "未开始";
-                        }
-                        else if(d.activityState_Id == 1){
-                            return "已结束";
-                        }
-                        else {
-                            return "进行中";
-                        }
-                    } }
-                , { field: 'Caozuo', title: '操作', width: 710, templet: '#barDemo' }
-            ]], where: { ActivityType_Id: Number($("#Type1").val()), ActivityState_Id: Number($("#State1").val()), Search: $("#Search").val() },
-            request: {
-                pageName: 'page',   // 页码的参数名称，默认：page
-                limitName: 'pageSize'   // 每页数据量的参数名，默认：limit
-            }
+    layui.use(['form', 'laydate'], function () {
+        var form = layui.form;
+        var layer = layui.layer;
+        var laydate = layui.laydate;
+
+        //执行一个laydate实例
+        laydate.render({
+            elem: '#test-laydate-range-datetime' //指定元素
+            , type: 'datetime',
+            range: true
         });
+        Type();
+
+        function Show() {
+            var id = location.search.split('?')[1].split('=')[1];
+                    $.ajax({
+            url: "http://localhost:49764/api/activity/GetActivity?id="+id,
+            type: "get",
+            success: function (result)
+            {
+                console.log(result);
+                form.val("Ju",
+                {
+                    "ActivityType_Id": result.activityType_Id,
+                    "Acticity_Department_Id": result.acticity_Department_Id,
+                    "Activity_Desc": result.activity_Desc,
+                    "Activity_Name": result.activity_Name,
+                    "Time": result.timeBegin.replace("T"," ") + " - " + result.timeBegin.replace("T"," ")
+                    })
+
+                var d = "#Activity_Product_Id" + result.activity_Product_Id;
+                var s = "#ActivityState_Id" + result.activityState_Id;
+                console.log(d, s);
+                $(d).prop("checked", true);
+                $(s).prop("checked", true);
+                form.render();
+
+            }
+
+        })
+
+        }
+
+        function Type() {
+            $.ajax({
+                url: "http://localhost:49764/api/activity/ShowType"
+                , type: "Get"
+                , success: function (data) {
+                    console.log(data);
+                    var list = '<option value="0" >请选择</option>';
+                    $(data).each(function () {
+                        list += '<option value=' + this.id + '>' + this.activityType_Name + '</option>';
+                    });
+                    $("#Type1").append(list);
+                    form.render();
+                    Department();
+                }
+            })
+        }
+        function Department() {
+            $.ajax({
+                url: "http://localhost:49764/api/activity/ShowDep"
+                , type: "Get"
+                , success: function (data) {
+                    var list = '<option value="0" >请选择</option>';
+                    $(data).each(function () {
+                        list += '<option value=' + this.id + '>' + this.department_Name + '</option>';
+                    })
+                    $("#AcDepart").append(list);
+                    form.render();
+                    Show();
+                }
+            })
+        }
+        form.on('submit(add)', function (data) {
+
+            let arr = data.field.Time.split(' - ');
+            data.field.TimeBegin = arr[0].replace(" ", "T");
+            data.field.TimeEnd = arr[1].replace(" ", "T");
+            data.field.ActivityType_Id = Number(data.field.ActivityType_Id);
+            data.field.Acticity_Department_Id = Number(data.field.Acticity_Department_Id);
+            data.field.Activity_Product_Id = Number(data.field.Activity_Product_Id);
+            data.field.ActivityState_Id = Number(data.field.ActivityState_Id);
+            delete data.field.Time;//删除属性
+            data.field.Id =location.search.split('?')[1].split('=')[1];
+            $.ajax({
+                url: "http://localhost:49764/api/activity/UpdActivity",
+                type: "post",
+                contentType: "application/json",
+                data: JSON.stringify(data.field),
+                success: function (result) {
+                    if (result > 0) {
+                        alert('修改成功');
+                        location.href = "/activity/ShowActivity";
+                    }
+                    else {
+                        alert('失败')
+                    }
+                }
+
+            })
+            return false;
+
+            //JSON.stringify(data.field)   这是表单中所有的数据
+
+            //  var articleFrom = data.field.articleFrom;
+
+            //   var articleSummary = data.field.articleSummary;
+        })
+
+        //各种基于事件的操作，下面会有进一步介绍
+    });
+
 </script>

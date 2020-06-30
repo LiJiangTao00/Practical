@@ -16,8 +16,9 @@ namespace PC.MVC.Controllers.Activity
         {
             return View();
         }
-        public IActionResult UpdActivity()
+        public IActionResult UpdActivity(int id)
         {
+            ViewBag.show = id;
             return View();
         }
         public IActionResult Details(int id=-1)

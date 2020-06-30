@@ -142,8 +142,17 @@ namespace PC.API.Controllers.Activity
         /// <returns></returns>
         public List<ActivityTableModel> Details(int id)
         {
-            List < ActivityTableModel > list=bll.Details(id);
+            List <ActivityTableModel> list=bll.Details(id);
             return list;
+        }
+        /// <summary>
+        /// 获取活动
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public ActivityTableModel GetActivity(int id)
+        {
+            return bll.GetActivity(id);
         }
 
     }

@@ -109,5 +109,14 @@ namespace PC.BLL.Activity
         {
             return dal.Execute();
         }
+        /// <summary>
+        /// 获取活动
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public ActivityTableModel GetActivity(int id)
+        {
+            return dal.GetActivity(id);
+        }
     }
 }

@@ -74,5 +74,11 @@ namespace PC.IBLL.Activity
         /// </summary>
         /// <returns></returns>
         List<Activity_DoTableModel> Execute();
+
+        /// <summary>
+        /// 获取活动
+        /// </summary>
+        /// <returns></returns>
+        ActivityTableModel GetActivity(int id);
     }
 }

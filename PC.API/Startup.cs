@@ -17,11 +17,10 @@ using PC.IDAL.Conference;
 using PC.DAL.Conference;
 using PC.IBLL.Conferences;
 using PC.BLL.Conferences;
-using PC.IBLL.UserIBLL;
-using PC.IDAL.UserIDAL;
-using PC.BLL.UserBLL;
-using PC.DAL.UserDAL;
-using Newtonsoft.Json.Linq;
+using PC.IDAL.Activity;
+using PC.DAL.Activity;
+using PC.IBLL.Activity;
+using PC.BLL.Activity;
 
 namespace PC.API
 {
@@ -38,16 +37,13 @@ namespace PC.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddSingleton<IMaterialDAL, MaterialDAL>();
+            services.AddSingleton<IMaterialDAL, MaterialDAL>(); 
             services.AddSingleton<IMaterialBLL,MaterialBLL>();
-
-   
-
+            services.AddSingleton<IActivityDal, ActivityDal>();
+            services.AddSingleton<IActivityBll, ActivityBll>();
             services.AddSingleton<IConferenceDal, ConferenceDal>();
             services.AddSingleton<IConferenceBll, ConferenceBll>();
-            services.AddSingleton<IUBLL, UBLL>();
-            services.AddSingleton<IUDAL, UDAL>();
-            services.AddCors(options => options.AddPolicy("cors", options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
+            services.AddCors(options => options.AddPolicy("cors", option => option.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
 
         }
 
@@ -61,8 +57,9 @@ namespace PC.API
             }
 
             app.UseRouting();
+
             app.UseAuthorization();
-            app.UseStaticFiles();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

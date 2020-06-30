@@ -129,5 +129,16 @@ namespace PC.DAL.Activity
             string sql = $"select * from Activity_DoTable";
             return dep.Query(sql);
         }
+        /// <summary>
+        /// 获取活动
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public ActivityTableModel GetActivity(int id)
+        {
+            DapperHelper<ActivityTableModel> dapper = new DapperHelper<ActivityTableModel>();
+            string sql = $"select * from ActivityTable where id="+id;
+            return dapper.Query(sql).FirstOrDefault();
+        }
     }
 }

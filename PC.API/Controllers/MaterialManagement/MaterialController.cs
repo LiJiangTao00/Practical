@@ -10,10 +10,13 @@ using PC.DAL.MaterialDal;
 using PC.IBLL.MaterialBLL;
 using PC.BLL.MaterialBll;
 using Microsoft.AspNetCore.Routing;
+using PC.Model.ViewModel;
+using Newtonsoft.Json;
+using System.IO;
 
 namespace PC.API.Controllers.MaterialManagement
 {
-    [Route("api/[controller]")]
+    [Route("api/[Controller]/[Action]")]
     [ApiController]
     public class MaterialController : ControllerBase
     {
@@ -30,7 +33,6 @@ namespace PC.API.Controllers.MaterialManagement
         /// 显示物料信息
         /// </summary>
         /// <returns></returns>
-        [Route("ShowMaterial")]
         [HttpGet]
         public List<MaterialTableModel> ShowMaterial()
         {
@@ -41,7 +43,6 @@ namespace PC.API.Controllers.MaterialManagement
         /// 显示物料下拉信息
         /// </summary>
         /// <returns></returns>
-        [Route("GetTypes")]
         [HttpGet]
         public List<MaterialTypeTableModel> GetTypes()
         {
@@ -55,11 +56,179 @@ namespace PC.API.Controllers.MaterialManagement
         /// <param name="materialname"></param>
         /// <param name="materialprice"></param>
         /// <returns></returns>
-        [Route("SelMaterial")]
         [HttpGet]
-        public List<MaterialTableModel> SelMaterial(string Materialid, string Materialname, float Materialprice, float Materialprice1)
+        public PageShowMaterial SelMaterial(string Materialid, string Materialname, float Materialprice, float Materialprice1, int PageIndex = 1, int PageSize = 3)
         {
-            return _bll.SelMaterial(Materialid, Materialname, Materialprice,Materialprice1);
+            return _bll.SelMaterial(Materialid, Materialname, Materialprice,Materialprice1, PageIndex, PageSize);
+        }
+
+        /// <summary>
+        /// 添加物料
+        /// </summary>
+        /// <param name="mod"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public int AddMaterial(MaterialTableModel mod)
+        {
+            return _bll.AddMaterial(mod);
+        }
+
+        /// <summary>
+        /// 显示活动列表
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public List<ActivityTableModel> ShowActivity()
+        {
+            return _bll.ShowActivity();
+        }
+
+        /// <summary>
+        /// 显示物料订单信息
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public List<ShowMaterialApprove> GetShowMaterialApprove()
+        {
+            return _bll.GetShowMaterialApprove();
+        }
+
+        /// <summary>
+        /// 显示订单表
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public List<OrderTableModel> GetOrder()
+        {
+            return _bll.GetOrder();
+        }
+
+        /// <summary>
+        /// 显示用户信息
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public List<UserTableModel> GetUsers()
+        {
+            return _bll.GetUsers();
+        }
+
+        /// <summary>
+        /// 显示产品组
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public List<ProductTableModel> GetProduct()
+        {
+            return _bll.GetProduct();
+        }
+
+        /// <summary>
+        /// 显示部门
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public List<DepartmentTableModel> GetDepartment()
+        {
+            return _bll.GetDepartment();
+        }
+
+        /// <summary>
+        /// 显示职位
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public List<JobTableModel> GetJob()
+        {
+            return _bll.GetJob();
+        }
+
+        /// <summary>
+        /// 显示地区
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public List<PlaceTableModel> GetPlace()
+        {
+            return _bll.GetPlace();
+        }
+
+        /// <summary>
+        /// 查询订单
+        /// </summary>
+        /// <param name="Material_Id">物料编号</param>
+        /// <param name="Material_Name">物料名称</param>
+        /// <param name="Order_State">物料状态</param>
+        /// <param name="Order_Proposer">申请人</param>
+        /// <param name="Order_ApplyTime">申请时间</param>
+        /// <param name="PageIndex">当前页</param>
+        /// <param name="PageSize">页大小</param>
+        /// <returns></returns>
+        [HttpGet]
+        public PageShowMaterial SelOrder(string Material_Id, string Material_Name, string Order_Proposer, DateTime? Order_ApplyTime, int PageIndex = 1, int PageSize = 1, int Order_State = -1)
+        {
+
+            return _bll.SelOrder(Material_Id, Material_Name, Order_Proposer, Order_ApplyTime, PageIndex, PageSize, Order_State);
+        }
+
+        /// <summary>
+        /// 显示物料审批
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public List<ApprovalMaterial> GetApproval()
+        {
+            return _bll.GetApproval();
+        }
+
+        /// <summary>
+        /// 查询审批物料
+        /// </summary>
+        /// <param name="Material_Id">物料编号</param>
+        /// <param name="Material_Name">物料名称</param>
+        /// <param name="Order_Proposer">申请人</param>
+        /// <param name="Order_ApplyTime">申请时间</param>
+        /// <param name="Order_ApproveTime">审批时间</param>
+        /// <param name="PageIndex">当前页</param>
+        /// <param name="PageSize">页大小</param>
+        /// <param name="Material_Approval">审批类型</param>
+        /// <returns></returns>
+       [HttpGet]
+        public PageShowMaterial SelApproval(string Material_Id, string Material_Name, string Order_Proposer, DateTime? Order_SubmissionTime, DateTime? Order_ApproveTime, int PageIndex = 1, int PageSize = 1, int Material_Approval = -1)
+        {
+            return _bll.SelApproval(Material_Id, Material_Name, Order_Proposer, Order_SubmissionTime, Order_ApproveTime, PageIndex, PageSize, Material_Approval);
+        }
+
+        /// <summary>
+        /// 反填物料
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public ShowFill Fill(int Id)
+        {
+            return _bll.Fill(Id).First();
+        }
+
+        /// <summary>
+        /// 反填物料审批
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public ApprovalMaterial FillApproval(int Id)
+        {
+            return _bll.FillApproval(Id).First();
+        }
+
+        /// <summary>
+        /// 反填物料订单
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public ShowMaterialApprove ShowMaterialFill(int Id)
+        {
+            return _bll.ShowMaterialFill(Id).First();
         }
     }
 }

@@ -12,7 +12,9 @@ namespace PC.Model.Models
 		 public int  Order_MTypeId { get; set; }
 		 public string  Order_Proposer { get; set; }
 		 public DateTime  Order_ApplyTime { get; set; }
-		 public int  Order_State { get; set; }
+		 public DateTime Order_SubmissionTime { get; set; }
+		 public DateTime Order_ApproveTime { get; set; }
+        public int  Order_State { get; set; }
 		 public string  Order_Number { get; set; }
 		 public string  Order_Consignee { get; set; }
 		 public string  Order_ConsigneePhone { get; set; }
