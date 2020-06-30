@@ -21,7 +21,10 @@ using PC.IDAL.Activity;
 using PC.DAL.Activity;
 using PC.IBLL.Activity;
 using PC.BLL.Activity;
-
+using PC.IDAL.UserIDAL;
+using PC.DAL.UserDAL;
+using PC.IBLL.UserIBLL;
+using PC.BLL.UserBLL;
 namespace PC.API
 {
     public class Startup
@@ -43,6 +46,8 @@ namespace PC.API
             services.AddSingleton<IActivityBll, ActivityBll>();
             services.AddSingleton<IConferenceDal, ConferenceDal>();
             services.AddSingleton<IConferenceBll, ConferenceBll>();
+            services.AddSingleton<IUDAL, UDAL>();
+            services.AddSingleton<IUBLL, UBLL>();
             services.AddCors(options => options.AddPolicy("cors", option => option.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
 
         }
