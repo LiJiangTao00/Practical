@@ -1,0 +1,63 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    <div style="margin-left:100px;margin-left:20px">
+        <div>
+            <h3 style="font-weight:600;">首页</h3>
+        </div>
+        <div style="margin-top:20px;margin-right:40px">
+            <div>
+                新增数据
+                <select id="DataTime">
+                    <option value="week">本周</option>
+                    <option value="month">本月</option>
+                    <option value="year">本年</option>
+                </select>
+            </div>
+            <a href="javascript:GetUser()">
+                <div id="user">
+
+                </div>
+            </a>
+            <a href="javascript:GetMeet()">
+                <div id="meet">
+
+                </div>
+            </a>
+            <a href="javascript:GetWu()">
+                <div id="wu">
+
+                </div>
+            </a>
+        </div>
+        <div style="margin-top:20px;margin-right:40px">
+            <div>
+                会议统计
+                <select id="MeetTime">
+                    <option value="week">本周</option>
+                    <option value="month">本月</option>
+                    <option value="year">本年</option>
+                </select>
+            </div>
+            <div id="MeetState">
+
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+<link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet"/>
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script>
+
+</script>

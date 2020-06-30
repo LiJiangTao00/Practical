@@ -91,8 +91,9 @@
         Type();
 
         function Show() {
+            var id = location.search.split('?')[1].split('=')[1];
                     $.ajax({
-            url: "http://localhost:49764/api/activity/GetActivity?id="+@ViewBag.show,
+            url: "http://localhost:49764/api/activity/GetActivity?id="+id,
             type: "get",
             success: function (result)
             {
@@ -105,7 +106,7 @@
                     "Activity_Name": result.activity_Name,
                     "Time": result.timeBegin.replace("T"," ") + " - " + result.timeBegin.replace("T"," ")
                     })
-    
+
                 var d = "#Activity_Product_Id" + result.activity_Product_Id;
                 var s = "#ActivityState_Id" + result.activityState_Id;
                 console.log(d, s);
@@ -160,7 +161,7 @@
             data.field.Activity_Product_Id = Number(data.field.Activity_Product_Id);
             data.field.ActivityState_Id = Number(data.field.ActivityState_Id);
             delete data.field.Time;//删除属性
-            data.field.Id =@ViewBag.show;
+            data.field.Id =location.search.split('?')[1].split('=')[1];
             $.ajax({
                 url: "http://localhost:49764/api/activity/UpdActivity",
                 type: "post",

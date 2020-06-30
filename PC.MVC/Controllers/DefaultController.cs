@@ -16,5 +16,9 @@ namespace PC.MVC.Controllers
         {
             return View();
         }
+        public IActionResult Forget()
+        {
+            return View();
+        }
     }
 }
