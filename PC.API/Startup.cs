@@ -17,6 +17,10 @@ using PC.IDAL.Conference;
 using PC.DAL.Conference;
 using PC.IBLL.Conferences;
 using PC.BLL.Conferences;
+using PC.IDAL.Activity;
+using PC.DAL.Activity;
+using PC.IBLL.Activity;
+using PC.BLL.Activity;
 
 namespace PC.API
 {
@@ -33,12 +37,13 @@ namespace PC.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddSingleton<IMaterialDAL, MaterialDAL>();
+            services.AddSingleton<IMaterialDAL, MaterialDAL>(); 
             services.AddSingleton<IMaterialBLL,MaterialBLL>();
-
+            services.AddSingleton<IActivityDal, ActivityDal>();
+            services.AddSingleton<IActivityBll, ActivityBll>();
             services.AddSingleton<IConferenceDal, ConferenceDal>();
             services.AddSingleton<IConferenceBll, ConferenceBll>();
-            services.AddCors(options => options.AddPolicy("cors", options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
+            services.AddCors(options => options.AddPolicy("cors", option => option.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
 
         }
 
