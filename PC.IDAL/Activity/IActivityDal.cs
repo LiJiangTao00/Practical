@@ -1,8 +1,9 @@
-﻿using PC.Model.Models;
+﻿using NPOI.SS.Formula.Functions;
+using PC.Model.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
-
+using System.Threading.Tasks;
 
 namespace PC.IDAL.Activity
 {
@@ -12,22 +13,73 @@ namespace PC.IDAL.Activity
         /// 显示活动列表
         /// </summary>
         /// <returns></returns>
-        List<Activity_DoTableModel> ShowActivity();
+        List<ActivityTableModel> ShowActivity();  
+
+        /// <summary>
+        /// 显示活动类型下拉框
+        /// </summary>
+        /// <returns></returns>
+        List<ActivityTypeTableModel> ShowType();
+
+        /// <summary>
+        /// 显示活动状态下拉框
+        /// </summary>
+        /// <returns></returns>
+        List<ActivityStateTableModel> ShowState();
+
+        // <summary>
+        /// 显示部门下拉框
+        /// </summary>
+        /// <returns></returns>
+        List<DepartmentTableModel> ShowDep();
+
         /// <summary>
         /// 添加活动
         /// </summary>
-        /// <param name="activity"></param>
         /// <returns></returns>
-        int AddActivity(ActivityTableModel activity);
+        int AddActivity(ActivityTableModel model);
+
         /// <summary>
-        /// 显示活动状态
+        /// 删除活动
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        int DelActivity(int id);
+
+        /// <summary>
+        /// 修改活动
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        int UpdActivity(ActivityTableModel model);
+        /// <summary>
+        /// 获取部门名称
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        string GetDepartName(int id);
+        /// <summary>
+        /// 获取活动类型名称
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        string GetActivityName(int id);
+
+        /// <summary>
+        /// 显示详情
         /// </summary>
         /// <returns></returns>
-        List<ActivityStateTableModel> ShowActivityState();
+        List<ActivityTableModel> Details(int id);
+
         /// <summary>
-        /// 显示活动类型
+        /// 查看执行情况
         /// </summary>
         /// <returns></returns>
-        List<ActivityTypeTableModel> ShowActivityType();
+        List<Activity_DoTableModel> Execute();
+        /// <summary>
+        /// 获取活动
+        /// </summary>
+        /// <returns></returns>
+        ActivityTableModel GetActivity(int id);
     }
 }

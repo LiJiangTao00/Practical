@@ -24,27 +24,35 @@
 
     <div id="LAY_app">
         <div class="layui-layout layui-layout-admin">
-            <div class="layui-header">
+            <div class="layui-header" style="height:60px;background-color:#0094ff">
                 <!-- 头部区域 -->
                 <ul class="layui-nav layui-layout-left">
                 </ul>
                 <ul class="layui-nav layui-layout-right" lay-filter="layadmin-layout-right">
-                    <li class="layui-nav-item" lay-unselect>
-                        <a href="">
-                            <label id="Name">登录人</label>
+                    <li class="layui-nav-item" lay-unselect style="margin-right:150px">
+                        <a lay-href="/User/selectuser">
+                            <div style="width:21px;height:23px;margin-left:5px">
+                                <img src="~/img/u69.png" />
+                            </div>
+                            <label id="Name" style="color:white;font-weight:600">登录人</label>
                         </a>
                     </li>
-                    <li class="layui-nav-item layui-hide-xs" lay-unselect>
+                    <li class="layui-nav-item layui-hide-xs" lay-unselect style="margin-right:150px">
                         <a href="">
-                            <cite>首页</cite>
+                            <div style="width:21px;height:23px;margin-left:5px">
+                                <img src="~/img/u72.png" />
+                            </div>
+                            <cite style="color:white;font-weight:600">首页</cite>
                         </a>
                     </li>
-                    <li class="layui-nav-item" lay-unselect>
+                    <li class="layui-nav-item" lay-unselect style="margin-right:300px">
                         <a href="/default/login">
-                            <cite>退出</cite>
+                            <div style="width:21px;height:23px;margin-left:5px">
+                                <img src="~/img/u75.png" />
+                            </div>
+                            <cite style="color:white;font-weight:600">退出</cite>
                         </a>
                     </li>
-
                 </ul>
             </div>
 
@@ -52,7 +60,7 @@
             <div class="layui-side layui-side-menu">
                 <div class="layui-side-scroll">
                     <div class="layui-logo" lay-href="home/console.html">
-                        <span>药企内部管理系统</span>
+                        <span style="color:white;font-weight:700">药企内部管理系统</span>
                     </div>
 
                     <ul class="layui-nav layui-nav-tree" lay-shrink="all" id="LAY-system-side-menu" lay-filter="layadmin-system-side-menu">
@@ -75,7 +83,7 @@
                                     <a lay-href="">国内会议</a>
                                 </dd>
                                 <dd data-name="console">
-                                    <a lay-href="">会议统计</a>
+                                    <a lay-href="/Conference/ConStatistics">会议统计</a>
                                 </dd>
                             </dl>
                         </li>
@@ -109,7 +117,10 @@
                             </a>
                             <dl class="layui-nav-child">
                                 <dd data-name="console" class="layui-this">
-                                    <a lay-href="">活动列表</a>
+                                    <a href="/Activity/ShowActivity" target="main_self_frame">活动列表</a>
+                                </dd>
+                                <dd data-name="console">
+                                    <a href="" target="main_self_frame">统计报表</a>
                                 </dd>
                             </dl>
                         </li>
@@ -120,129 +131,14 @@
                             </a>
                             <dl class="layui-nav-child">
                                 <dd data-name="console" class="layui-this">
-                                    <a lay-href="/User/ShowList">用户列表</a>
+                                    <a href="/User/ShowList" target="main_self_frame">用户列表</a>
                                 </dd>
                                 <dd data-name="console">
-                                    <a lay-href="/User/ShowJob">职务权限</a>
+                                    <a href="/User/ShowJob" target="main_self_frame">职务权限</a>
                                 </dd>
 
                             </dl>
                         </li>
-                        @*<li data-name="template" class="layui-nav-item">
-                                <a href="javascript:;" lay-tips="页面" lay-direction="2">
-                                    <i class="layui-icon layui-icon-template"></i>
-                                    <cite>页面</cite>
-                                </a>
-                                <dl class="layui-nav-child">
-                                    <dd><a lay-href="template/personalpage.html">个人主页</a></dd>
-                                    <dd><a lay-href="template/addresslist.html">通讯录</a></dd>
-                                    <dd><a lay-href="template/goodslist.html">商品列表</a></dd>
-                                    <dd><a lay-href="template/msgboard.html">留言板</a></dd>
-                                    <dd><a lay-href="template/search.html">搜索结果</a></dd>
-                                    <dd><a href="user/reg.html" target="_blank">注册</a></dd>
-                                    <dd><a href="user/login.html" target="_blank">登入</a></dd>
-                                    <dd><a href="user/forget.html" target="_blank">忘记密码</a></dd>
-                                    <dd><a lay-href="template/tips/404.html">404页面不存在</a></dd>
-                                    <dd><a lay-href="template/tips/error.html">错误提示</a></dd>
-                                    <dd><a lay-href="http://www.baidu.com/">百度一下</a></dd>
-                                    <dd><a lay-href="http://www.layui.com/">layui官网</a></dd>
-                                    <dd><a lay-href="http://www.layui.com/admin/">layuiAdmin官网</a></dd>
-                                </dl>
-                            </li>
-                            <li data-name="app" class="layui-nav-item">
-                                <a href="javascript:;" lay-tips="应用" lay-direction="2">
-                                    <i class="layui-icon layui-icon-app"></i>
-                                    <cite>应用</cite>
-                                </a>
-                                <dl class="layui-nav-child">
-
-                                    <dd data-name="content">
-                                        <a href="javascript:;">内容系统</a>
-                                        <dl class="layui-nav-child">
-                                            <dd data-name="list"><a lay-href="app/content/list.html">文章列表</a></dd>
-                                            <dd data-name="tags"><a lay-href="app/content/tags.html">分类管理</a></dd>
-                                            <dd data-name="comment"><a lay-href="app/content/comment.html">评论管理</a></dd>
-                                        </dl>
-                                    </dd>
-                                    <dd data-name="forum">
-                                        <a href="javascript:;">社区系统</a>
-                                        <dl class="layui-nav-child">
-                                            <dd data-name="list"><a lay-href="app/forum/list.html">帖子列表</a></dd>
-                                            <dd data-name="replys"><a lay-href="app/forum/replys.html">回帖列表</a></dd>
-                                        </dl>
-                                    </dd>
-                                    <dd>
-                                        <a lay-href="app/message/index.html">消息中心</a>
-                                    </dd>
-                                    <dd data-name="workorder">
-                                        <a lay-href="app/workorder/list.html">工单系统</a>
-                                    </dd>
-                                </dl>
-                            </li>
-                            <li data-name="senior" class="layui-nav-item">
-                                <a href="javascript:;" lay-tips="高级" lay-direction="2">
-                                    <i class="layui-icon layui-icon-senior"></i>
-                                    <cite>高级</cite>
-                                </a>
-                                <dl class="layui-nav-child">
-                                    <dd>
-                                        <a layadmin-event="im">LayIM 通讯系统</a>
-                                    </dd>
-                                    <dd data-name="echarts">
-                                        <a href="javascript:;">Echarts集成</a>
-                                        <dl class="layui-nav-child">
-                                            <dd><a lay-href="senior/echarts/line.html">折线图</a></dd>
-                                            <dd><a lay-href="senior/echarts/bar.html">柱状图</a></dd>
-                                            <dd><a lay-href="senior/echarts/map.html">地图</a></dd>
-                                        </dl>
-                                    </dd>
-                                </dl>
-                            </li>
-                            <li data-name="user" class="layui-nav-item">
-                                <a href="javascript:;" lay-tips="用户" lay-direction="2">
-                                    <i class="layui-icon layui-icon-user"></i>
-                                    <cite>用户</cite>
-                                </a>
-                                <dl class="layui-nav-child">
-                                    <dd>
-                                        <a lay-href="user/user/list.html">网站用户</a>
-                                    </dd>
-                                    <dd>
-                                        <a lay-href="user/administrators/list.html">后台管理员</a>
-                                    </dd>
-                                    <dd>
-                                        <a lay-href="user/administrators/role.html">角色管理</a>
-                                    </dd>
-                                </dl>
-                            </li>
-                            <li data-name="set" class="layui-nav-item">
-                                <a href="javascript:;" lay-tips="设置" lay-direction="2">
-                                    <i class="layui-icon layui-icon-set"></i>
-                                    <cite>设置</cite>
-                                </a>
-                                <dl class="layui-nav-child">
-                                    <dd class="layui-nav-itemed">
-                                        <a href="javascript:;">系统设置</a>
-                                        <dl class="layui-nav-child">
-                                            <dd><a lay-href="set/system/website.html">网站设置</a></dd>
-                                            <dd><a lay-href="set/system/email.html">邮件服务</a></dd>
-                                        </dl>
-                                    </dd>
-                                    <dd class="layui-nav-itemed">
-                                        <a href="javascript:;">我的设置</a>
-                                        <dl class="layui-nav-child">
-                                            <dd><a lay-href="set/user/info.html">基本资料</a></dd>
-                                            <dd><a lay-href="set/user/password.html">修改密码</a></dd>
-                                        </dl>
-                                    </dd>
-                                </dl>
-                            </li>
-                            <li data-name="get" class="layui-nav-item">
-                                <a href="javascript:;" lay-href="http://www.layui.com/admin/#get" lay-tips="授权" lay-direction="2">
-                                    <i class="layui-icon layui-icon-auz"></i>
-                                    <cite>授权</cite>
-                                </a>
-                            </li>*@
                     </ul>
                 </div>
             </div>
@@ -274,7 +170,7 @@
             <!-- 主体内容 -->
             <div class="layui-body" id="LAY_app_body">
                 <div class="layadmin-tabsbody-item layui-show">
-                    <iframe src="" frameborder="0" class="layadmin-iframe"></iframe>
+                    <iframe src="" frameborder="0" name="main_self_frame" class="layadmin-iframe"></iframe>
                 </div>
             </div>
 
@@ -298,6 +194,15 @@
         console.log(localStorage["Name"]);
         $('#Name').html(localStorage["Name"]);
     })
+    function refreshHighlight(url) {
+        $ = layui.jquery;
+        $(".layui-nav[lay-filter='navList'] a").each(function (ind, val) {
+            if ($(this).attr('href') === url) {
+                $('.layui-nav dd').removeClass('layui-this');
+                $(this).parent('dd').addClass('layui-this');
+            }
+        })
+    }
 </script>
 
 

@@ -1,0 +1,118 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>设置权限</title>
+</head>
+<body>
+    <div style="margin-left:100px;margin-left:20px">
+        <div>
+            <h3 style="font-weight:600;">添加用户</h3>
+           <input type="button" value="返回" onclick="GoBack()" />
+        </div>
+        <table id="JobTb">
+        </table>
+        <h2>操作权限</h2>
+        <table class="table table-borderless" id="PermissionTb">
+        </table>
+        <div>
+            <input type="button" value="button" />
+            <input type="reset" value="reset" />
+        </div>
+    </div>
+</body>
+</html>
+<link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script>
+    $(function () {
+        ShowJob();
+    })
+    function GoBack() {
+        window.history.back(-1);
+    }
+    function ShowJob() {
+        var photo = '/img/u829.png';
+        var id = localStorage["PermissionId"];
+        $.ajax({
+            url: "http://localhost:49764/api/user/ShowSingleJob?id=" + id,
+            type: "get",
+            dataType: "json",
+            success: function (data) {
+                $('#JobTb').empty();
+                var str = '';
+                str = '<tr>' +
+                    '<td rowspan = "2" >' +
+                    '<img src="' + photo + '" />' +
+                    '</td >' +
+                    '<td>' + data.job_Name + '</td>' +
+                    '</tr>' +
+                    '<tr>' +
+                    '<td>' + data.job_Desc + '</td>' +
+                    '</tr>';
+                $('#JobTb').append(str);
+            }
+        })
+        ShowPermission();
+    }
+    function ShowPermission() {
+        $.ajax({
+            url: "http://localhost:49764/api/user/ShowPermission",
+            type: "get",
+            dataType: "json",
+            success: function (data) {
+                console.log(data);
+                $('#PermissionTb').empty();
+                var str = '';
+                $.each(data, function (i, n) {
+                    str += '<tr>' +
+                        '<td><input type="checkbox" id="chk' + n.id + '"  value="' + n.id + '"/>' + n.permission_Name + '</td>' +
+                        '</tr><tr>';
+                    $.each(n.modelList, function (x, y) {
+                        str += '<td><input type="checkbox" id="chk' + y.id + '" value="' + y.id + '"/>' + y.permission_Name + '</td>';
+                    })
+                    str += '</tr>';
+                })
+                $('#PermissionTb').append(str);
+            }
+        })
+        ChkPermission();
+    }
+    function ChkPermission() {
+        var id = localStorage["PermissionId"];
+        $.ajax({
+            url: "http://localhost:49764/api/user/ShowSinglePermission?id=" + id,
+            type: "get",
+            dataType: "json",
+            success: function (data) {
+                $('.chk').attr("checked", false);
+                $.each(data, function (i, n) {
+                    $('#chk' + n.id).attr("checked", true);
+                    if (n.id < 5) {
+                        ChkPid(n.id);
+                    }
+                })
+            }
+        })
+    }
+    function ChkPid(id) {
+        $.ajax({
+            url: "http://localhost:49764/api/user/ChkPid?id=" + id,
+            type: "get",
+            dataType: "json",
+            success: function (data) {
+                if (data != null) {
+                    $.each(data, function (i, n) {
+                        $('#chk' + n.id).attr("checked", true);
+                    })
+                }
+            }
+        })
+    }
+</script>

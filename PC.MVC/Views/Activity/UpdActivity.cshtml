@@ -1,0 +1,193 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>UpdActivity</title>
+    <link href="~/layuiadmin/layui/css/layui.css" rel="stylesheet" />
+    <script src="~/layuiadmin/layui/layui.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+</head>
+<body>
+    <button type="button" class="layui-btn layui-btn-primary" style="float:right;margin-right:30px;" onclick="location.href = '/activity/ShowActivity'">返回列表</button>
+    <h1 style="text-align: center;margin-top:30px;margin-bottom:30px;">活动内容修改</h1>
+    <form class="layui-form" lay-filter="Ju">
+        <!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">活动分类</label>
+            <div class="layui-input-block">
+                <select name="ActivityType_Id" lay-filter="aihao" id="Type1">
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">活动名称</label>
+            <div class="layui-input-block">
+                <input type="text" name="Activity_Name" placeholder="请输入" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">活动描述</label>
+            <div class="layui-input-block">
+                <textarea placeholder="请输入内容" name="Activity_Desc" class="layui-textarea"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">部门</label>
+            <div class="layui-input-block">
+                <select name="Acticity_Department_Id" lay-filter="aihao" id="AcDepart">
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">所属产品组</label>
+            <div class="layui-input-block">
+                <input type="radio" name="Activity_Product_Id" id="Activity_Product_Id0" value="0" title="CV" checked>
+                <input type="radio" name="Activity_Product_Id" id="Activity_Product_Id1" value="1" title="DIA">
+                <input type="radio" name="Activity_Product_Id" id="Activity_Product_Id2" value="2" title="社区">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">是否启用</label>
+            <div class="layui-input-block">
+                <input type="radio" name="ActivityState_Id" id="ActivityState_Id1" value="1" title="是" checked>
+                <input type="radio" name="ActivityState_Id" id="ActivityState_Id0" value="0" title="否">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">开始时间-结束时间</label>
+            <div class="layui-input-inline">
+                <input type="text" name="Time" class="layui-input" id="test-laydate-range-datetime" placeholder="" lay-key="12">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" type="button" lay-submit lay-filter="add">立即提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+        <!-- 更多表单结构排版请移步文档左侧【页面元素-表单】一项阅览 -->
+    </form>
+</body>
+</html>
+<script>
+    layui.use(['form', 'laydate'], function () {
+        var form = layui.form;
+        var layer = layui.layer;
+        var laydate = layui.laydate;
+
+        //执行一个laydate实例
+        laydate.render({
+            elem: '#test-laydate-range-datetime' //指定元素
+            , type: 'datetime',
+            range: true
+        });
+        Type();
+
+        function Show() {
+            var id = location.search.split('?')[1].split('=')[1];
+                    $.ajax({
+            url: "http://localhost:49764/api/activity/GetActivity?id="+id,
+            type: "get",
+            success: function (result)
+            {
+                console.log(result);
+                form.val("Ju",
+                {
+                    "ActivityType_Id": result.activityType_Id,
+                    "Acticity_Department_Id": result.acticity_Department_Id,
+                    "Activity_Desc": result.activity_Desc,
+                    "Activity_Name": result.activity_Name,
+                    "Time": result.timeBegin.replace("T"," ") + " - " + result.timeBegin.replace("T"," ")
+                    })
+
+                var d = "#Activity_Product_Id" + result.activity_Product_Id;
+                var s = "#ActivityState_Id" + result.activityState_Id;
+                console.log(d, s);
+                $(d).prop("checked", true);
+                $(s).prop("checked", true);
+                form.render();
+
+            }
+
+        })
+
+        }
+
+        function Type() {
+            $.ajax({
+                url: "http://localhost:49764/api/activity/ShowType"
+                , type: "Get"
+                , success: function (data) {
+                    console.log(data);
+                    var list = '<option value="0" >请选择</option>';
+                    $(data).each(function () {
+                        list += '<option value=' + this.id + '>' + this.activityType_Name + '</option>';
+                    });
+                    $("#Type1").append(list);
+                    form.render();
+                    Department();
+                }
+            })
+        }
+        function Department() {
+            $.ajax({
+                url: "http://localhost:49764/api/activity/ShowDep"
+                , type: "Get"
+                , success: function (data) {
+                    var list = '<option value="0" >请选择</option>';
+                    $(data).each(function () {
+                        list += '<option value=' + this.id + '>' + this.department_Name + '</option>';
+                    })
+                    $("#AcDepart").append(list);
+                    form.render();
+                    Show();
+                }
+            })
+        }
+        form.on('submit(add)', function (data) {
+
+            let arr = data.field.Time.split(' - ');
+            data.field.TimeBegin = arr[0].replace(" ", "T");
+            data.field.TimeEnd = arr[1].replace(" ", "T");
+            data.field.ActivityType_Id = Number(data.field.ActivityType_Id);
+            data.field.Acticity_Department_Id = Number(data.field.Acticity_Department_Id);
+            data.field.Activity_Product_Id = Number(data.field.Activity_Product_Id);
+            data.field.ActivityState_Id = Number(data.field.ActivityState_Id);
+            delete data.field.Time;//删除属性
+            data.field.Id =location.search.split('?')[1].split('=')[1];
+            $.ajax({
+                url: "http://localhost:49764/api/activity/UpdActivity",
+                type: "post",
+                contentType: "application/json",
+                data: JSON.stringify(data.field),
+                success: function (result) {
+                    if (result > 0) {
+                        alert('修改成功');
+                        location.href = "/activity/ShowActivity";
+                    }
+                    else {
+                        alert('失败')
+                    }
+                }
+
+            })
+            return false;
+
+            //JSON.stringify(data.field)   这是表单中所有的数据
+
+            //  var articleFrom = data.field.articleFrom;
+
+            //   var articleSummary = data.field.articleSummary;
+        })
+
+        //各种基于事件的操作，下面会有进一步介绍
+    });
+
+</script>

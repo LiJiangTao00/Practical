@@ -203,6 +203,7 @@
             url: "http://localhost:49764/api/user/Login?User_Phone=" + User_Phone + "&User_Pwd=" + User_Pwd,
             type: "get",
             success: function (data) {
+                localStorage["Phone"] = User_Phone;
                 if (data > 0) {
                     ShowName(User_Phone);
                 }

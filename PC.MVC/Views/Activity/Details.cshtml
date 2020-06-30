@@ -1,0 +1,57 @@
+﻿
+@{
+    Layout = null;
+}
+@model PC.Model.Models.ActivityTableModel
+<!DOCTYPE html>
+
+<script src="~/lib/jquery/dist/jquery.js"></script>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Details</title>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <link href="~/layuiadmin/layui/css/layui.css" rel="stylesheet" />
+
+</head>
+<body>
+    <div style="margin:20px;">
+        <span id="tn">
+
+        </span>
+    </div>
+</body>
+</html>
+
+<script>
+    $(function () {
+        show();
+
+    })
+
+    function show() {
+        $.ajax({
+        url: "http://localhost:49764/api/activity/Details?Id=" + @ViewBag.show,
+        type: "get",
+        success: function (result) {
+                var str = result[0].activity_Desc;
+                var test = str.split(/[\n]/);
+                var desc = '';
+                for (x in test)
+                {
+                    desc += test[x] + "<br />";
+                }
+                console.log(desc);
+                $("#tn").html(desc);
+        }
+    });
+    }
+
+
+
+
+
+</script>

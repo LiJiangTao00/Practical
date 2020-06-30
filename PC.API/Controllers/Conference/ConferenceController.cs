@@ -31,12 +31,13 @@ namespace PC.API.Controllers.Conference
             return _bll.ShowConference();
 
         }
-        
+
         [HttpPost]
-        public SearchPageShowConference SearchConference(DateTime condate, string conplace, string constate, string conname, int conproduct, int pageindex = 1, int pagesize = 2)
+
+        public SearchPageShowConference SearchConference([FromForm] SearchPageConference spc)
         {
 
-            return _bll.SearchConference(condate, conplace, constate, conname, conproduct, pageindex, pagesize);
+            return _bll.SearchConference(spc.condate, spc.conplace, spc.constate, spc.conname, spc.conproduct, spc.pageindex, spc.pagesize);
 
         }
         /// <summary>
@@ -45,11 +46,45 @@ namespace PC.API.Controllers.Conference
         /// <param name="c">要添加的数据</param>
         /// <returns></returns>
         [HttpPost]
-        public int AddConference([FromForm]ConferenceTableModel c)
+        public int AddConference([FromForm]ConferenceTableModel con)
         {
-            return _bll.AddConference(c);
+            return _bll.AddConference(con);
 
         }
 
+        [HttpGet]
+        //删除会议
+        public int DelConference(string ids)
+        {
+            return _bll.DelConference(ids);
+        }
+
+        //会议详情（根据ID反填）
+        [HttpGet]
+        public ConferenceInfo ConferenceInfo(int cid)
+        {
+            return _bll.ConferenceInfo(cid);
+        }
+        //会议统计 即根据条件查询会议数量
+        [HttpGet]
+        public ConNums ConStatistics(string conproduct, int conyear = -1, int departmentid = -1, int con_typeid = -1)
+        {
+            return _bll.ConStatistics(conproduct, conyear, departmentid, con_typeid);
+        }
+        //会议统计页面的部门下拉菜单
+        [HttpGet]
+        public List<DepartmentTableModel> DepSel()
+        {
+
+            return _bll.DepSel();
+        }
+
+        //会议统计页面的会议类型下拉菜单
+        [HttpGet]
+        public List<ConferenceTypeTableModel> ConTypeSel()
+        {
+
+            return _bll.ConTypeSel();
+        }
     }
 }

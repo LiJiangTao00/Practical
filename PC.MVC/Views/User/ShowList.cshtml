@@ -11,7 +11,8 @@
     <title>用户列表</title>
 </head>
 <body>
-    <div>
+    <div style="margin-left:100px;margin-left:20px">
+        <h3 style="font-weight:600;">添加用户</h3>
         <div style="margin:20px">
             <div style="border: 1px solid #808080;height:55px;padding-top:5px;">
                 <div style="float:left;padding-bottom:5px">
@@ -32,8 +33,8 @@
         </div>
         <div>
             <div>
+
                 <input type="button" value="添加" class="layui-btn layui-btn-normal" onclick="Add()" />
-                <input type="button" value="导入" class="layui-btn layui-btn-primary" onclick="Insert()" />
                 <input type="button" value="导出" class="layui-btn layui-btn-primary" onclick="Derive()" />
                 <input id="File1" type="file" />
                 <input type="button" value="修改职务" class="layui-btn layui-btn-primary" onclick="UpdateJob()" />
@@ -65,6 +66,12 @@
             <div>
                 <input id="chk" type="checkbox" onclick="GetChk()" />全选
                 <input type="button" value="批量删除" onclick="PiDel()" />
+                <div id="pagenum" style="float:right">
+                    <input type="button" value="首页" onclick="Page('first')"/>
+                    <input type="button" value="上一页" onclick="Page('last')"/>
+                    <input type="button" value="下一页" onclick="Page('next')"/>
+                    <input type="button" value="尾页" onclick="Page('end')"/>
+                </div>
             </div>
         </div>
     </div>
@@ -80,11 +87,14 @@
     var str = "";
     var tab = "";
     var total = 0;
+    var pageindex = 1;
+    var size = 3;
+    var pagetotal = 0;
     layui.use('layer', function () {
         var layer = layui.layer;
     });
     function ShowAll(id) {
-        ShowList(id);
+        ShowList(id, pageindex);
     }
     $(function () {
         ShowDepartment();
@@ -148,7 +158,7 @@
                 $('#ShowJob').append(str);
             }
         })
-        ShowList(0);
+        ShowList(0, pageindex);
     }
     function ProvinceChange() {
         var pid = $('#ShowProvince').val();
@@ -182,7 +192,7 @@
             }
         })
     }
-    function ShowList(product) {
+    function ShowList(product,index) {
         var txt_Sel = $('#txt_Sel').val();
         var ShowDepartment = $('#ShowDepartment').val() == null ? 0 : $('#ShowDepartment').val();
         var ShowProvince = $('#ShowProvince').val() == null ? 0 : $('#ShowProvince').val();
@@ -190,12 +200,14 @@
         var ShowDistrict = parseInt($('#ShowDistrict').val());
         var ShowJob = $('#ShowJob').val() == null ? 0 : $('#ShowJob').val();
         $.ajax({
-            url: "http://localhost:49764/api/user/ShowUser?product=" + product + "&did=" + ShowDepartment + "&pid=" + ShowProvince + "&cid=" + ShowCity + "&dis=" + ShowDistrict + "&jid=" + ShowJob + "&name=" + txt_Sel,
+            url: "http://localhost:49764/api/user/ShowUser?product=" + product + "&did=" + ShowDepartment + "&pid=" + ShowProvince + "&cid=" + ShowCity + "&dis=" + ShowDistrict + "&jid=" + ShowJob + "&name=" + txt_Sel + "&index=" + index,
             type: "get",
             dataType: "json",
             success: function (data) {
                 $('#tb').empty();
                 total = data.total;
+                pagetotal = Math.floor(total / size) + (total % size > 0 ? 1 : 0);
+                console.log(pagetotal);
                 var str = '';
                 $.each(data.model, function (i, n) {
                     str += '<tr><td><input class="chk" type="checkbox" value="' + n.id
@@ -206,11 +218,35 @@
                 $('#tb').append(str);
             }
         })
+        localStorage["selectid"] = product;
+        
         $('input[type="checkbox"]').prop("checked", false);
-        PageShow(total);
+    }
+    function Page(num) {
+        var selectid = parseInt(localStorage["selectid"]);
+        switch (num) {
+            case 'first':
+                pageindex = 1;
+                ShowList(selectid, pageindex);
+                break;
+            case 'last':
+                pageindex = pageindex - 1 < 0 ? 1 : (pageindex - 1);
+                ShowList(selectid, pageindex);
+                break;
+            case 'next':
+                pageindex = pageindex + 1 > pagetotal ? pagetotal : (pageindex + 1);
+                ShowList(selectid, pageindex);
+                break;
+            case 'end':
+                pageindex = pagetotal;
+                ShowList(selectid, pageindex);
+                break;
+            default:
+                break;
+        }
     }
     function Select() {
-        ShowList(0);
+        ShowList(0, pageindex);
     }
     function Lok(id) {
         var html = '<div id="upt"></div>';
@@ -219,8 +255,7 @@
             type: "get",
             dataType: "json",
             success: function (data) {
-
-                str = '<div style="float:left;"><img src="' + data.user_Photo + '" style="width:50px;height:70px"/></div>';
+                str = '<div style="float:left;"><img src="http://localhost:49764' + data.user_Photo + '" style="width:50px;height:70px"/></div>';
                 tab = '<table><tr><td>姓名：' + data.user_Name + '</td>' +
                     '<td> 工号：' + data.user_Id + '</td>' +
                     '<td>性别：' + IsBoy(data.user_Sex) + '</td></tr >' +
@@ -243,8 +278,6 @@
                 title: "用户详情",
                 area: ['500px', '400px'],
                 content: html, //这里content是一个普通的String
-                success: function () {
-                }
             });
         });
     }
@@ -262,9 +295,6 @@
             default:
                 break;
         }
-    }
-    function PageShow(total) {
-
     }
     function Add() {
         location.href = "/user/AddsingleUser";
@@ -298,9 +328,6 @@
             dataType: "json",
             success: function (data) {
                 console.log(data);
-                if (data > 0) {
-
-                }
             }
         })
         ShowList(0);
