@@ -373,7 +373,7 @@ namespace PC.DAL.UserDAL
                 default:
                     break;
             }
-            return _dal.GetLog(time, table);
+            return 0;
         }
     }
 }
