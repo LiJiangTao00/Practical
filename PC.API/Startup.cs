@@ -21,6 +21,10 @@ using PC.IBLL.UserIBLL;
 using PC.IDAL.UserIDAL;
 using PC.BLL.UserBLL;
 using PC.DAL.UserDAL;
+using PC.DAL.Activity;
+using PC.IDAL.Activity;
+using PC.BLL.Activity;
+using PC.IBLL.Activity;
 using Newtonsoft.Json.Linq;
 
 namespace PC.API
@@ -47,7 +51,9 @@ namespace PC.API
             services.AddSingleton<IConferenceBll, ConferenceBll>();
             services.AddSingleton<IUBLL, UBLL>();
             services.AddSingleton<IUDAL, UDAL>();
-            services.AddCors(options => options.AddPolicy("cors", options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
+            services.AddSingleton<IActivityBll, ActivityBll > ();
+            services.AddSingleton<IActivityDal, ActivityDal>();
+            services.AddCors(options => options.AddPolicy("cors", option => option.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
 
         }
 
