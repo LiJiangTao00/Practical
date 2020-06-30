@@ -33,5 +33,6 @@ namespace PC.IBLL.UserIBLL
         UserShowModel SelectUserPhone(string phone);
         int PutPwd(string phone, string oldpwd, string newPwd);
         int AddJob(JobTableModel m);
+        int GetLog(string time, string table);
     }
 }

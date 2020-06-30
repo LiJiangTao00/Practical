@@ -238,6 +238,11 @@ namespace PC.API.Controllers.UserInfo
         {
             return _bll.PutPwd(phone,oldpwd, newPwd);
         }
-        
+        [HttpGet]
+        public int GetLog(string time,string table)
+        {
+            return _bll.GetLog(time,table);
+        }
+
     }
 }

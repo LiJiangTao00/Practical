@@ -362,5 +362,18 @@ namespace PC.DAL.UserDAL
             string sql = " insert into JobTable values ('" + m.Job_Name + "','" + m.Job_Desc + "',1,'"+DateTime.Now +"',0,0)";
             return dapper.Execute(sql);
         }
+        public int GetLog(string time, string table)
+        {
+            string sql = "select count(1) from LogTable where OperationAction='添加' and ";
+            switch (table)
+            {
+                case "UserTable":
+                    sql += " and OperationTable='UserTable' ";
+                    break;
+                default:
+                    break;
+            }
+            return _dal.GetLog(time, table);
+        }
     }
 }
