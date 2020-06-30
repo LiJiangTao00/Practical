@@ -21,6 +21,7 @@ using PC.IBLL.UserIBLL;
 using PC.IDAL.UserIDAL;
 using PC.BLL.UserBLL;
 using PC.DAL.UserDAL;
+using Newtonsoft.Json.Linq;
 
 namespace PC.API
 {
@@ -39,6 +40,8 @@ namespace PC.API
             services.AddControllers();
             services.AddSingleton<IMaterialDAL, MaterialDAL>();
             services.AddSingleton<IMaterialBLL,MaterialBLL>();
+
+   
 
             services.AddSingleton<IConferenceDal, ConferenceDal>();
             services.AddSingleton<IConferenceBll, ConferenceBll>();

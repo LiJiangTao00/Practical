@@ -1,0 +1,143 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>UpdActivity</title>
+    <link href="~/layuiadmin/layui/css/layui.css" rel="stylesheet" />
+    <script src="~/layuiadmin/layui/layui.js"></script>
+</head>
+<body>
+    <form class="layui-form">
+        <!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">活动分类</label>
+            <div class="layui-input-block">
+                <select name="ActivityType_Id" lay-filter="aihao" id="Type1">
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">活动名称</label>
+            <div class="layui-input-block">
+                <input type="text" name="Activity_Name" placeholder="请输入" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">活动描述</label>
+            <div class="layui-input-block">
+                <textarea placeholder="请输入内容" name="Activity_Desc" class="layui-textarea"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">部门</label>
+            <div class="layui-input-block">
+                <select name="Acticity_Department_Id" lay-filter="aihao" id="AcDepart">
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">所属产品组</label>
+            <div class="layui-input-block">
+                <input type="radio" name="Activity_Product_Id" value="0" title="CV" checked>
+                <input type="radio" name="Activity_Product_Id" value="1" title="DIA">
+                <input type="radio" name="Activity_Product_Id" value="2" title="社区">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">是否启用</label>
+            <div class="layui-input-block">
+                <input type="radio" name="ActivityState_Id" value="1" title="是" checked>
+                <input type="radio" name="ActivityState_Id" value="0" title="否">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">开始时间-结束时间</label>
+            <div class="layui-input-inline">
+                <input type="text" name="Time" class="layui-input" id="test-laydate-range-datetime" placeholder="" lay-key="12">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" type="button" lay-submit lay-filter="add">立即提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+        <!-- 更多表单结构排版请移步文档左侧【页面元素-表单】一项阅览 -->
+    </form>
+</body>
+</html>
+<script>
+    table.render({
+            elem: '#ShowData'
+            , height: 312
+            , url: 'http://localhost:49764/api/activity/UpdActivity?id=' //数据接口
+            , page: true //开启分页
+            ,totalRow: true //开启合计行
+            , cols: [[ //表头
+                { field: 'activity_Name', title: '活动名称', width: 150, sort: true, fixed: 'left' }
+                , {
+                    field: 'activityType_Id', title: '活动类型', width: 150}
+                , {
+                    field: 'activity_Product_Id', title: '产品组', width: 80, sort: true, templet: function (d) {
+                        if (d.activity_Product_Id == 0)
+                        {
+                            return "CV组";
+                        }
+                        else if (d.activity_Product_Id == 1)
+                        {
+                            return "DIA组";
+                        }
+                        else
+                        {
+                            return "社区组";
+                        }
+                    }
+                }
+                , {
+                    field: 'acticity_Department_Id', title: '部门', width: 80}
+                , {
+                    field: 'timeBegin', title: '开始时间', width: 180, templet: function (d) {
+                        var data = new Date(d.timeBegin);
+                        var year = data.getFullYear();  //获取年
+                        var month = data.getMonth() + 1;    //获取月
+                        var day = data.getDate(); //获取日
+                        time = year + "-" + month + "-" + day;
+                        return time;
+                    }
+                }
+                , { field: 'timeEnd', title: '结束时间', width: 180, sort: true, templet: function (d) {
+                        var data = new Date(d.timeBegin);
+                        var year = data.getFullYear();  //获取年
+                        var month = data.getMonth() + 1;    //获取月
+                        var day = data.getDate(); //获取日
+                        time = year + "-" + month + "-" + day;
+                        return time;
+                    } }
+                , {
+                    field: 'activityState_Id', title: '状态', width: 80, sort: true, templet: function (d) {
+                        if (d.activityState_Id == 0)
+                        {
+                            return "未开始";
+                        }
+                        else if(d.activityState_Id == 1){
+                            return "已结束";
+                        }
+                        else {
+                            return "进行中";
+                        }
+                    } }
+                , { field: 'Caozuo', title: '操作', width: 710, templet: '#barDemo' }
+            ]], where: { ActivityType_Id: Number($("#Type1").val()), ActivityState_Id: Number($("#State1").val()), Search: $("#Search").val() },
+            request: {
+                pageName: 'page',   // 页码的参数名称，默认：page
+                limitName: 'pageSize'   // 每页数据量的参数名，默认：limit
+            }
+        });
+</script>

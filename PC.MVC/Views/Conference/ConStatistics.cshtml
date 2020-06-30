@@ -1,0 +1,199 @@
+﻿
+@{
+    Layout = null;
+}
+<script src="~/PlugIn/My97DatePicker/My97DatePicker/WdatePicker.js"></script>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/layuiadmin/layui/layui.js"></script>
+<link href="~/layuiadmin/layui/css/layui.css" rel="stylesheet" />
+
+<script src="~/js/echarts (2).js"></script>
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>会议统计</title>
+</head>
+<body>
+    <table>
+        <tr>
+            <td><a href="#" onclick="ConStatistics('all')">全部</a></td>
+            <td><a href="#" onclick="ConStatistics('CV')">CV组</a></td>
+            <td><a href="#" onclick="ConStatistics('DIA')">DIA组</a></td>
+            <td><a href="#" onclick="ConStatistics('COM')">社区组</a></td>
+            <td><input id="hid_product" type="hidden" value="default_proc" /></td>
+        </tr>
+        <tr>
+            <td>
+                <select id="Sel_Year">
+                    <option value="-1">==请选择年份==</option>
+                </select>
+            </td>
+            <td>
+                <select id="Sel_Month">
+                    <option value="1">按月统计</option>
+                    <option value="2">按季度统计</option>
+                    <option value="3">按年统计</option>
+                </select>
+            </td>
+            <td>
+                <select id="Sel_Dep">
+                    <option value="-1">==请选择市场部==</option>
+                </select>
+            </td>
+            <td>
+                <select id="Sel_ConType">
+                    <option value="-1">全部</option>
+                </select>
+            </td>
+            <td>
+                <input id="Button1" type="button" value="筛选" onclick="ConStatistics()" />
+            </td>
+        </tr>
+
+    </table>
+    <div id="MyBar" style="width: 600px;height:400px;"></div>
+</body>
+</html>
+<script>
+    $(function () {
+        DepSel();
+        GetYears();
+
+    })
+    //获取最近三年 赋值给年份下拉框
+    function GetYears() {
+        var date = new Date;
+        var NowYear = Number(date.getFullYear());
+        var line = `<option value="${NowYear - 1}">${NowYear - 1}</option>
+                    <option value="${NowYear - 2}">${NowYear - 2}</option>
+                    <option value="${NowYear - 3}">${NowYear - 3}</option> `
+        $("#Sel_Year").append(line);
+    }
+    function DepSel() {//部门下拉
+        $.ajax({
+            url: "http://localhost:49764/api/Conference/DepSel",
+            type: "get",
+            success: function (data) {
+                $(data).each(function (i, k) {
+                    $("#Sel_Dep").append(`<option value="${k.id}">${k.department_Name}</option>`);
+
+                })
+                ConTypeSel();
+            }
+
+        })
+    }
+    function ConTypeSel() {//会议类型下拉
+        $.ajax({
+            url: "http://localhost:49764/api/Conference/ConTypeSel",
+            type: "get",
+            success: function (data) {
+                $(data).each(function (i, k) {
+                    $("#Sel_ConType").append(`<option value="${k.id}">${k.conType_Name}</option>`);
+                })
+            }
+        })
+    }
+
+    function ConStatistics(StatisticsType) {
+        var conproduct = $("#hid_product").val();
+        switch (StatisticsType) {
+            case 'all'://CV组
+                conproduct = 'default_proc';
+                break;
+            case 'CV'://CV组
+                conproduct = 'CV';
+                break;
+            case 'DIA'://DIA组
+                conproduct = 'DIA';
+                break;
+            case 'COM'://社区组
+                conproduct = '社区';
+                break;
+            default:
+                break;
+        }
+        $("#hid_product").val(conproduct);//将要查询的产品组名称放入隐藏域 防止变动
+        $.ajax({
+            url: "http://localhost:49764/api/Conference/ConStatistics",
+            type: "get",
+            data: {
+                "conproduct": $("#hid_product").val(),
+                "conyear": Number($("#Sel_Year").val()),
+                "departmentid": Number($("#Sel_Dep").val()),
+                "con_typeid": Number($("#Sel_ConType").val())
+            },
+            success: function (d) {
+                var myChart = echarts.init(document.getElementById('MyBar'));
+                var option;
+                var Sel_Month = $("#Sel_Month").val();
+                if (Sel_Month == 1) {//按月显示
+                    option = {
+                        xAxis: {
+                            type: 'category',
+                            data: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月']
+                        },
+                        yAxis: {
+                            type: 'value'
+                        },
+                        series: [{
+                            data: [d.aprNums, d.augNums, d.decNums, d.febNums, d.janNums, d.julNums, d.junNums, d.marNums, d.mayNums, d.novNums, d.octNums, d.sepNums],
+                            type: 'bar',
+                            showBackground: true,
+                            backgroundStyle: {
+                                color: 'rgba(220, 220, 220, 0.8)'
+                            }
+                        }]
+                    };
+                } else if (Sel_Month == 2) {//按季度显示
+                    option = {
+                        xAxis: {
+                            type: 'category',
+                            data: ['一季度', '二季度', '三季度', '四季度']
+                        },
+                        yAxis: {
+                            type: 'value'
+                        },
+                        barWidth: 30,
+                        series: [{
+                            data: [d.aprNums+d.augNums+d.decNums, d.febNums+d.janNums+d.julNums, d.junNums+d.marNums+ d.mayNums, d.novNums+d.octNums+d.sepNums],
+                            type: 'bar',
+                            showBackground: true,
+                            backgroundStyle: {
+                                color: 'rgba(220, 220, 220, 0.8)'
+                            }
+                        }]
+                    };
+                } else {//按年显示
+                    option = {
+                        xAxis: {
+                            type: 'category',
+                            data: ['整年会议场次']
+                        },
+                        yAxis: {
+                            type: 'value'
+                        },
+                        barWidth: 40,
+                        series: [{
+                            data: [d.aprNums + d.augNums + d.decNums+ d.febNums + d.janNums + d.julNums+d.junNums + d.marNums + d.mayNums+d.novNums + d.octNums + d.sepNums],
+                            type: 'bar',
+                            showBackground: true,
+                            backgroundStyle: {
+                                color: 'rgba(220, 220, 220, 0.8)'
+                            }
+                        }]
+                    };
+                }
+
+                myChart.setOption(option);
+
+
+
+            }
+        })
+
+    }
+</script>

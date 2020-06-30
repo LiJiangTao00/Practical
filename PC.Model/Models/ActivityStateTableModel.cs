@@ -5,9 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 namespace PC.Model.Models
 {
-	 public class ActivityStateTableModel
+    /// <summary>
+    /// 活动状态表
+    /// </summary>
+    public class ActivityStateTableModel
 	 {
-		 public int  Id { get; set; }
-		 public string  ActivityState { get; set; }
+        //活动状态的主键
+        public int  Id { get; set; }
+        //活动状态
+        public string  ActivityState { get; set; }
 	 }
 }
