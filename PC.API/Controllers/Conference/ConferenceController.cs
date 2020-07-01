@@ -46,12 +46,14 @@ namespace PC.API.Controllers.Conference
         /// <param name="c">要添加的数据</param>
         /// <returns></returns>
         [HttpPost]
-        public int AddConference([FromForm]ConferenceTableModel con)
+        public int AddConference([FromForm] ConferenceAdd con)
         {
+
             return _bll.AddConference(con);
 
         }
-
+        [HttpPost]
+        
         [HttpGet]
         //删除会议
         public int DelConference(string ids)
