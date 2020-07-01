@@ -65,7 +65,7 @@
 
                     <ul class="layui-nav layui-nav-tree" lay-shrink="all" id="LAY-system-side-menu" lay-filter="layadmin-system-side-menu">
                         <li data-name="home" class="layui-nav-item layui-nav-itemed">
-                            <a href="/booth/index" lay-tips="首页" lay-direction="2" target="main_self_frame">
+                            <a href="javascript:;" lay-tips="首页" lay-direction="2">
                                 <i class="layui-icon layui-icon-home"></i>
                                 <cite>首页</cite>
                             </a>
@@ -77,10 +77,13 @@
                             </a>
                             <dl class="layui-nav-child">
                                 <dd data-name="console" class="layui-this">
-                                    <a href="/Conference/ShowConference" target="main_self_frame">国际会议</a>
+                                    <a lay-href="/Conference/ShowConference">国际会议</a>
                                 </dd>
                                 <dd data-name="console">
-                                    <a href="/Conference/ConStatistics" target="main_self_frame">会议统计</a>
+                                    <a lay-href="">国内会议</a>
+                                </dd>
+                                <dd data-name="console">
+                                    <a lay-href="/Conference/ConStatistics">会议统计</a>
                                 </dd>
                             </dl>
                         </li>
@@ -91,20 +94,20 @@
                             </a>
                             <dl class="layui-nav-child">
                                 <dd data-name="console" class="layui-this">
-                                    <a href="/Material/ShowMaterial" target="main_self_frame">物料列表</a>
+                                    <a lay-href="Material/ShowMaterial">物料列表</a>
                                 </dd>
                                 <dd data-name="console">
-                                    <a href="/material/GetApproval" target="main_self_frame">物料审批</a>
+                                    <a lay-href="">物料审批</a>
                                 </dd>
                                 <dd data-name="console">
-                                    <a href="/material/GetShowMaterialApprove" target="main_self_frame">物料订单</a>
+                                    <a lay-href="">物料订单</a>
                                 </dd>
                                 <dd data-name="console">
-                                    <a href="/material/BarGraph" target="main_self_frame">物料统计</a>
+                                    <a lay-href="">物料统计</a>
                                 </dd>
-                                @*<dd data-name="console">
-                                    <a lay-href="" target="main_self_frame">编辑物料</a>
-                                </dd>*@
+                                <dd data-name="console">
+                                    <a lay-href="">回收站</a>
+                                </dd>
                             </dl>
                         </li>
                         <li data-name="home" class="layui-nav-item layui-nav-itemed">
@@ -117,7 +120,7 @@
                                     <a href="/Activity/ShowActivity" target="main_self_frame">活动列表</a>
                                 </dd>
                                 <dd data-name="console">
-                                    <a href="/Activity/ShowActivity" target="main_self_frame">统计报表</a>
+                                    <a href="/Activity/Statistics" target="main_self_frame">统计报表</a>
                                 </dd>
                             </dl>
                         </li>

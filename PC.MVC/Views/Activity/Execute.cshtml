@@ -46,7 +46,6 @@
                 <td>操作</td>
             </tr>
             <tbody id="tb">
-
             </tbody>
         </table>
     </div>
@@ -149,6 +148,34 @@
         })
     }
     function ShowTable() {
-        
+        var txt_Sel = $('#txt_Sel').val();
+        var ShowDepartment = $('#ShowDepartment').val() == null ? 0 : $('#ShowDepartment').val();
+        var ShowProvince = $('#ShowProvince').val() == null ? 0 : $('#ShowProvince').val();
+        var ShowCity = parseInt($('#ShowCity').val());
+        var ShowDistrict = parseInt($('#ShowDistrict').val());
+        $.ajax({
+            url: "http://localhost:49764/api/user/ShowUser?product=" + product + "&did=" + ShowDepartment + "&pid=" + ShowProvince + "&cid=" + ShowCity + "&dis=" + ShowDistrict + "&name=" + txt_Sel,
+            type: "get",
+            dataType: "json",
+            success: function (data) {
+                $('#tb').empty();
+                var str = '';
+                $.each(data, function (i, n) {
+                    str += '<tr>' +
+                        '<td>' + n.Activity_Do_Con_Id + '</td>' +
+                        '<td>' + n.Activity_Name + '</td>' +
+                        '<td>' + n.Activity_Do_Hospital + '</td>' +
+                        '<td>' + n.User_Name + '</td>' +
+                        '<td>' + n.User_Area + '</td>' +
+                        '<td>' + n.Job_Name + '</td>' +
+                        '<td>' + n.TimeBegin + '</td>' +
+                        '<td>' + n.TimeEnd + '</td>' +
+                        '<td>' + n.ActivityState_Id + '</td>' +
+                        '<td><button id="test" type="button" class="layui-btn" onclick="Lok(' + n.id + ')">查看详情</button>' +
+                        '</td></tr>';
+                })
+                $('#tb').append(str);
+            }
+        })
     }
 </script>
