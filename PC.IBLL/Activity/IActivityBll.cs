@@ -91,6 +91,6 @@ namespace PC.IBLL.Activity
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        List<ActivityZLY> zLies(int id);
+        List<ActivityZLY> zLies();
     }
 }

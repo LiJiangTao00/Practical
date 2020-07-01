@@ -161,29 +161,9 @@ namespace PC.DAL.Activity
         /// <returns></returns>
         public List<ActivityZLY> zLies()
         {
-            List<ActivityZLY> list = (
-                                           from e in Execute() join s in ShowActivity()
-                                           on e.Activity_Do_Activity_Id equals s.Id join u in ShowUser()
-                                           on e.Activity_Do_User_Id equals u.Id join a in AddConference()
-                                           on e.Activity_Do_Con_Id equals a.Id join u in GetUsers()
-                                           on o.Order_User_Id equals u.Id
-                                           join p in GetProduct()
-                                           on o.Order_Product_Id equals p.Id
-                                           join d in GetDepartment()
-                                           on o.Order_Department_Id equals d.Id
-                                           join j in GetJob()
-                                           on o.Order_Job_Id equals j.Id
-                                           join g in GetPlace()
-                                           on o.Order_Area_Id equals g.Id
-                                    )
-            //string sql = "select c.Con_ConId,a.Activity_Name,d.Activity_Do_Hospital,u.User_Name,u.User_Area,j.Job_Name,d.Activity_Do_CreateTime,d.Activity_Do_EndTime,d.Activity_Do_State 
-            //              from Activity_DoTable d join ActivityTable a
-            //              on d.Activity_Do_Activity_Id = a.Id join UserTable u
-            //              on d.Activity_Do_User_Id = u.Id join ConferenceTable c
-            //              on d.Activity_Do_Con_Id = c.Id join InvitationTable i
-            //              on d.Activity_Do_Inviter_User_Id = i.Id join JobTable j
-            //              on u.User_Job = j.Id";
-            return list;
+            DapperHelper<ActivityZLY> dapper = new DapperHelper<ActivityZLY>();
+            string sql = "select Product_Name,count(1) Pcount from ActivityTable join ProductTable on Activity_Product_Id=ProductTable.Id group by Product_Name";
+            return dapper.Query(sql).ToList();
         }
         /// <summary>
         /// 显示物料订单信息
