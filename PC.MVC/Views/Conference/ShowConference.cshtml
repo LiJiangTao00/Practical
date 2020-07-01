@@ -140,7 +140,7 @@
                         + `<td><a href="#" OnClick="Con_Info(${k.id})">查看详情</a>
                                <a href="#" OnClick="s(${k.id})">编辑</a>
                                <a href="#" OnClick="Del_Single(${k.id})">删除</a>
-                               <a href="#" OnClick="s(${k.id})">分配名额</a>
+                               <a href="#" OnClick="QuotaAllocation(${k.id})">分配名额</a>
                                <a href="#" OnClick="s(${k.id})">修改名额</a>
                                <a href="#" OnClick="s(${k.id})">审批名单</a>
                                <a href="#" OnClick="s(${k.id})">查看返还记录</a>
@@ -244,21 +244,21 @@
                     newDateEndnewDate2 = newDateEnd.getTime();
 
                     var list = `<tr>
-                        + <td><input id="Checkbox1" type="checkbox" name="Ck_id" value="${k.id}" /></td>
-                        + <td>${k.con_Name}</td>
-                        + <td>${k.con_Place}</td>
-                        + <td>${k.con_StartTime}到${k.con_EndTime}</td>
-                        + <td>${nowTime > newDateEnd ? "已结束" : nowTime < newDateStart ? "未开始" : "进行中"}</td>
-                        + <td>${k.product_Name}</td>
-                        + <td><a href="#" OnClick="Con_Info(${k.id})">查看详情</a>
+                         <td><input id="Checkbox1" type="checkbox" name="Ck_id" value="${k.id}" /></td>
+                         <td>${k.con_Name}</td>
+                         <td>${k.con_Place}</td>
+                         <td>${k.con_StartTime}到${k.con_EndTime}</td>
+                         <td>${nowTime > newDateEnd ? "已结束" : nowTime < newDateStart ? "未开始" : "进行中"}</td>
+                         <td>${k.product_Name}</td>
+                         <td><a href="#" OnClick="Con_Info(${k.id})">查看详情</a>
                                <a href="#" OnClick="s(${k.id})">编辑</a>
                                <a href="#" OnClick="Del_Single(${k.id})">删除</a>
-                               <a href="#" OnClick="s(${k.id})">分配名额</a>
+                               <a href="#" OnClick="QuotaAllocation(${k.id})">分配名额</a>
                                <a href="#" OnClick="s(${k.id})">修改名额</a>
                                <a href="#" OnClick="s(${k.id})">审批名单</a>
                                <a href="#" OnClick="s(${k.id})">查看返还记录</a>
                            </td>
-                        + </tr>`
+                         </tr>`
                     $("#tb").append(list);
                 })
             }
@@ -392,6 +392,10 @@
 
     //    window.open('/Conference/ShowConference', 'height=50, width=100, top=0, left=0, toolbar=no, menubar=no, scrollbars=no, resizable=no,location=n o, status=no');
     //}
+    function QuotaAllocation(id) {
+        localStorage["QuotaAllocationId"] = id;
+        location.href ="/Conference/quotaallocation"
+    }
 </script>
 
 

@@ -86,5 +86,20 @@ namespace PC.API.Controllers.Conference
 
             return _bll.ConTypeSel();
         }
+        [HttpPost]
+        //分配名额时按会议id显示的小组长列表+此列表的条件查询
+        public List<ParticipantTable> ShowParticipantsByConid([FromForm]QuotaData Qd)
+        {           
+
+            return _bll.ShowParticipantsByConid(Qd.conid, Qd.DaQv, Qd.DiQv, Qd.PhoneOrName);
+        }
+        [HttpGet]
+        //给小组长分配参会名额  即修改名单关系表中：参会人可带人员数量
+        public int UptQuotaNumByUid(int uid, int conid, int num)
+        {
+
+            return _bll.UptQuotaNumByUid(uid, conid, num);
+
+        }
     }
 }

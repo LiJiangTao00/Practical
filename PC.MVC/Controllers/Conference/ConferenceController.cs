@@ -26,5 +26,11 @@ namespace PC.MVC.Controllers.Conference
             return View();
 
         }
+        //显示分配名额页面
+        public IActionResult quotaallocation()
+        {
+            return View();
+
+        }
     }
 }
