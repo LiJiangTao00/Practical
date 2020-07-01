@@ -131,5 +131,9 @@ namespace PC.BLL.UserBLL
         {
             return _dal.GetLog(time, table);
         }
+        public List<PieModel> GetCon(string time)
+        {
+            return _dal.GetCon(time);
+        }
     }
 }

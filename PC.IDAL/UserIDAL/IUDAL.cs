@@ -34,5 +34,6 @@ namespace PC.IDAL.UserIDAL
         int PutPwd(string phone, string oldpwd, string newPwd);
         int AddJob(JobTableModel m);
         BoothView GetLog(string time, string table);
+        List<PieModel> GetCon(string time);
     }
 }

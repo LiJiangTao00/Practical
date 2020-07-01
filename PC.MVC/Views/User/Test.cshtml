@@ -9,159 +9,105 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>Test</title>
+    <link rel="shortcut icon" href="../js/echarts-2.2.7/doc/asset/ico/favicon.png">
+    <script type="text/javascript" src="../js/echarts-2.2.7/doc/asset/js/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/echarts-2.2.7/doc/example/www2/js/echarts-all.js"></script>
+
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+
+    <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
 </head>
 <body>
-    <div id="main" style="width: 600px;height:400px;"></div>
+    <div id="main" style="width:600px;height:400px;"></div>
 </body>
 </html>
-<link rel="shortcut icon" href="../js/echarts-2.2.7/doc/asset/ico/favicon.png">
-<script type="text/javascript" src="../js/echarts-2.2.7/doc/asset/js/jquery.min.js"></script>
-<script type="text/javascript" src="../js/echarts-2.2.7/doc/example/www2/js/echarts-all.js"></script>
 
-<script src="~/lib/jquery/dist/jquery.js"></script>
 
-<link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
 <script>
-
-    // 基于准备好的dom，初始化echarts实例
-
-    var myChart = echarts.init(document.getElementById('main'));
-
+    $(document).ready(function () {
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('main'));
 
 
-    var option = {
-
-        title: {  // 标题。
-
-            text: '饼图程序调用高亮示例',  // 标题文本
-
-            x: 'center'  // 水平居中。
-
-        },
-
-        tooltip: {  // 鼠标悬浮时的工具提示。
-
-            trigger: 'item',  // 触发器：饼块。
-
-            // 格式程序。{a}，是series中对象的name属性的值
-
-            // {b}，是series中对象的data中每一条数据的name属性的值。
-
-            // {c}，是series中对象的data中每一条数据的value属性的值。
-
-            // {d}%，是series中对象的data中每一条数据所占的比例。
-
-            formatter: "{a} <br/>{b} : {c} ({d}%)"
-
-        },
-
-        legend: {  // 图例。
-
-            orient: 'vertical',  // 标定方向：垂直
-
-            left: 'left',  // 图例位于图的左或者右。
-
-            // 图例数据。
-
-            data: ['直接访问', '邮件营销', '联盟广告', '视频广告', '搜索引擎']
-
-        },
-
-        series: [
-
-            {
-
-                name: '会议统计',  // 系列名
-
-                type: 'pie',  // 图类型。
-
-                radius: '55%',  // 图半径，占父元素的比例。
-
-                center: ['50%', '60%'],  // 图的中心位置。
-
-                data: [  // 饼图的数据
-
-                    
-
-                ],
-
-                itemStyle: {  // 饼图的样式。
-
-                    emphasis: {  // 鼠标悬浮时的效果。
-
-                        shadowBlur: 10,  // 阴影大小
-
-                        shadowOffsetX: 0,  // 阴影水平方向偏移。
-
-                        shadowColor: 'rgba(0, 0, 0, 0.5)'  // 阴影颜色。
-
-                    }
-
+        // 初始 option
+        option = {
+            title: {
+                text: '某站点用户访问来源',
+                subtext: '纯属虚构',
+                x: 'center'
+            },
+            tooltip: {
+                trigger: 'item',
+                formatter: "{a} <br/>{b} : {c} ({d}%)"
+            },
+            legend: {
+                orient: 'vertical',
+                x: 'left',
+                data: ['已完成', '正举办', '未举办']
+            },
+            toolbox: {
+                show: true,
+                feature: {
+                    mark: { show: true },
+                    dataView: { show: true, readOnly: false },
+                    magicType: {
+                        show: true,
+                        type: ['pie', 'funnel'],
+                        option: {
+                            funnel: {
+                                x: '25%',
+                                width: '50%',
+                                funnelAlign: 'left',
+                                max: 1548
+                            }
+                        }
+                    },
+                    restore: { show: true },
+                    saveAsImage: { show: true }
                 }
+            },
+            calculable: true,
+            series: [
+                {
+                    name: '访问来源',
+                    type: 'pie',
+                    radius: '55%',
+                    center: ['50%', '60%'],
+                    data: []
+                }
+            ]
+        };
+        //获取数据
+        $.getJSON("http://localhost:49764/api/user/GetCon?time=week", function (data11) {
+            var d = data11;
+            var nanlist = [];
+
+            for (var i = 0; i < d.length; i++) {
+                // var m=new Map();//定义一个字典或者map集合
+                // m.set("value",d[i].jine);
+                // m.set("name",d[i].dpname);
+                var m = {};
+                m["value"] = d[i].num;
+                m["name"] = d[i].name;
+                nanlist.push(m);
 
             }
+            myChart.setOption({
 
-        ]
-
-    };
-
-    var app = { config: null, currentIndex: 0 };
-
-    app.currentIndex = -1;
-
-
-
-    setInterval(function () {
-
-        // 数据条数，即饼图分成的块数。
-
-        var dataLen = option.series[0].data.length;
-
-        // 取消之前高亮的图形
-
-        myChart.dispatchAction({
-
-            type: 'downplay',
-
-            seriesIndex: 0,
-
-            dataIndex: app.currentIndex
-
+                legend: {
+                    data: ['已完成', '正举办', '未举办']
+                },
+                series: [{
+                    // 根据名字对应到相应的系列
+                    name: '会议状态',
+                    data: nanlist
+                },
+                ]
+            });
         });
-
-        app.currentIndex = (app.currentIndex + 1) % dataLen;
-
-        // 高亮当前图形
-
-        myChart.dispatchAction({
-
-            type: 'highlight',
-
-            seriesIndex: 0,
-
-            dataIndex: app.currentIndex
-
-        });
-
-        // 显示 tooltip
-
-        myChart.dispatchAction({
-
-            type: 'showTip',
-
-            seriesIndex: 0,
-
-            dataIndex: app.currentIndex
-
-        });
-
-    }, 1000);
-
-
-
-
-
-    myChart.setOption(option);
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+    });
 
 </script>

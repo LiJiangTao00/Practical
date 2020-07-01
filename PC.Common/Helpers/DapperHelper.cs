@@ -32,19 +32,26 @@ namespace PC.Common.Helpers
                     tab = item;
                 }
                 tsql += "'"+tab+"Table',";
-                if (sql.Contains("insert"))
+                if (tab=="Log")
                 {
-                    tsql += "'添加','"+DateTime.Now+"')";
+
                 }
                 else
                 {
-                    tsql += "'修改','" + DateTime.Now + "')";
-                }
-                int res = con.Execute(sql);
-                if (res>0)
-                {
-                    int p = con.Execute(tsql);
-                    return p;
+                    if (sql.Contains("insert"))
+                    {
+                        tsql += "'添加','" + DateTime.Now + "')";
+                    }
+                    else
+                    {
+                        tsql += "'修改','" + DateTime.Now + "')";
+                    }
+                    int res = con.Execute(sql);
+                    if (res > 0)
+                    {
+                        int p = con.Execute(tsql);
+                        return p;
+                    }
                 }
                 return 0;
             }

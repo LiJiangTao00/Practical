@@ -377,6 +377,12 @@ namespace PC.DAL.UserDAL
                 case "MaterialTable":
                     sql += " and OperationTable='MaterialTable' ";
                     break;
+                //case "ConferenceTable":
+                //    sql = " select count(1) from ConferenceTable where 1=1 ";
+                //    break;
+                //case "MaterialTable":
+                //    sql = " select count(1) from MaterialTable where 1=1 ";
+                //    break;
                 default:
                     break;
             }
@@ -385,16 +391,37 @@ namespace PC.DAL.UserDAL
                 case "week":
                     sql += " and  (DATEPART(wk, OpertaionTime) = DATEPART(wk, GETDATE())) AND (DATEPART(yy, OpertaionTime) = DATEPART(yy, GETDATE())) ";
                     break;
-                case "ActivityTable":
+                case "month":
                     sql += " and (DATEPART(yy, OpertaionTime) = DATEPART(yy, GETDATE())) AND (DATEPART(mm, OpertaionTime) = DATEPART(mm, GETDATE())) ";
                     break;
-                case "MaterialTable":
+                case "year":
                     sql += " and DATEPART(qq, OpertaionTime) = DATEPART(qq, GETDATE()) and DATEPART(yy, OpertaionTime) = DATEPART(yy, GETDATE()) ";
                     break;
                 default:
                     break;
             }
             return booth.Query(sql).FirstOrDefault();
+        }
+        public List<PieModel> GetCon(string time)
+        {
+            DapperHelper<PieModel> booth = new DapperHelper<PieModel>();
+            string sql = "select count(1) Num,case when Con_State=0 then '未开始' when Con_State=1 then '进行中' else '已结束' end as Name from ConferenceTable group by Con_State,Con_StartTime  having  ";
+            switch (time)
+            {
+                case "week":
+                    sql += "   (DATEPART(wk, Con_StartTime) = DATEPART(wk, GETDATE())) AND (DATEPART(yy, Con_StartTime) = DATEPART(yy, GETDATE())) ";
+                    break;
+                case "month":
+                    sql += "  (DATEPART(yy, Con_StartTime) = DATEPART(yy, GETDATE())) AND (DATEPART(mm, Con_StartTime) = DATEPART(mm, GETDATE())) ";
+                    break;
+                case "year":
+                    sql += "  DATEPART(qq, Con_StartTime) = DATEPART(qq, GETDATE()) and DATEPART(yy, Con_StartTime) = DATEPART(yy, GETDATE()) ";
+                    break;
+                default:
+                    break;
+            }
+            List<PieModel> list = booth.Query(sql).ToList();
+            return list;
         }
     }
 }
