@@ -7,88 +7,69 @@
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script src="~/layuiadmin/layui/layui.js"></script>
 <link href="~/layuiadmin/layui/css/layui.css" rel="stylesheet" />
-
-
-<style>
-    table, table tr th, table tr td {
-        border: 1px solid black;
-    }
-
-        table tr td {
-            text-align: center;
-        }
-</style>
-<h1>筛选</h1>
+<link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+<script src="~/lib/jquery/dist/jquery.js"></script>
 <html>
-@*<head>
-        <script LANGUAGE="JavaScript">
-    <!--
-            function Con_Info(id) {
-                localStorage["id"] = id;
-                window.open("/Conference/ShowConference", "newwindow", "height=300, width=800, toolbar =no, menubar=no, scrollbars=no, resizable=no, location=no, status=no,top=200,left=300,resizable=no,toolbar=no,location=no") //写成一行
-            }
-            //-->
-        </script>
-    </head>*@
 <body>
-    <div>
-        <table>
+    <div style="margin-left:100px;margin-left:20px">
+        <h3 style="font-weight:600;">会议列表</h3>
+        <div style="margin:20px">
+            <table>
+                <tr>
+                    <td>
+                        <input id="Txt_condate" type="text" onclick="WdatePicker()" placeholder="输入会议日期" class="form-control" style="width:200px;height:40px;float:left;" />
+                    </td>
+                    <td>
+                        <input id="Txt_conplace" type="text" placeholder="输入会议地点" class="form-control" style="width:200px;height:40px;float:left;" />
+                    </td>
+                    <td>
+                        <select id="Sel_constate" class="btn btn-default dropdown-toggle">
+                            <option data="">==请选择会议状态==</option>
+                            <option data="进行中">进行中</option>
+                            <option data="已结束">已结束</option>
+                            <option data="未开始">未开始</option>
+                        </select>
+                    </td>
+                    <td>
+                        <input id="Txt_conname" type="text" placeholder="输入会议名称关键字" class="form-control" style="width:200px;height:40px;float:left;" />
+                    </td>
+                    <td>
+                        <input type="button" value="筛选" onclick="PageShow_Search('all')" class="btn btn-default" style="width:80px;height:37px;color:blue;border:1px solid blue;margin-left:5px"/>
+                        <input type="button" value="添加" class="layui-btn layui-btn-normal" onclick="location.href='AddConference'" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div>
+            <input type="button" value="全部" onclick="PageShow_Search()" class="btn btn-block" style="background-color: Transparent; border-style: none;width:200px;float:left;margin-top:8px" />
+            <input type="button" value="CV组" onclick="PageShow_Search('CV')" class="btn btn-block" style="background-color: Transparent; border-style: none;width:200px;float:left" />
+            <input type="button" value="DIA组" onclick="PageShow_Search('DIA')" class="btn btn-block" style="background-color: Transparent; border-style: none;width:200px;float:left" />
+            <input type="button" value="社区组" onclick="PageShow_Search('COM')" class="btn btn-block" style="background-color: Transparent; border-style: none;width:200px;float:left" />
+        </div>
+        <hr />
+        <table class="table table-hover">
             <tr>
-                <td>
-                    <input id="Txt_condate" type="text" onclick="WdatePicker()" placeholder="输入会议日期" />
-                </td>
-                <td>
-                    <input id="Txt_conplace" type="text" placeholder="输入会议地点" />
-                </td>
-                <td>
-                    <select id="Sel_constate">
-                        <option data="">==请选择会议状态==</option>
-                        <option data="进行中">进行中</option>
-                        <option data="已结束">已结束</option>
-                        <option data="未开始">未开始</option>
-                    </select>
-                </td>
-                <td>
-                    <input id="Txt_conname" type="text" placeholder="输入会议名称关键字" />
-                </td>
-                <td>
-                    <input id="Button1" type="button" value="筛选" onclick="PageShow_Search('all')" />
-                </td>
+                <td><input id="Ck_all" type="checkbox" onclick="Select_Ck() " /> 选择</td> @*利用该复选框的id值来操作(全选/反选)数据行中的复选框*@
+                <td>会议名称</td>
+                <td>会议地点</td>
+                <td>会议日期</td>
+                <td>会议状态</td>
+                <td>产品组</td>
+                <td>操作</td>
             </tr>
-        </table>
-    </div>
-    <table class="table table-hover" style="font-size: small;">
-        <tr>
-            <td colspan="2" style="text-align:left"><h2>会议列表</h2></td>
-            <td colspan="5" style="text-align:left"><input id="Button1" type="button" value="➕添加" style="background-color:blue;color:white" onclick="location.href='AddConference'" /></td>
-        </tr>
-        <tr>
-            <td><a href="#" onclick="PageShow_Search()">全部</a></td>
-            <td colspan="2"><a href="#" onclick="PageShow_Search('CV')">CV组</a></td>
-            <td colspan="2"><a href="#" onclick="PageShow_Search('DIA')">DIA组</a></td>
-            <td colspan="2"><a href="#" onclick="PageShow_Search('COM')">社区组</a><input id="hid_product" type="hidden" value="default_proc" /></td>
-        </tr>
-        <tr>
-            <td><input id="Ck_all" type="checkbox" onclick="Select_Ck() " /> 选择</td> @*利用该复选框的id值来操作(全选/反选)数据行中的复选框*@
-            <td>会议名称</td>
-            <td>会议地点</td>
-            <td>会议日期</td>
-            <td>会议状态</td>
-            <td>产品组</td>
-            <td>操作</td>
-        </tr>
-        <tbody id="tb">
-        </tbody>
+            <tbody id="tb">
+            </tbody>
 
-    </table>
-    <div>
-        <a href="#" onclick="Del_Mult()">批量删除</a>
-        <input id="btn_First" type="button" value="首页" onclick="PageShow_Search('first')" />
-        <input id="btn_Prev" type="button" value="上一页" onclick="PageShow_Search('prv')" />
-        当前第<label id="lab_pageindex">1</label>页/总共<label id="lab_pagecount"></label>页
-        每页<label id="lab_pagesize">2</label>/总共<label id="lab_datacount"></label>条
-        <input id="btn_Next" type="button" value="下一页" onclick="PageShow_Search('next')" />
-        <input id="btn_Last" type="button" value="尾页" onclick="PageShow_Search('last')" />
+        </table>
+        <div>
+            <a href="#" onclick="Del_Mult()">批量删除</a>
+            <input id="btn_First" type="button" class="btn btn-default" style="width:80px;height:37px;color:blue;border:1px solid blue;margin-left:5px" value="首页" onclick="PageShow_Search('first')" />
+            <input id="btn_Prev" type="button" class="btn btn-default" style="width:80px;height:37px;color:blue;border:1px solid blue;margin-left:5px" value="上一页" onclick="PageShow_Search('prv')" />
+            当前第<label id="lab_pageindex">1</label>页/总共<label id="lab_pagecount"></label>页
+            每页<label id="lab_pagesize">2</label>/总共<label id="lab_datacount"></label>条
+            <input id="btn_Next" type="button" class="btn btn-default" style="width:80px;height:37px;color:blue;border:1px solid blue;margin-left:5px" value="下一页" onclick="PageShow_Search('next')" />
+            <input id="btn_Last" type="button" class="btn btn-default" style="width:80px;height:37px;color:blue;border:1px solid blue;margin-left:5px" value="尾页" onclick="PageShow_Search('last')" />
+        </div>
     </div>
 </body>
 
@@ -140,7 +121,7 @@
                         + `<td><a href="#" OnClick="Con_Info(${k.id})">查看详情</a>
                                <a href="#" OnClick="s(${k.id})">编辑</a>
                                <a href="#" OnClick="Del_Single(${k.id})">删除</a>
-                               <a href="#" OnClick="s(${k.id})">分配名额</a>
+                               <a href="#" OnClick="QuotaAllocation(${k.id})">分配名额</a>
                                <a href="#" OnClick="s(${k.id})">修改名额</a>
                                <a href="#" OnClick="s(${k.id})">审批名单</a>
                                <a href="#" OnClick="s(${k.id})">查看返还记录</a>
@@ -244,21 +225,21 @@
                     newDateEndnewDate2 = newDateEnd.getTime();
 
                     var list = `<tr>
-                        + <td><input id="Checkbox1" type="checkbox" name="Ck_id" value="${k.id}" /></td>
-                        + <td>${k.con_Name}</td>
-                        + <td>${k.con_Place}</td>
-                        + <td>${k.con_StartTime}到${k.con_EndTime}</td>
-                        + <td>${nowTime > newDateEnd ? "已结束" : nowTime < newDateStart ? "未开始" : "进行中"}</td>
-                        + <td>${k.product_Name}</td>
-                        + <td><a href="#" OnClick="Con_Info(${k.id})">查看详情</a>
+                         <td><input id="Checkbox1" type="checkbox" name="Ck_id" value="${k.id}" /></td>
+                         <td>${k.con_Name}</td>
+                         <td>${k.con_Place}</td>
+                         <td>${k.con_StartTime}到${k.con_EndTime}</td>
+                         <td>${nowTime > newDateEnd ? "已结束" : nowTime < newDateStart ? "未开始" : "进行中"}</td>
+                         <td>${k.product_Name}</td>
+                         <td><a href="#" OnClick="Con_Info(${k.id})">查看详情</a>
                                <a href="#" OnClick="s(${k.id})">编辑</a>
                                <a href="#" OnClick="Del_Single(${k.id})">删除</a>
-                               <a href="#" OnClick="s(${k.id})">分配名额</a>
+                               <a href="#" OnClick="QuotaAllocation(${k.id})">分配名额</a>
                                <a href="#" OnClick="s(${k.id})">修改名额</a>
                                <a href="#" OnClick="s(${k.id})">审批名单</a>
                                <a href="#" OnClick="s(${k.id})">查看返还记录</a>
                            </td>
-                        + </tr>`
+                         </tr>`
                     $("#tb").append(list);
                 })
             }
@@ -345,32 +326,32 @@
             url: "http://localhost:49764/api/Conference/ConferenceInfo?cid=" + Cid,
             type: "get",
             success: function (d) {
-                console.log(2)
+                console.log(2);
                 InfoHtml += `<tr>
                                 <td colspan="2"><h1>会议信息</h1></td>
                             </tr>
-                            < tr >
+                            <tr>
                                 <td>会议名称：${d.con.con_Name}</td>
                                <td>会议时间：${d.con.con_StartTime}到${d.con.con_EndTime}</td>
-                            </tr >
-                            < tr >
+                            </tr>
+                            <tr>
                                 <td>会议地点：${d.con.con_Place}</td>
                                <td>会议类型：${d.con.conType_Name}</td>
-                            </tr >
-                            < tr >
+                            </tr>
+                            <tr>
                                 <td>名额提交截止日期：${d.con.con_QuotaEndTime}</td>
                                <td></td>
-                            </tr >
-                            < tr >
+                            </tr>
+                            <tr>
                                 <td colspan="2">参会名额：${d.con.con_QuotaNumber}，已收集：${d.concomenum}，还差：${d.consurplusnum}。</td>
-                            </tr >
-                            < tr >
+                            </tr>
+                            <tr>
                                  <td colspan="2"><h1>会议资料</h1></td>
-                            </tr >
-                            < tr >
+                            </tr>
+                            <tr>
                                 <td></td>
                                <td></td>
-                            </tr >
+                            </tr>
                                 </table>
                                     </div>`;
                 layui.use('layer', function () {
@@ -385,13 +366,17 @@
 
             }
         })
-       
-        
+
+
     }
     //function a1() {
 
     //    window.open('/Conference/ShowConference', 'height=50, width=100, top=0, left=0, toolbar=no, menubar=no, scrollbars=no, resizable=no,location=n o, status=no');
     //}
+    function QuotaAllocation(id) {
+        localStorage["QuotaAllocationId"] = id;
+        location.href ="/Conference/quotaallocation"
+    }
 </script>
 
 

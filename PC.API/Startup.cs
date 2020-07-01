@@ -48,6 +48,8 @@ namespace PC.API
             services.AddSingleton<IActivityBll, ActivityBll>();
             services.AddSingleton<IConferenceDal, ConferenceDal>();
             services.AddSingleton<IConferenceBll, ConferenceBll>();
+            services.AddSingleton<IUDAL, UDAL>();
+            services.AddSingleton<IUBLL, UBLL>();
             services.AddCors(options => options.AddPolicy("cors", option => option.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
 
         }
@@ -64,7 +66,8 @@ namespace PC.API
             app.UseRouting();
 
             app.UseAuthorization();
-
+            //¶ÁÈ¡ÕÕÆ¬
+            app.UseStaticFiles();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

@@ -362,18 +362,39 @@ namespace PC.DAL.UserDAL
             string sql = " insert into JobTable values ('" + m.Job_Name + "','" + m.Job_Desc + "',1,'"+DateTime.Now +"',0,0)";
             return dapper.Execute(sql);
         }
-        public int GetLog(string time, string table)
+        public BoothView GetLog(string time, string table)
         {
-            string sql = "select count(1) from LogTable where OperationAction='添加' and ";
+            DapperHelper<BoothView> booth = new DapperHelper<BoothView>();
+            string sql = "select count(1) Num from LogTable where OperationAction='添加'  ";
             switch (table)
             {
                 case "UserTable":
                     sql += " and OperationTable='UserTable' ";
                     break;
+                case "ConferenceTable":
+                    sql += " and OperationTable='ConferenceTable' ";
+                    break;
+                case "MaterialTable":
+                    sql += " and OperationTable='MaterialTable' ";
+                    break;
                 default:
                     break;
             }
-            return 0;
+            switch (time)
+            {
+                case "week":
+                    sql += " and  (DATEPART(wk, OpertaionTime) = DATEPART(wk, GETDATE())) AND (DATEPART(yy, OpertaionTime) = DATEPART(yy, GETDATE())) ";
+                    break;
+                case "ActivityTable":
+                    sql += " and (DATEPART(yy, OpertaionTime) = DATEPART(yy, GETDATE())) AND (DATEPART(mm, OpertaionTime) = DATEPART(mm, GETDATE())) ";
+                    break;
+                case "MaterialTable":
+                    sql += " and DATEPART(qq, OpertaionTime) = DATEPART(qq, GETDATE()) and DATEPART(yy, OpertaionTime) = DATEPART(yy, GETDATE()) ";
+                    break;
+                default:
+                    break;
+            }
+            return booth.Query(sql).FirstOrDefault();
         }
     }
 }
