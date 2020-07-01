@@ -362,16 +362,17 @@ namespace PC.DAL.UserDAL
             string sql = " insert into JobTable values ('" + m.Job_Name + "','" + m.Job_Desc + "',1,'"+DateTime.Now +"',0,0)";
             return dapper.Execute(sql);
         }
-        public int GetLog(string time, string table)
+        public BoothView GetLog(string time, string table)
         {
-            string sql = "select count(1) from LogTable where OperationAction='添加' and ";
+            DapperHelper<BoothView> booth = new DapperHelper<BoothView>();
+            string sql = "select count(1) Num from LogTable where OperationAction='添加'  ";
             switch (table)
             {
                 case "UserTable":
                     sql += " and OperationTable='UserTable' ";
                     break;
-                case "ActivityTable":
-                    sql += " and OperationTable='ActivityTable' ";
+                case "ConferenceTable":
+                    sql += " and OperationTable='ConferenceTable' ";
                     break;
                 case "MaterialTable":
                     sql += " and OperationTable='MaterialTable' ";
@@ -393,7 +394,7 @@ namespace PC.DAL.UserDAL
                 default:
                     break;
             }
-            return dapper.Execute(sql);
+            return booth.Query(sql).FirstOrDefault();
         }
     }
 }

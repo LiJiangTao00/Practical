@@ -64,7 +64,8 @@ namespace PC.API
             app.UseRouting();
 
             app.UseAuthorization();
-
+            //¶ÁÈ¡ÕÕÆ¬
+            app.UseStaticFiles();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

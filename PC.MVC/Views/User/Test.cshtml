@@ -11,98 +11,157 @@
     <title>Test</title>
 </head>
 <body>
-    <div style="margin-left:100px;margin-left:20px">
-        <div>
-            <h3 style="font-weight:600;">首页</h3>
-        </div>
-        <div style="margin-top:20px;margin-right:40px">
-            <div style="border: 1px solid #808080;width:500px;height:40px;vertical-align:central">
-                新增数据
-                <select id="DataTime" style="float:right">
-                    <option value="week">本周</option>
-                    <option value="month">本月</option>
-                    <option value="year">本季度</option>
-                </select>
-            </div>
-            <div style="border: 1px solid #808080;width:500px;height:300px">
-                <div style="margin:60px;margin-right:40px;float:left">
-                    <a href="javascript:GetUser()" style="color:black;text-decoration:none">
-                        <div id="user">
-                            <h1>  50</h1>
-                            <h4>新增用户</h4>
-                        </div>
-                    </a>
-                </div>
-                <div style="margin:60px;margin-left:40px;margin-right:40px;float:left">
-                    <a href="javascript:GetMeet()" style="color:black;text-decoration:none">
-                        <div id="meet">
-                            <h1>  50</h1>
-                            <h4>新增会议</h4>
-                        </div>
-                    </a>
-                </div>
-                <div style="margin:60px;margin-left:40px;margin-right:40px;float:left">
-                    <a href="javascript:GetWu()" style="color:black;text-decoration:none">
-                        <div id="wu">
-                            <h1>  50</h1>
-                            <h4>新增会议</h4>
-                        </div>
-                    </a>
-                </div>
-            </div>
-        </div>
-        <div style="margin-top:20px;margin-right:40px">
-            <div style="border: 1px solid #808080;width:500px;height:40px;vertical-align:central">
-                会议统计
-                <select id="MeetTime" style="float:right">
-                    <option value="week">本周</option>
-                    <option value="month">本月</option>
-                    <option value="year">本季度</option>
-                </select>
-            </div>
-            <div style="border: 1px solid #808080;width:500px;height:300px">
-                <div style="margin:60px;margin-right:40px;float:left">
-                    <a href="javascript:GetUser()" style="color:black;text-decoration:none">
-                        <div id="user">
-                            <h1>  50</h1>
-                            <h4>新增用户</h4>
-                        </div>
-                    </a>
-                </div>
-                <div style="margin:60px;margin-left:40px;margin-right:40px;float:left">
-                    <a href="javascript:GetMeet()" style="color:black;text-decoration:none">
-                        <div id="meet">
-                            <h1>  50</h1>
-                            <h4>新增会议</h4>
-                        </div>
-                    </a>
-                </div>
-                <div style="margin:60px;margin-left:40px;margin-right:40px;float:left">
-                    <a href="javascript:GetWu()" style="color:black;text-decoration:none">
-                        <div id="wu">
-                            <h1>  50</h1>
-                            <h4>新增会议</h4>
-                        </div>
-                    </a>
-                </div>
-            </div>
-        </div>
-        <div style="margin-top:20px;margin-left:40px;margin-right:40px">
-            <div>
-                会议统计
-                <select id="MeetTime">
-                    <option value="week">本周</option>
-                    <option value="month">本月</option>
-                    <option value="year">本年</option>
-                </select>
-            </div>
-            <div id="MeetState">
-
-            </div>
-        </div>
-    </div>
+    <div id="main" style="width: 600px;height:400px;"></div>
 </body>
 </html>
+<link rel="shortcut icon" href="../js/echarts-2.2.7/doc/asset/ico/favicon.png">
+<script type="text/javascript" src="../js/echarts-2.2.7/doc/asset/js/jquery.min.js"></script>
+<script type="text/javascript" src="../js/echarts-2.2.7/doc/example/www2/js/echarts-all.js"></script>
+
 <script src="~/lib/jquery/dist/jquery.js"></script>
+
+<link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
 <script>
+
+    // 基于准备好的dom，初始化echarts实例
+
+    var myChart = echarts.init(document.getElementById('main'));
+
+
+
+    var option = {
+
+        title: {  // 标题。
+
+            text: '饼图程序调用高亮示例',  // 标题文本
+
+            x: 'center'  // 水平居中。
+
+        },
+
+        tooltip: {  // 鼠标悬浮时的工具提示。
+
+            trigger: 'item',  // 触发器：饼块。
+
+            // 格式程序。{a}，是series中对象的name属性的值
+
+            // {b}，是series中对象的data中每一条数据的name属性的值。
+
+            // {c}，是series中对象的data中每一条数据的value属性的值。
+
+            // {d}%，是series中对象的data中每一条数据所占的比例。
+
+            formatter: "{a} <br/>{b} : {c} ({d}%)"
+
+        },
+
+        legend: {  // 图例。
+
+            orient: 'vertical',  // 标定方向：垂直
+
+            left: 'left',  // 图例位于图的左或者右。
+
+            // 图例数据。
+
+            data: ['直接访问', '邮件营销', '联盟广告', '视频广告', '搜索引擎']
+
+        },
+
+        series: [
+
+            {
+
+                name: '会议统计',  // 系列名
+
+                type: 'pie',  // 图类型。
+
+                radius: '55%',  // 图半径，占父元素的比例。
+
+                center: ['50%', '60%'],  // 图的中心位置。
+
+                data: [  // 饼图的数据
+
+                    
+
+                ],
+
+                itemStyle: {  // 饼图的样式。
+
+                    emphasis: {  // 鼠标悬浮时的效果。
+
+                        shadowBlur: 10,  // 阴影大小
+
+                        shadowOffsetX: 0,  // 阴影水平方向偏移。
+
+                        shadowColor: 'rgba(0, 0, 0, 0.5)'  // 阴影颜色。
+
+                    }
+
+                }
+
+            }
+
+        ]
+
+    };
+
+    var app = { config: null, currentIndex: 0 };
+
+    app.currentIndex = -1;
+
+
+
+    setInterval(function () {
+
+        // 数据条数，即饼图分成的块数。
+
+        var dataLen = option.series[0].data.length;
+
+        // 取消之前高亮的图形
+
+        myChart.dispatchAction({
+
+            type: 'downplay',
+
+            seriesIndex: 0,
+
+            dataIndex: app.currentIndex
+
+        });
+
+        app.currentIndex = (app.currentIndex + 1) % dataLen;
+
+        // 高亮当前图形
+
+        myChart.dispatchAction({
+
+            type: 'highlight',
+
+            seriesIndex: 0,
+
+            dataIndex: app.currentIndex
+
+        });
+
+        // 显示 tooltip
+
+        myChart.dispatchAction({
+
+            type: 'showTip',
+
+            seriesIndex: 0,
+
+            dataIndex: app.currentIndex
+
+        });
+
+    }, 1000);
+
+
+
+
+
+    myChart.setOption(option);
+
 </script>

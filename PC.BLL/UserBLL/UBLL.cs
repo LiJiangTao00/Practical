@@ -127,7 +127,7 @@ namespace PC.BLL.UserBLL
         {
             return _dal.AddJob(m);
         }
-        public int GetLog(string time, string table)
+        public BoothView GetLog(string time, string table)
         {
             return _dal.GetLog(time, table);
         }

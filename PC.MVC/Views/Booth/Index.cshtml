@@ -15,48 +15,58 @@
         <div>
             <h3 style="font-weight:600;">首页</h3>
         </div>
-        <div style="margin-top:20px;margin-right:40px">
-            <div>
+        <div style="margin-top:20px;margin-right:40px;float:left">
+            <div style="border: 1px solid #808080;width:600px;float:left;height:40px;vertical-align:central">
                 新增数据
-                <select id="DataTime">
+                <select id="DataTime" style="float:right">
                     <option value="week">本周</option>
                     <option value="month">本月</option>
                     <option value="year">本季度</option>
                 </select>
             </div>
-            <a href="javascript:GetUser()">
-                <div id="user">
+            <div style="border: 1px solid #808080;width:600px;height:350px;margin-top:40px" id="shownum">
+                <div style="margin:60px;float:left">
+                    <a href="javascript:GetUser()" style="color:black;text-decoration:none">
+                        <div id="user">
 
+                        </div>
+                    </a>
                 </div>
-            </a>
-            <a href="javascript:GetMeet()">
-                <div id="meet">
+                <div style="margin:60px;margin-left:30px;float:left">
+                    <a href="javascript:GetMeet()" style="color:black;text-decoration:none">
+                        <div id="meet">
 
+                        </div>
+                    </a>
                 </div>
-            </a>
-            <a href="javascript:GetWu()">
-                <div id="wu">
+                <div style="margin:60px;margin-left:30px;float:left">
+                    <a href="javascript:GetWu()" style="color:black;text-decoration:none">
+                        <div id="wu">
 
+                        </div>
+                    </a>
                 </div>
-            </a>
-        </div>
-        <div style="margin-top:20px;margin-right:40px">
-            <div>
-                会议统计
-                <select id="MeetTime">
-                    <option value="week">本周</option>
-                    <option value="month">本月</option>
-                    <option value="year">本年</option>
-                </select>
             </div>
-            <div id="MeetState">
+        </div>
+        <div style="margin-top:20px;float:left;">
+            <div style="float:left;width:600px;">
+                <div style="border: 1px solid #808080;width:600px;height:40px;vertical-align:central">
+                    会议统计
+                    <select id="MeetTime" style="float:right">
+                        <option value="week">本周</option>
+                        <option value="month">本月</option>
+                        <option value="year">本年</option>
+                    </select>
+                </div>
+            </div>
+            <div id="MeetState" style="border: 1px solid #808080;width:600px;height:350px;margin-top:40px">
 
             </div>
         </div>
     </div>
 </body>
 </html>
-<link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet"/>
+<link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
 <script src="~/lib/jquery/dist/jquery.js"></script>
 <script>
     $(function () {
@@ -64,15 +74,75 @@
     })
     function ShowData() {
         var time = $('#DataTime').val();
+        var tab = "UserTable";
         $.ajax({
-            url: "http://localhost:49764/api/user/GetLog?time=" + time + "&table=" + UserTable,
+            url: "http://localhost:49764/api/user/GetLog?time=" + time + "&table=" + tab,
             type: "get",
             dataType: "json",
             success: function (data) {
                 $('#user').empty();
-                var str = '';
-                $('#user').html();
+                var str = '<div id="user">' +
+                    '<h1>&nbsp;&nbsp;&nbsp;' + data.num + '</h1>' +
+                    '<h4>新增用户</h4>' +
+                    '</div>';
+                $('#user').html(str);
+            }
+        })
+        tab = "ConferenceTable";
+        $.ajax({
+            url: "http://localhost:49764/api/user/GetLog?time=" + time + "&table=" + tab,
+            type: "get",
+            dataType: "json",
+            success: function (data) {
+                $('#meet').empty();
+                var str = '<div id="user">' +
+                    '<h1>&nbsp;&nbsp;&nbsp; ' + data.num + '</h1>' +
+                    '<h4>新增会议</h4>' +
+                    '</div>';
+                $('#meet').html(str);
+            }
+        })
+        tab = "MaterialTable";
+        $.ajax({
+            url: "http://localhost:49764/api/user/GetLog?time=" + time + "&table=" + tab,
+            type: "get",
+            dataType: "json",
+            success: function (data) {
+                $('#wu').empty();
+                var str = '<div id="user">' +
+                    '<h1>&nbsp;&nbsp;&nbsp; ' + data.num + '</h1>' +
+                    '<h4>新增会议</h4>' +
+                    '</div>';
+                $('#wu').html(str);
             }
         })
     }
+</script>
+<script type="text/javascript">
+    gvChartInit();
+    $(document).ready(function () {
+        $('#myTable5').gvChart({
+            chartType: 'PieChart',
+            gvSettings: {
+                vAxis: { title: 'No of players' },
+                hAxis: { title: 'Month' },
+                width: 600,
+                height: 350
+            }
+        });
+    });
+</script>
+<script type="text/javascript">
+    gvChartInit();
+    $(document).ready(function () {
+        $('#myTable1').gvChart({
+            chartType: 'PieChart',
+            gvSettings: {
+                vAxis: { title: 'No of players' },
+                hAxis: { title: 'Month' },
+                width: 600,
+                height: 350
+            }
+        });
+    });
 </script>

@@ -11,48 +11,91 @@
     <title>Forget</title>
 </head>
 <body>
-    <table>
-        <tr>
-            <td>手机号</td>
-            <td>
-                <input id="User_Phone" type="text" />
-            </td>
-        </tr>
-        <tr>
-            <td>验证码</td>
-            <td>
-                <input id="MessageText" type="text" />
-                <input type="button" value="发送验证码" />
-            </td>
-        </tr>
-        <tr>
-            <td>登录密码</td>
-            <td>
-                <input id="User_Pwd" type="password" />
-            </td>
-        </tr>
-        <tr>
-            <td>登录密码</td>
-            <td>
-                <input id="User_RePwd" type="password" />
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <input type="button" value="提交" onclick="GiveUp()" />
-            </td>
-            <td>
-                <input type="button" value="重置" onclick="ReBack()" />
-            </td>
-        </tr>
-    </table>
+    <img width="100%" height="100%" src="~/img/Login.jpg" style="position:absolute; left:0; top:0; z-index:-1;" />
+    <div id="main" style="background-color:white">
+        <div style="padding:50px 20px 50px 20px">
+            <h2 style="color:blue;font-weight:800;margin-left:50px">药企内部管理平台</h2>
+            <div class="input-group" style="margin-top:30px">
+                <span class="input-group-addon"><img src="~/img/u12.svg" style="width:30px;height:30px" /></span>
+                <input id="User_Phone" type="text" class="form-control" placeholder="" style="width:50px">
+            </div>
+            @*<div class="input-group" style="margin-top:30px">
+            <span class="input-group-addon">
+                <img src="~/img/u13.svg" style="width:30px;height:30px;background-color: Transparent; border-style: none;" />
+            </span>
+            <input id="MessageText" type="text" class="form-control" style="background-color: Transparent; border-style: none;" >
+            <button type="button" class="btn btn-default" style="width:80px;color:blue;border:1px solid blue;font-size:6px" onclick="">发送验证码</button>
+        </div>*@
+            <div class="input-group" style="margin-top:30px">
+                <span class="input-group-addon">
+                    <img src="~/img/u17.svg" style="width:30px;height:30px" />
+                </span>
+                <input id="User_Pwd" type="password" class="form-control" style="background-color: Transparent; border-style: none;">
+            </div>
+            <div class="input-group" style="margin-top:30px">
+                <span class="input-group-addon">
+                    <img src="~/img/u17.svg" style="width:30px;height:30px" />
+                </span>
+                <input id="User_RePwd" type="password" class="form-control" style="background-color: Transparent; border-style: none;">
+            </div>
+            <div style="margin-top:20px;float:left">
+                <input class="btn btn-primary" style="width:200px;margin-left:100px" type="button" value="提交" id="btn_log" onclick="GiveUp()" />
+
+            </div>
+            @*<div style="margin-top:20px;float:left;margin-left:40px">
+                <input class="btn btn-primary" style="width:200px;margin-left:100px" type="button" value="重置" id="btn_log" onclick="ReBack()" />
+            </div>*@
+        </div>
+    </div>
 </body>
 </html>
 <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
 <style>
-    .div1 {
-        display: flex;
-        height: 100vh;
+    #main {
+        position: absolute;
+        width: 450px;
+        height: 400px;
+        left: 50%;
+        top: 50%;
+        margin-left: -300px;
+        margin-top: -200px;
+    }
+
+    .drag {
+        width: 300px;
+        height: 40px;
+        line-height: 40px;
+        background-color: #e8e8e8;
+        position: relative;
+        margin: 0 auto;
+    }
+
+    .bg {
+        width: 40px;
+        height: 100%;
+        position: absolute;
+        background-color: #75CDF9;
+    }
+
+    .text {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        user-select: none;
+    }
+
+    .btn {
+        width: 40px;
+        height: 38px;
+        position: absolute;
+        border: 1px solid #ccc;
+        cursor: move;
+        font-family: "宋体";
+        text-align: center;
+        background-color: #fff;
+        user-select: none;
+        color: #666;
     }
 </style>
 <script src="~/lib/jquery/dist/jquery.js"></script>
@@ -73,7 +116,7 @@
                 success: function (data) {
                     console.log(data);
                     if (data < 0) {
-                        alert("OK");
+                        location.href = "/default/login";
                     }
                 }
             })
