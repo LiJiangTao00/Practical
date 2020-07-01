@@ -24,12 +24,12 @@ namespace PC.DAL.Conference
             return ShowConferenceDapper.Query("select * from ConferenceTable join ConferenceTypeTable ct on Con_TypeId=ct.Id join ProductTable p on p.Id=Con_ProductId where Con_DelState=1");
         }
         //添加会议
-        public int AddConference(ConferenceTableModel c)
+        public int AddConference(ConferenceAdd c)
         {
             c.Con_ConId = "GC" + DateTime.Now.Year.ToString() + DateTime.Now.Month.ToString() + DateTime.Now.Day.ToString() + DateTime.Now.Hour.ToString() + DateTime.Now.Minute.ToString() + DateTime.Now.Second.ToString();
             c.Con_DelState = 1;
             c.Con_ConDataId = 1;//没做 默认是1
-            DapperHelper<ConferenceTableModel> ConferenceDapper = new DapperHelper<ConferenceTableModel>();
+            DapperHelper<ConferenceAdd> ConferenceDapper = new DapperHelper<ConferenceAdd>();
             return ConferenceDapper.Execute($"insert into ConferenceTable values('{c.Con_Name}','{c.Con_ConId}','{c.Con_TypeId}','{c.Con_StartTime}','{c.Con_EndTime}','{c.Con_Place}','{c.Con_OrganizationalUnit}','{c.Con_SupportUnit}','{c.Con_ProductId}','{c.Con_QuotaEndTime}','{c.Con_QuotaNumber}','{c.Con_ConDataId}','{c.Con_Desc}','{c.Con_State}','{c.Con_Admin}','1')");
         }
         /// <summary>
