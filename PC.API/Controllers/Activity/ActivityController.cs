@@ -108,6 +108,11 @@ namespace PC.API.Controllers.Activity
         {
             return bll.UpdActivity(model);
         }
+        //public int UpdActivity(string obj)
+        //{
+        //    ActivityTableModel m = JsonConvert.DeserializeObject<ActivityTableModel>(obj);
+        //    return bll.UpdActivity(m);
+        //}
         /// <summary>
         /// 获取部门名称
         /// </summary>
@@ -146,6 +151,16 @@ namespace PC.API.Controllers.Activity
             return list;
         }
         /// <summary>
+        /// 获取执行情况
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public List<Activity_DoTableModel> Execute(int id)
+        {
+            List<Activity_DoTableModel> list = bll.Execute(id);
+            return list;
+        }
+        /// <summary>
         /// 获取活动
         /// </summary>
         /// <param name="id"></param>
@@ -154,6 +169,22 @@ namespace PC.API.Controllers.Activity
         {
             return bll.GetActivity(id);
         }
-
+        /// <summary>
+        /// 显示统计
+        /// </summary>
+        /// <returns></returns>
+        public List<ActivityShowView> ShowView()
+        {
+            return bll.ShowView();
+        }
+        /// <summary>
+        /// 显示执行的列表
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public List<ActivityZLY> zLies(int id)
+        {
+            return bll.zLies(id);
+        }
     }
 }

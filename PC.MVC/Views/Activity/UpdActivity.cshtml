@@ -161,10 +161,12 @@
             data.field.Activity_Product_Id = Number(data.field.Activity_Product_Id);
             data.field.ActivityState_Id = Number(data.field.ActivityState_Id);
             delete data.field.Time;//删除属性
-            data.field.Id =location.search.split('?')[1].split('=')[1];
+            data.field.Id = parseInt(location.search.split('?')[1].split('=')[1]);
+            console.log(data.field);
+            //var obj = JSON.stringify(data.field);
             $.ajax({
                 url: "http://localhost:49764/api/activity/UpdActivity",
-                type: "post",
+                type: "put",
                 contentType: "application/json",
                 data: JSON.stringify(data.field),
                 success: function (result) {
@@ -176,7 +178,6 @@
                         alert('失败')
                     }
                 }
-
             })
             return false;
 

@@ -30,5 +30,9 @@ namespace PC.MVC.Controllers.Activity
         {
             return View();
         }
+        public IActionResult Statistics()
+        {
+            return View();
+        }
     }
 }

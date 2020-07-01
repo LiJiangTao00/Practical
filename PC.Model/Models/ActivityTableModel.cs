@@ -26,7 +26,7 @@ namespace PC.Model.Models
         public int  Acticity_Department_Id { get; set; }
         //¼ÙÉ¾
         public int  Activity_DelState { get; set; }
-        ///×´Ì¬
+        //×´Ì¬
         public int ActivityState_Id { get; set; }
         //¿ªÊ¼
         public DateTime? TimeBegin { get; set; }

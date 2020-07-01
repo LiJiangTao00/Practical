@@ -21,7 +21,10 @@ using PC.IDAL.Activity;
 using PC.DAL.Activity;
 using PC.IBLL.Activity;
 using PC.BLL.Activity;
-
+using PC.IDAL.UserIDAL;
+using PC.DAL.UserDAL;
+using PC.IBLL.UserIBLL;
+using PC.BLL.UserBLL;
 namespace PC.API
 {
     public class Startup
@@ -40,6 +43,8 @@ namespace PC.API
             services.AddSingleton<IMaterialDAL, MaterialDAL>(); 
             services.AddSingleton<IMaterialBLL,MaterialBLL>();
             services.AddSingleton<IActivityDal, ActivityDal>();
+            services.AddSingleton<IUDAL,UDAL>();
+            services.AddSingleton<IUBLL, UBLL>();
             services.AddSingleton<IActivityBll, ActivityBll>();
             services.AddSingleton<IConferenceDal, ConferenceDal>();
             services.AddSingleton<IConferenceBll, ConferenceBll>();
