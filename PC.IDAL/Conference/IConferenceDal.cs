@@ -24,6 +24,10 @@ namespace PC.IDAL.Conference
 
         //会议统计页面的会议类型下拉菜单
         List<ConferenceTypeTableModel> ConTypeSel();
+        //分配名额时按会议id显示的小组长列表+此列表的条件查询+分页
+        List<ParticipantTable> ShowParticipantsByConid(int conid, string DaQv, string DiQv, string PhoneOrName);
+        //给小组长分配参会名额  即修改名单关系表中：参会人可带人员数量
+        int UptQuotaNumByUid(int uid, int conid, int num);
 
     }
 }

@@ -76,6 +76,21 @@ namespace PC.BLL.Conferences
 
             return _dal.ConTypeSel();
         }
+        //分配名额时按会议id显示的小组长列表+此列表的条件查询
+        public List<ParticipantTable> ShowParticipantsByConid(int conid, string DaQv = "", string DiQv = "", string PhoneOrName = "")
+        {
+
+            return _dal.ShowParticipantsByConid(conid, DaQv, DiQv, PhoneOrName);
+        }
+        //给小组长分配参会名额  即修改名单关系表中：参会人可带人员数量
+        public int UptQuotaNumByUid(int uid, int conid, int num)
+        {
+
+            return _dal.UptQuotaNumByUid(uid, conid, num);
+
+        }
+
+
 
 
     }
