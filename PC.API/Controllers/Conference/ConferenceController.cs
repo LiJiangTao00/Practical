@@ -111,7 +111,7 @@ namespace PC.API.Controllers.Conference
             return _bll.ShowUsersNoConid(Qd.conid, Qd.DaQv, Qd.DiQv, Qd.PhoneOrName);
         }
         [HttpGet]
-        //分配名额 即贼关系表中添加数据
+        //分配名额 即往关系表中添加数据
         public int AddQuota(int uid, int conid, int num)
         {
 
