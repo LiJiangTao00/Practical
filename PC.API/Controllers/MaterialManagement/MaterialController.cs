@@ -266,5 +266,16 @@ namespace PC.API.Controllers.MaterialManagement
         {
             return _bll.UpdMaterial(model);
         }
+
+        /// <summary>
+        /// 反填物料
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+       [HttpGet]
+        public MaterialTableModel Fillmaterial(int Id)
+        {
+            return _bll.Fillmaterial(Id);
+        }
     }
 }

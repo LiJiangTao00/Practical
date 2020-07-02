@@ -81,6 +81,8 @@
     $(function () {
         //物料类型下拉绑定
         Typedrop();
+        //反填物料方法
+        FillMaterial();
     })
     //绑定下拉（物料信息）
     function Typedrop() {
@@ -98,6 +100,29 @@
             }
         })
     }
+
+    //反填物料
+    function FillMaterial() {
+        $.ajax({
+            url: "http://localhost:49764/api/material/Fillmaterial?Id=" + $("#Hidden").val(),
+            type: "Get",
+            dataType: "json",
+            success: function (data) { 
+                console.log(data);
+                $("#Mtype_name").val(data.material_TypeId)
+                $("#Material_PlaceName").val(data.material_PlaceName)
+                $("#Material_Id").val(data.material_Id)
+                $("#Material_Name").val(data.material_Name)
+                $("#Material_Desc").val(data.material_Desc)
+                $("#Material_Image").val(data.material_Image)
+                $("#Material_Price").val(data.material_Price)
+                $("#Material_Number").val(data.material_Number)
+                $("#Material_State").val(data.material_State)
+            }
+        })
+    }
+
+    //编辑物料
     function Save() {
         var obj = {
             Material_TypeId: $("#Mtype_name").val(),
@@ -111,6 +136,7 @@
             Material_State: parseInt($("#Material_State").val()),
             Id: parseInt($("#Hidden").val())
         };
+        console.log(obj);
        // console.log(obj);
         $.ajax({
             url: "http://localhost:49764/api/material/UpdMaterial",

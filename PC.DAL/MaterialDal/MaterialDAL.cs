@@ -10,6 +10,7 @@ using PC.Model.ViewModel;
 using PC.DAL.Activity;
 using PC.DAL.UserDAL;
 using NPOI.SS.Formula.Functions;
+using PC.Common.Helpers;
 
 namespace PC.DAL.MaterialDal
 {
@@ -23,10 +24,14 @@ namespace PC.DAL.MaterialDal
         /// <returns></returns>
         public List<MaterialTableModel> ShowMaterial()
         {
-            using (SqlConnection conn = new SqlConnection("Data Source=192.168.43.93;Initial Catalog=Practial;User ID=sa;pwd=12345"))
-            {
-                return conn.Query<MaterialTableModel>($"select * from MaterialTable m join MaterialTypeTable t on m.Material_TypeId = t.Id").ToList();
-            }
+            DapperHelper<MaterialTableModel> da = new DapperHelper<MaterialTableModel>();
+            string sql = "select* from MaterialTable a join MaterialTypeTable t on a.Material_TypeId=t.Id";
+            List<MaterialTableModel> list = da.Query(sql).ToList();
+            return list;
+            //using (SqlConnection conn = new SqlConnection("Data Source=192.168.43.93;Initial Catalog=Practial;User ID=sa;pwd=12345"))
+            //{
+            //    return conn.Query<MaterialTableModel>($"select m.Id,m.Material_Id,m.Material_Name,m.Material_TypeId,m.Material_Price,m.Material_Number,m.Material_LastNumber,m.Material_Desc,m.Material_Image,m.Material_State,m.Material_Approval,m.Material_Recycle,m.Material_AddTime,m.Material_DelState,m.Material_Activity_Id,m.Material_PlaceName,t.MType_Name from MaterialTable m join MaterialTypeTable t on m.Material_TypeId = t.Id").ToList();
+            //}
         }
 
 
@@ -64,7 +69,7 @@ namespace PC.DAL.MaterialDal
         public PageShowMaterial SelMaterial(string Materialid, string Materialname, float Materialprice = -1, float Materialprice1 = -1,int PageIndex = 1, int PageSize = 3)
        {
 
-            string sql = "select * from MaterialTable m join MaterialTypeTable t on m.Material_TypeId = t.Id where 1=1";
+            string sql = "select m.*,t.MType_Name from MaterialTable m join MaterialTypeTable t on m.Material_TypeId = t.Id where 1=1";
             if (Materialid!= null)
             {
                 sql += " and Material_Id like '%" + Materialid + "%'";
@@ -430,6 +435,19 @@ namespace PC.DAL.MaterialDal
             using (SqlConnection conn = new SqlConnection("Data Source=192.168.43.93;Initial Catalog=Practial;User ID=sa;pwd=12345"))
             {
                 return conn.Execute($"update MaterialTable  set Material_TypeId = {model.Material_TypeId},Material_PlaceName='{model.Material_PlaceName}',Material_Id = '{model.Material_Id}',Material_Name = '{model.Material_Name}',Material_Desc = '{model.Material_Desc}',Material_Image = '{model.Material_Image}',Material_Price = {model.Material_Price},Material_Number = {model.Material_Number},Material_State = {model.Material_State} where Id = {model.Id}");
+            }
+        }
+
+        /// <summary>
+        /// 反填物料
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public MaterialTableModel Fillmaterial(int Id)
+        {
+            using (SqlConnection conn = new SqlConnection("Data Source=192.168.43.93;Initial Catalog=Practial;User ID=sa;pwd=12345"))
+            {
+                return conn.Query<MaterialTableModel>($"select * from MaterialTable where Id = {Id}").FirstOrDefault();
             }
         }
 
