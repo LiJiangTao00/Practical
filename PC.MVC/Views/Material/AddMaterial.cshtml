@@ -56,6 +56,14 @@
             </td>
         </tr>
         <tr>
+            <td>图片：</td>
+            <td>
+                <div class="layui-input-inline">
+                    <input type="file" id="Material_Image" style="height:20px;width:200px;" name="username" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
+                </div>
+            </td>
+        </tr>
+        <tr>
             <td>单价：</td>
             <td>
                 <input id="Material_Price" type="text" />元
@@ -96,15 +104,19 @@
                 $("#type").empty();
                 var str = '<option value="0">请选择</option>';
                 $(data).each(function () {
-                    str += '<option value=' + this.Id + '>' + this.mType_Name + '</option>'
-                    $("#type").append(str);
+                    str += '<option value=' + this.Id + '>' + this.mType_Name + '</option>';
                 })
+                $("#type").append(str);
             }
         })
     }
 
     //添加物料信息
     function addmaterial() {
+        var fileUpload = $("#Material_Image").get(0);
+        var file = fileUpload.files[0];
+        var data = new FormData();
+        data.append(file.name, file);
         var obj = {
             Material_TypeId: $("#type").val(),
             Material_Id: $("#Material_Id").val(),
@@ -115,9 +127,11 @@
             Material_State: $("#Material_State").val()
         }
         $.ajax({
-            url: "http://localhost:49764/api/material/SelMaterial",
+            url: "http://localhost:49764/api/material/AddMaterial?obj=" + JSON.stringify(obj),
             type: "Post",
-            data: JSON.stringify(obj),
+            data: data,
+            contentType: false,
+            processData: false,
             contentType: "application/json",
             success: function (data) {
                 if (data > 0) {
