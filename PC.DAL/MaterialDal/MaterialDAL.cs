@@ -107,7 +107,8 @@ namespace PC.DAL.MaterialDal
         {
             using (SqlConnection conn = new SqlConnection("Data Source=192.168.43.93;Initial Catalog=Practial;User ID=sa;pwd=12345"))
             {
-                return conn.Execute($"insert into MaterialTable values('{mod.Material_TypeId}','{mod.Material_Id}','{mod.Material_Name}','{mod.Material_Desc}','{mod.Material_Image}','{mod.Material_Price}','{mod.Material_Number}','{mod.Material_State}')");
+                var sql = $"insert into MaterialTable values('{mod.Material_Id}','{mod.Material_Name}',{mod.Material_TypeId},{mod.Material_Price},{mod.Material_Number},{mod.Material_LastNumber},'{mod.Material_Desc}','{mod.Material_Image}',{mod.Material_State},2,1,'2020-05-06',0,2,'{mod.Material_PlaceName}')";
+                return conn.Execute(sql);
             }
         }
 
