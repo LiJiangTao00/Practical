@@ -268,6 +268,7 @@ namespace PC.DAL.UserDAL
             string sql = "update UserTable set User_Id='" + m.User_Id + "',User_Name='" + m.User_Name + "',User_Pwd='" + m.User_Pwd + "',User_Sex=" + m.User_Sex + ",User_Phone='" + m.User_Phone + "',User_Email='" + m.User_Email + "',User_Wechat='" + m.User_Wechat + "',User_QQ='" + m.User_QQ + "',User_Department=" + m.User_Department + ",User_Job=" + m.User_Job + ",User_Province=" + m.User_Province + ",User_City=" + m.User_City + ",User_District=" + m.User_District + ",User_Area='" + m.User_Area + "',User_Address='" + m.User_Address + "',User_ProductId=" + m.User_ProductId + ",User_Photo='" + m.User_Photo + "' where Id=" + m.Id;
             return dapper.Execute(sql);
         }
+
         public int UpdateJobState(int id)
         {
             DapperHelper<JobTableModel> job = new DapperHelper<JobTableModel>();
@@ -293,11 +294,13 @@ namespace PC.DAL.UserDAL
             string sql = " update JobTable set Job_DelState=1 where Id =" + v;
             return dapper.Execute(sql);
         }
+
         public int PutJob(JobTableModel m)
         {
             string sql = " update JobTable set Job_Name = '" + m.Job_Name + "', Job_Desc='" + m.Job_Desc + "' where Id=" + m.Id;
             return dapper.Execute(sql);
         }
+
         public JobTableModel ShowJob(int id)
         {
             DapperHelper<JobTableModel> job = new DapperHelper<JobTableModel>();
@@ -305,6 +308,7 @@ namespace PC.DAL.UserDAL
             JobTableModel m = job.Query(sql).FirstOrDefault();
             return m;
         }
+
         public List<ListPermission> ShowPermission()
         {
             DapperHelper<PermissionTableModel> per = new DapperHelper<PermissionTableModel>();
@@ -326,6 +330,7 @@ namespace PC.DAL.UserDAL
             }
             return list;
         }
+
         public List<PermissionRelationTableModel> ShowSinglePermission(int id)
         {
             DapperHelper<PermissionRelationTableModel> pr = new DapperHelper<PermissionRelationTableModel>();
@@ -333,6 +338,7 @@ namespace PC.DAL.UserDAL
             List<PermissionRelationTableModel> m = pr.Query(sql);
             return m;
         }
+
         public List<PermissionRelationTableModel> ChkPid(int id)
         {
             DapperHelper<PermissionRelationTableModel> pr = new DapperHelper<PermissionRelationTableModel>();
@@ -340,12 +346,14 @@ namespace PC.DAL.UserDAL
             List<PermissionRelationTableModel> m = pr.Query(sql);
             return m;
         }
+
         public UserShowModel SelectUserPhone(string phone)
         {
             DapperHelper<UserShowModel> helper = new DapperHelper<UserShowModel>();
             string sql = "select * from UserTable u join DepartmentTable d on u.User_Department = d.Id join JobTable j on u.User_Job = j.Id join ProductTable p on u.User_ProductId = p.Id where User_State = 0 and User_DelState = 0 and User_Phone =" + phone;
             return helper.Query(sql).FirstOrDefault();
         }
+
         public int PutPwd(string phone, string oldpwd, string newPwd)
         {
             string sql = "select * from UserTable where User_Phone='" + phone + "' and User_Pwd='" + oldpwd + "'";
@@ -357,11 +365,13 @@ namespace PC.DAL.UserDAL
             }
             return 0;
         }
+
         public int AddJob(JobTableModel m)
         {
             string sql = " insert into JobTable values ('" + m.Job_Name + "','" + m.Job_Desc + "',1,'" + DateTime.Now + "',0,0)";
             return dapper.Execute(sql);
         }
+
         public BoothView GetLog(string time, string table)
         {
             DapperHelper<BoothView> booth = new DapperHelper<BoothView>();
@@ -402,10 +412,11 @@ namespace PC.DAL.UserDAL
             }
             return booth.Query(sql).FirstOrDefault();
         }
+
         public List<PieModel> GetCon(string time)
         {
             DapperHelper<PieModel> booth = new DapperHelper<PieModel>();
-            string sql = "select count(1) Num,case when Con_State=0 then '未开始' when Con_State=1 then '进行中' else '已结束' end as Name from ConferenceTable group by Con_State,Con_StartTime  having  ";
+            string sql = "select count(1) Num,case when Con_State=0 then '未开始' when Con_State=1 then '进行中' else '已结束' end as Name from ConferenceTable where ";
             switch (time)
             {
                 case "week":
@@ -420,9 +431,11 @@ namespace PC.DAL.UserDAL
                 default:
                     break;
             }
+            sql += " group by Con_State";
             List<PieModel> list = booth.Query(sql).ToList();
             return list;
         }
+
         public int ChangePermission(int id, string ids)
         {
             string sql = "delete from PermissionRelationTable where Permission_Id=" + id;
