@@ -306,7 +306,7 @@
             } else if (layEvent === 'edit') {
                 Edit(data.id);
             } else if (layEvent === 'sel') {
-                location.href = "/activity/Execute";
+                location.href = "/activity/Execute?id=" + data.id;
                 layer.msg('查看执行情况');
             }
 
@@ -362,7 +362,7 @@
                         '<td>' + this.timeBegin + '</td>' +
                         '<td>' + this.timeEnd + '</td>' +
                         '<td>' + this.activityState_Id + '</td>' +
-                        '<td><input id="Detail" type="button" value="查看详情" oclick="detail()"/><input id="edit" type="button" value="编辑" oclick="Edit(' + id + ')"/><input id="Recycle" type="button" value="删除" oclick="recycle(' + id + ')"/><input id="Check" type="button" value="查看执行情况" oclick="Check()"/><input id="Statistics" type="button" value="统计" oclick="Statistics()"/></td>' +
+                        '<td><input id="Detail" type="button" value="查看详情" oclick="detail()"/><input id="edit" type="button" value="编辑" oclick="Edit(' + id + ')"/><input id="Recycle" type="button" value="删除" oclick="recycle(' + id + ')"/><input id="Check" type="button" value="查看执行情况" oclick="Check(' + id + ')"/></td>' +
                         '</tr>'
                     $("#tb").append(list);
                 })

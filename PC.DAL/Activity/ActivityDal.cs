@@ -159,7 +159,7 @@ namespace PC.DAL.Activity
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public List<ActivityZLY> zLies(int id)
+        public List<ActivityZLY> zLies(int id, int did, int pid, int cid, int dis, string name)
         {
             List<ActivityZLY> list = (from d in ShowActivity_DoTable()
                                       join a in ShowActivityTable()
