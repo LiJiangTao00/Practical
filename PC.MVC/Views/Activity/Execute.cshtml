@@ -98,22 +98,6 @@
         $('#ShowDistrict').empty();
         var str = '<option value="0">请选择</option>';
         $('#ShowDistrict').append(str);
-        ShowJob();
-    }
-    function ShowJob() {
-        $.ajax({
-            url: "http://localhost:49764/api/user/ShowJob",
-            type: "get",
-            dataType: "json",
-            success: function (data) {
-                $('#ShowJob').empty();
-                var str = '<option value="0">请选择</option>';
-                $.each(data, function (i, n) {
-                    str += '<option value="' + n.id + '">' + n.job_Name + '</option>';
-                })
-                $('#ShowJob').append(str);
-            }
-        })
     }
     function ProvinceChange() {
         var pid = $('#ShowProvince').val();
@@ -147,6 +131,9 @@
             }
         })
     }
+    function Select() {
+        ShowList(0, 1);
+    }
     function ShowTable() {
         var txt_Sel = $('#txt_Sel').val();
         var ShowDepartment = $('#ShowDepartment').val() == null ? 0 : $('#ShowDepartment').val();
@@ -154,7 +141,7 @@
         var ShowCity = parseInt($('#ShowCity').val());
         var ShowDistrict = parseInt($('#ShowDistrict').val());
         $.ajax({
-            url: "http://localhost:49764/api/user/ShowUser?product=" + product + "&did=" + ShowDepartment + "&pid=" + ShowProvince + "&cid=" + ShowCity + "&dis=" + ShowDistrict + "&name=" + txt_Sel,
+            url: "http://localhost:49764/api/activity/Execute?product=" + product + "&did=" + ShowDepartment + "&pid=" + ShowProvince + "&cid=" + ShowCity + "&dis=" + ShowDistrict + "&name=" + txt_Sel,
             type: "get",
             dataType: "json",
             success: function (data) {
@@ -162,8 +149,10 @@
                 var str = '';
                 $.each(data, function (i, n) {
                     str += '<tr>' +
-                        '<td>' + n.Activity_Do_Con_Id + '</td>' +
+                        '<td>' + n.Activity_Do_Activity_Id + '</td>' +
+                        '<td>' + n.Con_ConId + '</td>' +
                         '<td>' + n.Activity_Name + '</td>' +
+                        '<td>' + n.Con_QuotaNumber + '</td>' +
                         '<td>' + n.Activity_Do_Hospital + '</td>' +
                         '<td>' + n.User_Name + '</td>' +
                         '<td>' + n.User_Area + '</td>' +
