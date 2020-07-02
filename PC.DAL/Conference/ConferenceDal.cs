@@ -118,7 +118,7 @@ namespace PC.DAL.Conference
             DapperHelper<ConferenceBar> ConferenceBarDapper = new DapperHelper<ConferenceBar>();
 
             string sql = "select * from ConferenceTable " +
-                "join ConferenceTypeTable  on Con_TypeId=ConferenceTable.Id " +
+                "join ConferenceTypeTable  on Con_TypeId=ConferenceTypeTable.Id " +
                 "join ProductTable  on ProductTable.Id=Con_ProductId " +
                 "join UserTable on UserTable.id=ConferenceTable.Con_Admin " +
                 "join  DepartmentTable on   UserTable.User_Department=DepartmentTable.id where 1=1";
@@ -183,7 +183,7 @@ namespace PC.DAL.Conference
             string sql = "Select * from ConferenceTypeTable";
             return ConferenceTypeTableDapper.Query(sql);
         }
-        //分配名额时按会议id显示的小组长列表+此列表的条件查询
+        //修改名额时按会议id显示的小组长列表+此列表的条件查询
         public List<ParticipantTable> ShowParticipantsByConid(int conid,string DaQv="",string DiQv="",string PhoneOrName="")
         {
             string sql = "select *,UserTable.Id as uid from UserTable " +
@@ -191,7 +191,7 @@ namespace PC.DAL.Conference
                 "join ConferenceTable on ConferenceTable.Id=QuotaTable.QRelation_ConferenceId " +
                 "join DepartmentTable on DepartmentTable.Id=User_Department " +
                 "join JobTable on JobTable.Id=User_Job " +
-                "join ProductTable on ProductTable.Id=User_ProductId";
+                "join ProductTable on ProductTable.Id=User_ProductId where 1=1";
             if (DaQv!= "==选择大区==")
             {
                 sql += " and User_Area like '%" + DaQv + "%'";
@@ -208,19 +208,46 @@ namespace PC.DAL.Conference
             DapperHelper<ParticipantTable> ParticipantTableDapper = new DapperHelper<ParticipantTable>();
             return ParticipantTableDapper.Query(sql);
         }
-        //给小组长分配参会名额  即修改名单关系表中：参会人可带人员数量
+        //修改小组长可带参会名额  即修改名单关系表中：参会人可带人员数量
         public int UptQuotaNumByUid(int uid, int conid,int num)
         {
             DapperHelper<QuotaTableModel> QuotaTableModelDapper = new DapperHelper<QuotaTableModel>();
             string sql = "update QuotaTable set QRelation_Number=" + num + "where QRelation_ConferenceId="+conid+ " and QRelation_Userid="+uid;
-            //而且名额栏为空 证明还没有非陪名额
-            sql += " and Con_QuotaNumber is null";
             return QuotaTableModelDapper.Execute(sql);
 
         }
 
 
-
+        //分配名额显示所有与该会议id无关的小组长
+        public List<ParticipantTable> ShowUsersNoConid(int conid, string DaQv, string DiQv, string PhoneOrName)
+        {
+            string sql = "select *, UserTable.Id as uid from UserTable" +
+                " join DepartmentTable on DepartmentTable.Id = User_Department" +
+                " join JobTable on JobTable.Id = User_Job" +
+                " join ProductTable on ProductTable.Id = User_ProductId" +
+                $" where UserTable.Id not in (select QRelation_Userid from QuotaTable where QRelation_ConferenceId = {conid})";
+            if (DaQv != "==选择大区==")
+            {
+                sql += " and User_Area like '%" + DaQv + "%'";
+            }
+            if (DiQv != "==选择地区==")
+            {
+                sql += " and User_Area like '%" + DiQv + "%'";
+            }
+            if (PhoneOrName != "" && PhoneOrName != null)
+            {
+                sql += " and User_Phone like '%" + PhoneOrName + "%' or User_Name like '%" + PhoneOrName + "%'";
+            }
+            DapperHelper<ParticipantTable> ParticipantTableDapper = new DapperHelper<ParticipantTable>();
+            return ParticipantTableDapper.Query(sql);
+        }
+        //分配名额 即贼关系表中添加数据
+        public int AddQuota(int uid, int conid, int num)
+        {
+            DapperHelper<QuotaTableModel> QuotaTableModelDapper = new DapperHelper<QuotaTableModel>();
+            string sql = $"insert into QuotaTable values('{uid}','{conid}','{num}','默认')";
+            return QuotaTableModelDapper.Execute(sql);
+        }
 
 
 

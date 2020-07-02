@@ -25,9 +25,14 @@ namespace PC.IBLL.Conferences
 
         //会议统计页面的会议类型下拉类型下拉菜单
         List<ConferenceTypeTableModel> ConTypeSel();
-        //分配名额时按会议id显示的小组长列表+此列表的条件查询
+        //修改名额时按会议id显示的小组长列表+此列表的条件查询+分页
         List<ParticipantTable> ShowParticipantsByConid(int conid, string DaQv, string DiQv, string PhoneOrName);
-        //给小组长分配参会名额  即修改名单关系表中：参会人可带人员数量
+        //修改小组长可带参会名额  即修改名单关系表中：参会人可带人员数量
         int UptQuotaNumByUid(int uid, int conid, int num);
+
+        //分配名额显示所有与该会议id无关的小组长
+        List<ParticipantTable> ShowUsersNoConid(int conid, string DaQv, string DiQv, string PhoneOrName);
+        //分配名额 即贼关系表中添加数据
+        int AddQuota(int uid, int conid, int num);
     }
 }

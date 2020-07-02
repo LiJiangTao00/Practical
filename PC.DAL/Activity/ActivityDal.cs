@@ -161,21 +161,21 @@ namespace PC.DAL.Activity
         /// <returns></returns>
         public List<ActivityZLY> zLies()
         {
-            List<ActivityZLY> list = (
-                                           from e in Execute() join s in ShowActivity()
-                                           on e.Activity_Do_Activity_Id equals s.Id join u in ShowUser()
-                                           on e.Activity_Do_User_Id equals u.Id join a in AddConference()
-                                           on e.Activity_Do_Con_Id equals a.Id join u in GetUsers()
-                                           on o.Order_User_Id equals u.Id
-                                           join p in GetProduct()
-                                           on o.Order_Product_Id equals p.Id
-                                           join d in GetDepartment()
-                                           on o.Order_Department_Id equals d.Id
-                                           join j in GetJob()
-                                           on o.Order_Job_Id equals j.Id
-                                           join g in GetPlace()
-                                           on o.Order_Area_Id equals g.Id
-                                    )
+            List<ActivityZLY> list = new List<ActivityZLY>();// = (
+            //                               from e in Execute() join s in ShowActivity()
+            //                               on e.Activity_Do_Activity_Id equals s.Id join u in ShowUser()
+            //                               on e.Activity_Do_User_Id equals u.Id join a in AddConference()
+            //                               on e.Activity_Do_Con_Id equals a.Id join u in GetUsers()
+            //                               on o.Order_User_Id equals u.Id
+            //                               join p in GetProduct()
+            //                               on o.Order_Product_Id equals p.Id
+            //                               join d in GetDepartment()
+            //                               on o.Order_Department_Id equals d.Id
+            //                               join j in GetJob()
+            //                               on o.Order_Job_Id equals j.Id
+            //                               join g in GetPlace()
+            //                               on o.Order_Area_Id equals g.Id
+            //                        )
             //string sql = "select c.Con_ConId,a.Activity_Name,d.Activity_Do_Hospital,u.User_Name,u.User_Area,j.Job_Name,d.Activity_Do_CreateTime,d.Activity_Do_EndTime,d.Activity_Do_State 
             //              from Activity_DoTable d join ActivityTable a
             //              on d.Activity_Do_Activity_Id = a.Id join UserTable u
@@ -185,6 +185,12 @@ namespace PC.DAL.Activity
             //              on u.User_Job = j.Id";
             return list;
         }
+
+        public List<ActivityZLY> zLies(int id)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// 显示物料订单信息
         /// </summary>

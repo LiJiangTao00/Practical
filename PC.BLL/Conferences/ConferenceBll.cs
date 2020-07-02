@@ -76,13 +76,13 @@ namespace PC.BLL.Conferences
 
             return _dal.ConTypeSel();
         }
-        //分配名额时按会议id显示的小组长列表+此列表的条件查询
+        //修改名额时按会议id显示的小组长列表+此列表的条件查询
         public List<ParticipantTable> ShowParticipantsByConid(int conid, string DaQv = "", string DiQv = "", string PhoneOrName = "")
         {
 
             return _dal.ShowParticipantsByConid(conid, DaQv, DiQv, PhoneOrName);
         }
-        //给小组长分配参会名额  即修改名单关系表中：参会人可带人员数量
+        //修改小组长可带参会名额  即修改名单关系表中：参会人可带人员数量
         public int UptQuotaNumByUid(int uid, int conid, int num)
         {
 
@@ -90,7 +90,18 @@ namespace PC.BLL.Conferences
 
         }
 
+        //分配名额显示所有与该会议id无关的小组长
+        public List<ParticipantTable> ShowUsersNoConid(int conid, string DaQv, string DiQv, string PhoneOrName)
+        {
 
+            return _dal.ShowUsersNoConid(conid, DaQv, DiQv, PhoneOrName);
+        }
+        //分配名额 即贼关系表中添加数据
+        public int AddQuota(int uid, int conid, int num)
+        {
+
+            return _dal.AddQuota(uid, conid, num);
+        }
 
 
     }
