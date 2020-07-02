@@ -12,7 +12,7 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>分配名额</title>
+    <title>修改名额</title>
 </head>
 <body>
     <div>
@@ -38,6 +38,7 @@
                     <td>部门</td>
                     <td>职位</td>
                     <td>所在区域</td>
+                    <td>可带参会人数</td>
                     <td>操作</td>
                 </tr>
             </thead>
@@ -88,7 +89,7 @@
         };
         console.log(Qd);
         $.ajax({
-            url: "http://localhost:49764/api/Conference/ShowUsersNoConid",
+            url: "http://localhost:49764/api/Conference/ShowParticipantsByConid",
             data: Qd,
             type: "post",
             contentType: "application/x-www-form-urlencoded",
@@ -104,7 +105,8 @@
                          <td>${k.department_Name}</td>
                          <td>${k.job_Name}</td>
                          <td>${k.user_Address}</td>
-                         <td><a href="#" OnClick="QuotaHtml(${k.uid})">分配名额</a></td>
+                         <td>${k.qRelation_Number}</td>
+                         <td><a href="#" OnClick="QuotaHtml(${k.uid})">修改名额</a></td>
                          </tr>`
                     $("#tb").append(list);
 
@@ -117,7 +119,7 @@
         Html += `<tr>
                             <td>参会名额:</td>
                             <td><input id="Text1" type="text" /></td>
-                      </tr>                      
+                      </tr>
                              </table>
                                 </div>`;
         layui.use('layer', function () {
@@ -129,24 +131,24 @@
                 btn: ['提交', '关闭'],
                 content: Html,
                 yes: function () {
-                    if (isNaN(Number($("#Text1").val())) || $("#Text1").val()=="") {
+                    if (isNaN(Number($("#Text1").val())) || $("#Text1").val() == "") {
                         alert("请输入数字！");
                         return;
                     }
                     $.ajax({
-                        url: "http://localhost:49764/api/Conference/AddQuota",
+                        url: "http://localhost:49764/api/Conference/UptQuotaNumByUid",
                         type: "get",
                         data: {
                             uid: id,
-                            conid: localStorage["QuotaAllocationId"],
+                            conid: localStorage["UptQuotaId"] = id,
                             num: Number($("#Text1").val()),
                         },
                         success: function (data) {
                             if (data > 0) {
-                                layer.msg('分配名额完成');
-                                location.href = "/Conference/quotaallocation";
+                                layer.msg('修改名额完成');
+                                location.href = "/Conference/UptQuota";
                             } else {
-                                layer.msg('分配名额失败');
+                                layer.msg('修改名额失败');
                             }
                         }
                     })

@@ -102,7 +102,6 @@
             success: function (data) {
                 console.log(data);
                 $("#type").empty();
-                var str = '<option value="0">请选择</option>';
                 $(data).each(function () {
                     str += '<option value=' + this.Id + '>' + this.mType_Name + '</option>';
                 })

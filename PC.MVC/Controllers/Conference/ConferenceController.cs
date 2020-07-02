@@ -32,5 +32,12 @@ namespace PC.MVC.Controllers.Conference
             return View();
 
         }
+        //显示修改会议名额页面
+        public IActionResult UptQuota()
+        {
+            return View();
+
+        }
+        
     }
 }

@@ -21,5 +21,6 @@ namespace PC.Model.ViewModel
 		public DateTime Material_AddTime { get; set; }
 		public int Material_DelState { get; set; }
 		public string MType_Name { get; set; }
+		public string Material_PlaceName { get; set; }
 	}
 }

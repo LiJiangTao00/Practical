@@ -159,10 +159,86 @@ namespace PC.DAL.Activity
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public List<ActivityZLY> zLies()
+        public List<ActivityZLY> zLies(int id, int did, int pid, int cid, int dis, string name)
         {
-            DapperHelper<ActivityZLY> dapper = new DapperHelper<ActivityZLY>();
-            string sql = "select Product_Name,count(1) Pcount from ActivityTable join ProductTable on Activity_Product_Id=ProductTable.Id group by Product_Name";
+            List<ActivityZLY> list = (from d in ShowActivity_DoTable()
+                                      join a in ShowActivityTable()
+                                      on d.Activity_Do_Activity_Id equals a.Id
+                                      join u in ShowUserTable()
+                                      on d.Activity_Do_User_Id equals u.Id
+                                      join c in ShowConferenceTable()
+                                      on d.Activity_Do_Con_Id equals c.Id
+                                      join i in ShowInvitationTable()
+                                      on d.Activity_Do_Inviter_User_Id equals i.Id
+                                      join j in ShowJobTable()
+                                      on u.User_Job equals j.Id
+                                      select new ActivityZLY
+                                      {
+                                          Id = a.Id,
+                                          Activity_Do_Activity_Id = d.Activity_Do_Activity_Id,
+                                          Con_ConId = c.Con_ConId,
+                                          Activity_Name = a.Activity_Name,
+                                          Con_QuotaNumber = c.Con_QuotaNumber,
+                                          Activity_Do_Hospital = d.Activity_Do_Hospital,
+                                          User_Name = u.User_Name,
+                                          User_Area = u.User_Area,
+                                          Job_Name = j.Job_Name,
+                                          TimeBegin = c.Con_StartTime,
+                                          TimeEnd = c.Con_EndTime,
+                                          ActivityState_Id = a.ActivityState_Id,
+                                          User_Department = u.User_Department,
+                                          User_Job = u.User_Job,
+                                          User_Province = u.User_ProductId,
+                                          User_City = u.User_City,
+                                          User_District = u.User_District,
+
+                                      }).ToList();
+            list = list.Where(x => x.Activity_Do_Activity_Id == id).ToList();
+            //string sql = "select c.Con_ConId,a.Activity_Name,d.Activity_Do_Hospital,u.User_Name,u.User_Area,j.Job_Name,d.Activity_Do_CreateTime,d.Activity_Do_EndTime,d.Activity_Do_State 
+            //              from Activity_DoTable d join ActivityTable a
+            //              on d.Activity_Do_Activity_Id = a.Id join UserTable u
+            //              on d.Activity_Do_User_Id = u.Id join ConferenceTable c
+            //              on d.Activity_Do_Con_Id = c.Id join InvitationTable i
+            //              on d.Activity_Do_Inviter_User_Id = i.Id join JobTable j
+            //              on u.User_Job = j.Id";
+            return list;
+        }
+        public List<Activity_DoTableModel> ShowActivity_DoTable()
+        {
+            DapperHelper<Activity_DoTableModel> dapper = new DapperHelper<Activity_DoTableModel>();
+            string sql = "select * from Activity_DoTable";
+            return dapper.Query(sql).ToList();
+        }
+        public List<ActivityTableModel> ShowActivityTable()
+        {
+            DapperHelper<ActivityTableModel> dapper = new DapperHelper<ActivityTableModel>();
+            string sql = "select * from ActivityTable";
+            return dapper.Query(sql).ToList();
+        }
+        public List<UserTableModel> ShowUserTable()
+        {
+            DapperHelper<UserTableModel> dapper = new DapperHelper<UserTableModel>();
+            string sql = "select * from UserTable";
+            return dapper.Query(sql).ToList();
+        }
+
+        public List<ConferenceTableModel> ShowConferenceTable()
+        {
+            DapperHelper<ConferenceTableModel> dapper = new DapperHelper<ConferenceTableModel>();
+            string sql = "select * from ConferenceTable";
+            return dapper.Query(sql).ToList();
+        }
+        public List<InvitationTableModel> ShowInvitationTable()
+        {
+            DapperHelper<InvitationTableModel> dapper = new DapperHelper<InvitationTableModel>();
+            string sql = "select * from InvitationTable";
+            return dapper.Query(sql).ToList();
+        }
+
+        public List<JobTableModel> ShowJobTable()
+        {
+            DapperHelper<JobTableModel> dapper = new DapperHelper<JobTableModel>();
+            string sql = "select * from JobTable";
             return dapper.Query(sql).ToList();
         }
         /// <summary>

@@ -121,5 +121,11 @@ namespace PC.IBLL.MaterialBLL
         /// <returns></returns>
         List<ShowMaterialApprove> ShowMaterialFill(int Id);
 
+        /// <summary>
+        /// 编辑物料信息
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        int UpdMaterial(MaterialTableModel model);
     }
 }

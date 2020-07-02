@@ -40,7 +40,7 @@
                 $('#ShowDiv').empty();
                 console.log(data);
                 var str = '';
-                str += '<div style="float:left;"><img src="' + data.user_Photo + '" style="width:50px;height:70px"/></div>';
+                str += '<div style="float:left;"><img src="http://localhost:49764' + data.user_Photo + '" style="width:50px;height:70px"/></div>';
                 str += '<table><tr><td>姓名：' + data.user_Name + '</td>' +
                     '<td> 工号：' + data.user_Id + '</td>' +
                     '<td>性别：' + data.user_Sex + '</td></tr >' +
@@ -170,6 +170,7 @@
     }
     function PutPwd() {
         var str = '';
+        $('#ShowDiv').empty();
         str = '<table style="margin:90px">' +
             '<tr>' +
             '<td>原密码</td>' +

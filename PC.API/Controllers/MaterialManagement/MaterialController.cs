@@ -255,5 +255,16 @@ namespace PC.API.Controllers.MaterialManagement
         {
             return _bll.ShowMaterialFill(Id).First();
         }
+
+        /// <summary>
+        /// 修改物料
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+       [HttpPost]
+        public int UpdMaterial([FromForm]MaterialTableModel model)
+        {
+            return _bll.UpdMaterial(model);
+        }
     }
 }

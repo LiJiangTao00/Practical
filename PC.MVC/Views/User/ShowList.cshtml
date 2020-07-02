@@ -355,6 +355,10 @@
     }
     function UpdateJob() {
         var ids = GetChkId();
+        if (dis == "") {
+            alert("未选中");
+            return;
+        }
         var str = '<table style="width:400px;height:100px;margin-top:20px">' +
             '<tr style = "width:400px;height:110px" >' +
             '<td>' +
@@ -451,6 +455,10 @@
     }
     function UpdateDepartment() {
         var ids = GetChkId();
+         if (dis == "") {
+            alert("未选中");
+            return;
+        }
         var str = '<table style="width:400px;height:100px;margin-top:20px">' +
             '<tr style = "width:400px;height:110px" >' +
             '<td>' +
@@ -548,6 +556,10 @@
     }
     function Dead() {
         var ids = GetChkId();
+         if (dis == "") {
+            alert("未选中");
+            return;
+        }
         var str = '<table style="width:400px;height:100px;margin-top:20px">' +
             '<tr style = "width:400px;height:110px" >' +
             '<td>' +
@@ -619,6 +631,10 @@
     }
     function Freeze() {
         var ids = GetChkId();
+         if (dis == "") {
+            alert("未选中");
+            return;
+        }
         var str = '<table style="width:400px;height:100px;margin-top:20px">' +
             '<tr style = "width:400px;height:110px" >' +
             '<td>' +
