@@ -9,6 +9,7 @@ using System.Linq;
 using PC.Model.ViewModel;
 using PC.DAL.Activity;
 using PC.DAL.UserDAL;
+using NPOI.SS.Formula.Functions;
 
 namespace PC.DAL.MaterialDal
 {
@@ -24,7 +25,7 @@ namespace PC.DAL.MaterialDal
         {
             using (SqlConnection conn = new SqlConnection("Data Source=192.168.43.93;Initial Catalog=Practial;User ID=sa;pwd=12345"))
             {
-                return conn.Query<MaterialTableModel>($"select * from MaterialTable").ToList();
+                return conn.Query<MaterialTableModel>($"select * from MaterialTable m join MaterialTypeTable t on m.Material_TypeId = t.Id").ToList();
             }
         }
 
@@ -63,7 +64,7 @@ namespace PC.DAL.MaterialDal
         public PageShowMaterial SelMaterial(string Materialid, string Materialname, float Materialprice = -1, float Materialprice1 = -1,int PageIndex = 1, int PageSize = 3)
        {
 
-            string sql = "select * from MaterialTable where 1=1";
+            string sql = "select * from MaterialTable m join MaterialTypeTable t on m.Material_TypeId = t.Id where 1=1";
             if (Materialid!= null)
             {
                 sql += " and Material_Id like '%" + Materialid + "%'";
@@ -388,7 +389,8 @@ namespace PC.DAL.MaterialDal
         {
             using(SqlConnection conn = new SqlConnection("Data Source=192.168.43.93;Initial Catalog=Practial;User ID=sa;pwd=12345"))
             {
-                return conn.Query<ShowFill>($"select * from MaterialTypeTable t join MaterialTable m on t.Id = m.Material_TypeId where m.Id = {Id}").ToList();
+                List<ShowFill> list = conn.Query<ShowFill>($"select * from MaterialTypeTable t join MaterialTable m on t.Id = m.Material_TypeId where m.Id = {Id}").ToList();
+                return list;
             }
         }
 
@@ -414,6 +416,19 @@ namespace PC.DAL.MaterialDal
             using (SqlConnection conn = new SqlConnection("Data Source=192.168.43.93;Initial Catalog=Practial;User ID=sa;pwd=12345"))
             {
                 return conn.Query<ShowMaterialApprove>($"select *  from  MaterialTable m  join OrderTable o on o.Order_MId = m.Id join MaterialTypeTable t on m.Material_TypeId = t.Id join ActivityTable a on m.Material_Activity_Id = a.Id join UserTable u on o.Order_User_Id = u.Id join ProductTable p on o.Order_Product_Id = p.Id join DepartmentTable d on o.Order_Department_Id = d.Id join JobTable j on o.Order_Job_Id = j.Id join PlaceTable g on o.Order_Area_Id = g.Id where o.Id = {Id}").ToList();
+            }
+        }
+
+        /// <summary>
+        /// 修改物料
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public int UpdMaterial(MaterialTableModel model)
+        {
+            using (SqlConnection conn = new SqlConnection("Data Source=192.168.43.93;Initial Catalog=Practial;User ID=sa;pwd=12345"))
+            {
+                return conn.Execute($"update MaterialTable  set Material_TypeId = {model.Material_TypeId},Material_PlaceName='{model.Material_PlaceName}',Material_Id = '{model.Material_Id}',Material_Name = '{model.Material_Name}',Material_Desc = '{model.Material_Desc}',Material_Image = '{model.Material_Image}',Material_Price = {model.Material_Price},Material_Number = {model.Material_Number},Material_State = {model.Material_State} where Id = {model.Id}");
             }
         }
 

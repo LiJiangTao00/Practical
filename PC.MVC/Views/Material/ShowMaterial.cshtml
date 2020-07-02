@@ -52,6 +52,8 @@
             </thead>
             <tbody id="tb"></tbody>
         </table>
+    </div>
+
     <div>
         <input id="btn_First" type="button" value="首页" onclick="Screen('first')"/>
         <input id="btn_Prev" type="button" value="上一页" onclick="Screen('prv')"/>
@@ -92,12 +94,12 @@
                         '<td>' + this.material_Id + '</td>' +
                         '<td>' + this.material_Name + '</td>' +
                         '<td>' + this.material_Image + '</td>'+
-                        '<td>' + this.material_TypeId + '</td>' +
+                        '<td>' + this.mType_Name + '</td>' +
                         '<td>' + this.material_Price + '</td>' +
                         '<td>' + this.material_Number + '</td>' +
                         '<td>' + this.material_LastNumber + '</td>' +
                         '<td>' + (this.material_State == 1 ? "上架" : "下架") + '</td>' +
-                        '<td><input id="Detail" type="button" value="查看详情" onclick="detail(' + this.id+')"/><input id="edit" type="button" value="编辑"  onclick="Edit()"/></td>' +
+                        '<td><input id="Detail" type="button" value="查看详情" onclick="detail(' + this.id + ')"/><input id="edit" type="button" value="编辑"  onclick="Edit(' + this.id + ')"/></td>' +
                         '</tr>'
                     $("#tb").append(list);
                 })
@@ -176,12 +178,12 @@
                         '<td>' + this.material_Id + '</td>' +
                         '<td>' + this.material_Name + '</td>' +
                         '<td>' + this.material_Image + '</td>' +
-                        '<td>' + this.material_TypeId + '</td>' +
+                        '<td>' + this.mType_Name + '</td>' +
                         '<td>' + this.material_Price + '</td>' +
                         '<td>' + this.material_Number + '</td>' +
                         '<td>' + this.material_LastNumber + '</td>' +
                         '<td>' + (this.material_State == 1 ? "上架" : "下架") + '</td>' +
-                        '<td><input id="Detail" type="button" value="查看详情" onclick="detail(' + this.id+')"/><input id="edit" type="button" value="编辑" onclick="Edit()"/></td>' +
+                        '<td><input id="Detail" type="button" value="查看详情" onclick="detail(' + this.id + ')"/><input id="edit" type="button" value="编辑" onclick="Edit(' + this.id + ')"/></td>' +
                         '</tr>'
                     $("#tb").append(list);
                 })
@@ -211,11 +213,12 @@
             url: "http://localhost:49764/api/material/Fill?Id=" + id,
             type: "get",
             success: function (d) {
-                console.log(d);
+                console.log(d); 
                 InfoHtml += `<div>
                             <table>
                             < tr >
                                 <td>物料分类：${d.mType_Name}</td>
+                                <td>区域：${d.material_PlaceName}</td>
                             </tr >
                             < tr >
                                 <td>物料编号：${d.material_Id}</td>
@@ -246,4 +249,10 @@
         
     }
 
+    //编辑跳转页面
+    function Edit(Id) {
+
+
+        location.href = '/material/UpdMaterial?Id=' + Id;
+    }
 </script>

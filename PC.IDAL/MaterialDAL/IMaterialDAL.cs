@@ -118,5 +118,12 @@ namespace PC.IDAL.IMaterialDAL
         /// <param name="Id"></param>
         /// <returns></returns>
         List<ShowMaterialApprove> ShowMaterialFill(int Id);
+
+        /// <summary>
+        /// 编辑物料信息
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        int UpdMaterial(MaterialTableModel model);
     }
 }

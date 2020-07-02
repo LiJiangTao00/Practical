@@ -202,5 +202,15 @@ namespace PC.BLL.MaterialBll
         {
             return _dal.ShowMaterialFill(Id);
         }
+
+        /// <summary>
+        /// 修改物料
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public int UpdMaterial(MaterialTableModel model)
+        {
+            return _dal.UpdMaterial(model);
+        }
     }
 }
