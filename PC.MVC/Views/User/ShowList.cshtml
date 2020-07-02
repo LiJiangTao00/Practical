@@ -12,7 +12,7 @@
 </head>
 <body>
     <div style="margin-left:100px;margin-left:20px">
-        <h3 style="font-weight:600;">添加用户</h3>
+        <h3 style="font-weight:600;">用户列表</h3>
         <div style="margin:20px">
             <div style="border: 1px solid #808080;height:55px;padding-top:5px;">
                 <div style="float:left;padding-bottom:5px">
@@ -35,8 +35,8 @@
             <div>
 
                 <input type="button" value="添加" class="layui-btn layui-btn-normal" onclick="Add()" />
-                <input type="button" value="导出" class="layui-btn layui-btn-primary" onclick="Derive()" />
-                <input id="File1" type="file" />
+                @*<input type="button" value="导出" class="layui-btn layui-btn-primary" onclick="Derive()" />
+                <input id="File1" type="file" />*@
                 <input type="button" value="修改职务" class="layui-btn layui-btn-primary" onclick="UpdateJob()" />
                 <input type="button" value="修改部门" class="layui-btn layui-btn-primary" onclick="UpdateDepartment()" />
                 <input type="button" value="停用用户" class="layui-btn layui-btn-primary" onclick="Dead()" />
@@ -246,7 +246,7 @@
         }
     }
     function Select() {
-        ShowList(0, pageindex);
+        ShowList(0, 1);
     }
     function Lok(id) {
         var html = '<div id="upt"></div>';
@@ -355,6 +355,10 @@
     }
     function UpdateJob() {
         var ids = GetChkId();
+        if (dis == "") {
+            alert("未选中");
+            return;
+        }
         var str = '<table style="width:400px;height:100px;margin-top:20px">' +
             '<tr style = "width:400px;height:110px" >' +
             '<td>' +
@@ -451,6 +455,10 @@
     }
     function UpdateDepartment() {
         var ids = GetChkId();
+         if (dis == "") {
+            alert("未选中");
+            return;
+        }
         var str = '<table style="width:400px;height:100px;margin-top:20px">' +
             '<tr style = "width:400px;height:110px" >' +
             '<td>' +
@@ -548,6 +556,10 @@
     }
     function Dead() {
         var ids = GetChkId();
+         if (dis == "") {
+            alert("未选中");
+            return;
+        }
         var str = '<table style="width:400px;height:100px;margin-top:20px">' +
             '<tr style = "width:400px;height:110px" >' +
             '<td>' +
@@ -619,6 +631,10 @@
     }
     function Freeze() {
         var ids = GetChkId();
+         if (dis == "") {
+            alert("未选中");
+            return;
+        }
         var str = '<table style="width:400px;height:100px;margin-top:20px">' +
             '<tr style = "width:400px;height:110px" >' +
             '<td>' +

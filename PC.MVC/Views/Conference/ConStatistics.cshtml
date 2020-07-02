@@ -7,7 +7,7 @@
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script src="~/layuiadmin/layui/layui.js"></script>
 <link href="~/layuiadmin/layui/css/layui.css" rel="stylesheet" />
-
+<link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
 <script src="~/js/echarts (2).js"></script>
 <!DOCTYPE html>
 
@@ -17,44 +17,39 @@
     <title>会议统计</title>
 </head>
 <body>
-    <table>
-        <tr>
-            <td><a href="#" onclick="ConStatistics('all')">全部</a></td>
-            <td><a href="#" onclick="ConStatistics('CV')">CV组</a></td>
-            <td><a href="#" onclick="ConStatistics('DIA')">DIA组</a></td>
-            <td><a href="#" onclick="ConStatistics('COM')">社区组</a></td>
-            <td><input id="hid_product" type="hidden" value="default_proc" /></td>
-        </tr>
-        <tr>
-            <td>
-                <select id="Sel_Year">
-                    <option value="-1">==请选择年份==</option>
-                </select>
-            </td>
-            <td>
-                <select id="Sel_Month">
-                    <option value="1">按月统计</option>
-                    <option value="2">按季度统计</option>
-                    <option value="3">按年统计</option>
-                </select>
-            </td>
-            <td>
-                <select id="Sel_Dep">
-                    <option value="-1">==请选择市场部==</option>
-                </select>
-            </td>
-            <td>
-                <select id="Sel_ConType">
-                    <option value="-1">全部</option>
-                </select>
-            </td>
-            <td>
-                <input id="Button1" type="button" value="筛选" onclick="ConStatistics()" />
-            </td>
-        </tr>
-
-    </table>
-    <div id="MyBar" style="width: 600px;height:400px;"></div>
+    <div style="margin-left:100px;margin-left:20px">
+        <h3 style="font-weight:600;">会议统计</h3>
+        <div style="margin:20px;height:55px;">
+            <div>
+                <input type="button" value="全部" onclick="ConStatistics('all')" class="btn btn-block" style="background-color: Transparent; border-style: none;width:200px;float:left;margin-top:8px" />
+                <input type="button" value="CV组" onclick="ConStatistics('CV')" class="btn btn-block" style="background-color: Transparent; border-style: none;width:200px;float:left" />
+                <input type="button" value="DIA组" onclick="ConStatistics('DIA')" class="btn btn-block" style="background-color: Transparent; border-style: none;width:200px;float:left" />
+                <input type="button" value="社区组" onclick="ConStatistics('COM')" class="btn btn-block" style="background-color: Transparent; border-style: none;width:200px;float:left" />
+                <input id="hid_product" type="hidden" value="default_proc" />
+                <div style="float:left;padding-bottom:5px;margin-left:20px">
+                    <select id="Sel_Year" class="btn btn-default dropdown-toggle">
+                        <option value="-1">==请选择年份==</option>
+                    </select>
+                    <select id="Sel_Month" class="btn btn-default dropdown-toggle">
+                        <option value="1">按月统计</option>
+                        <option value="2">按季度统计</option>
+                        <option value="3">按年统计</option>
+                    </select>
+                    <select id="Sel_Dep" class="btn btn-default dropdown-toggle">
+                        <option value="-1">==请选择市场部==</option>
+                    </select>
+                    <select id="Sel_ConType" class="btn btn-default dropdown-toggle">
+                        <option value="-1">全部</option>
+                    </select>
+                    <input type="button" class="btn btn-primary" style="width:80px" value="筛选" onclick="ConStatistics()" />
+                </div>
+            </div>
+            <div style="border: 1px solid #808080;padding-top:100px;">
+                
+            </div>
+            <div id="MyBar" style="width: 600px;height:400px;"></div>
+        </div>
+    </div>
 </body>
 </html>
 <script>
@@ -159,7 +154,7 @@
                         },
                         barWidth: 30,
                         series: [{
-                            data: [d.aprNums+d.augNums+d.decNums, d.febNums+d.janNums+d.julNums, d.junNums+d.marNums+ d.mayNums, d.novNums+d.octNums+d.sepNums],
+                            data: [d.aprNums + d.augNums + d.decNums, d.febNums + d.janNums + d.julNums, d.junNums + d.marNums + d.mayNums, d.novNums + d.octNums + d.sepNums],
                             type: 'bar',
                             showBackground: true,
                             backgroundStyle: {
@@ -178,7 +173,7 @@
                         },
                         barWidth: 40,
                         series: [{
-                            data: [d.aprNums + d.augNums + d.decNums+ d.febNums + d.janNums + d.julNums+d.junNums + d.marNums + d.mayNums+d.novNums + d.octNums + d.sepNums],
+                            data: [d.aprNums + d.augNums + d.decNums + d.febNums + d.janNums + d.julNums + d.junNums + d.marNums + d.mayNums + d.novNums + d.octNums + d.sepNums],
                             type: 'bar',
                             showBackground: true,
                             backgroundStyle: {

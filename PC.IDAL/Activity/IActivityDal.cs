@@ -1,5 +1,6 @@
 ﻿using NPOI.SS.Formula.Functions;
 using PC.Model.Models;
+using PC.Model.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -75,11 +76,22 @@ namespace PC.IDAL.Activity
         /// 查看执行情况
         /// </summary>
         /// <returns></returns>
-        List<Activity_DoTableModel> Execute();
+        List<Activity_DoTableModel> Execute(int id);
         /// <summary>
         /// 获取活动
         /// </summary>
         /// <returns></returns>
         ActivityTableModel GetActivity(int id);
+        /// <summary>
+        /// 统计报表
+        /// </summary>
+        /// <returns></returns>
+        List<ActivityShowView> ShowView();
+        /// <summary>
+        /// 显示执行页面
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        List<ActivityZLY> zLies(int id, int did, int pid, int cid, int dis, string name);
     }
 }

@@ -43,6 +43,8 @@ namespace PC.API
             services.AddSingleton<IMaterialDAL, MaterialDAL>(); 
             services.AddSingleton<IMaterialBLL,MaterialBLL>();
             services.AddSingleton<IActivityDal, ActivityDal>();
+            services.AddSingleton<IUDAL,UDAL>();
+            services.AddSingleton<IUBLL, UBLL>();
             services.AddSingleton<IActivityBll, ActivityBll>();
             services.AddSingleton<IConferenceDal, ConferenceDal>();
             services.AddSingleton<IConferenceBll, ConferenceBll>();
@@ -64,7 +66,8 @@ namespace PC.API
             app.UseRouting();
 
             app.UseAuthorization();
-
+            //¶ÁÈ¡ÕÕÆ¬
+            app.UseStaticFiles();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

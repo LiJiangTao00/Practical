@@ -1,6 +1,7 @@
 ﻿using PC.IBLL.Activity;
 using PC.IDAL.Activity;
 using PC.Model.Models;
+using PC.Model.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -104,10 +105,14 @@ namespace PC.BLL.Activity
         {
             return dal.Details(id);
         }
-
-        public List<Activity_DoTableModel> Execute()
+        /// <summary>
+        /// 获取执行情况
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public List<Activity_DoTableModel> Execute(int id)
         {
-            return dal.Execute();
+            return dal.Execute(id);
         }
         /// <summary>
         /// 获取活动
@@ -117,6 +122,15 @@ namespace PC.BLL.Activity
         public ActivityTableModel GetActivity(int id)
         {
             return dal.GetActivity(id);
+        }
+        public List<ActivityShowView> ShowView()
+        {
+            return dal.ShowView();
+        }
+
+        public List<ActivityZLY> zLies(int id, int did, int pid, int cid, int dis, string name)
+        {
+            return dal.zLies(id, did, pid, cid, dis, name);
         }
     }
 }

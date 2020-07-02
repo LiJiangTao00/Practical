@@ -14,6 +14,7 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
     <link href="~/layuiadmin/layui/css/layui.css" rel="stylesheet" />
     <script src="~/layuiadmin/layui/layui.js"></script>
+    <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
 </head>
 <body>
     <div style="margin:20px">
@@ -32,7 +33,7 @@
             <input type="button" value="筛选" class="layui-btn layui-btn-warm" style="margin-left:20px" onclick="Select()" />
         </div>
 
-        <table>
+        <table class="table table-bordered">
             <tr>
                 <td>编码</td>
                 <td>活动名称</td>
@@ -43,10 +44,8 @@
                 <td>创建时间</td>
                 <td>结束时间</td>
                 <td>活动状态</td>
-                <td>操作</td>
             </tr>
             <tbody id="tb">
-
             </tbody>
         </table>
     </div>
@@ -55,6 +54,7 @@
 <script>
     $(function () {
         ShowDepartment();
+        ShowTable();
     })
     function ShowDepartment() {
         $.ajax({
@@ -99,22 +99,6 @@
         $('#ShowDistrict').empty();
         var str = '<option value="0">请选择</option>';
         $('#ShowDistrict').append(str);
-        ShowJob();
-    }
-    function ShowJob() {
-        $.ajax({
-            url: "http://localhost:49764/api/user/ShowJob",
-            type: "get",
-            dataType: "json",
-            success: function (data) {
-                $('#ShowJob').empty();
-                var str = '<option value="0">请选择</option>';
-                $.each(data, function (i, n) {
-                    str += '<option value="' + n.id + '">' + n.job_Name + '</option>';
-                })
-                $('#ShowJob').append(str);
-            }
-        })
     }
     function ProvinceChange() {
         var pid = $('#ShowProvince').val();
@@ -148,7 +132,76 @@
             }
         })
     }
-    function ShowTable() {
+    function Select() {
+        ShowTable();
+    }
+    function ShowList() {
+        //var txt_Sel = $('#txt_Sel').val();
+        //var ShowDepartment = $('#ShowDepartment').val() == null ? 0 : $('#ShowDepartment').val();
+        //var ShowProvince = $('#ShowProvince').val() == null ? 0 : $('#ShowProvince').val();
+        //var ShowCity = parseInt($('#ShowCity').val());
+        //var ShowDistrict = parseInt($('#ShowDistrict').val());
+        //var ShowJob = $('#ShowJob').val() == null ? 0 : $('#ShowJob').val();
+        //$.ajax({
+        //    url: "http://localhost:49764/api/user/ShowUser?product=" + product + "&did=" + ShowDepartment + "&pid=" + ShowProvince + "&cid=" + ShowCity + "&dis=" + ShowDistrict + "&jid=" + ShowJob + "&name=" + txt_Sel + "&index=" + index,
+        //    type: "get",
+        //    dataType: "json",
+        //    success: function (data) {
+        //        $('#tb').empty();
+        //        var str = '';
+        //        $.each(data, function (i, n) {
+        //            str += '<tr><td><input class="chk" type="checkbox" value="' + n.id
+        //                + '" /></td><td>' + n.user_Phone + '</td><td>' + n.user_Name + '</td><td>' + n.user_Id + '</td><td>' + n.product_Name
+        //                + '</td><td>' + n.department_Name + '</td><td>' + n.job_Name + '</td><td>' + n.user_AddTime
+        //                + '</td><td><button id="test" type="button" class="layui-btn" onclick="Lok(' + n.id + ')">查看详情</button><input type="button" value="编辑" class="layui-btn layui-btn-primary" onclick="Edit(' + n.id + ')" /><input type="button" value="删除" class="layui-btn layui-btn-primary" onclick="Del(' + n.id + ')" /></td></tr>';
+        //        })
+        //        $('#tb').append(str);
+        //    }
+        //})
+        //localStorage["selectid"] = product;
         
+        //$('input[type="checkbox"]').prop("checked", false);
+    }
+    function ShowTable() {
+        var txt_Sel = $('#txt_Sel').val();
+        var ShowDepartment = $('#ShowDepartment').val() == null ? 0 : $('#ShowDepartment').val();
+        var ShowProvince = $('#ShowProvince').val() == null ? 0 : $('#ShowProvince').val();
+        var ShowCity = parseInt($('#ShowCity').val());
+        var ShowDistrict = parseInt($('#ShowDistrict').val());
+        $.ajax({
+            url: "http://localhost:49764/api/activity/zLies?id=" + location.search.split('=')[1] + "&did=" + ShowDepartment + "&pid=" + ShowProvince + "&cid=" + ShowCity + "&dis=" + ShowDistrict + "&name=" + txt_Sel,
+            type: "get",
+            dataType: "json",
+            success: function (data) {
+                $('#tb').empty();
+                var str = '';
+                $.each(data, function (i, n) {
+                    str += '<tr>' +
+                        '<td>' + n.con_ConId + '</td>' +
+                        '<td>' + n.activity_Name + '</td>' +
+                        '<td>' + n.activity_Do_Hospital + '</td>' +
+                        '<td>' + n.user_Name + '</td>' +
+                        '<td>' + n.user_Area + '</td>' +
+                        '<td>' + n.job_Name + '</td>' +
+                        '<td>' + n.timeBegin + '</td>' +
+                        '<td>' + n.timeEnd + '</td>' +
+                        '<td>' + Zhuzhu(n.activityState_Id )+ '</td>' +
+                        //'<td><button id="test" type="button" class="layui-btn" onclick="Lok(' + n.id + ')">查看详情</button>' +
+                        '</td></tr>';
+                })
+                $('#tb').append(str);
+            }
+        })
+    }
+    function Zhuzhu(activityState_Id )
+    {
+        if (activityState_Id  == 0)
+                        {
+                            return "已完成";
+                        }
+                        
+                        else {
+                            return "未完成";
+                        }
     }
 </script>

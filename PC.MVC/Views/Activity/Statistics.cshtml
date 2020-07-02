@@ -1,0 +1,177 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Statistics</title>
+</head>
+<body>
+    <div id="service" style="width: 850px;height:500px;"></div>
+</body>
+</html>
+<script src="~/lib/jquery/dist/jquery.js"></script>
+
+<link rel="shortcut icon" href="../js/echarts-2.2.7/doc/asset/ico/favicon.png">
+<link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+<script type="text/javascript" src="../js/echarts-2.2.7/doc/asset/js/jquery.min.js"></script>
+<script type="text/javascript" src="../js/echarts-2.2.7/doc/example/www2/js/echarts-all.js"></script>
+<script>
+    $(function () {
+        Frons();
+
+    });
+    function Frons() {
+        $.ajax({
+            url: "http://localhost:49764/api/activity/ShowView",
+            type: "get",
+            dataType: "json",
+            success: function (data) {
+                var xx = [];
+                var y1 = [];
+                $(data).each(function () {
+                    xx.push(this.product_Name);
+                    y1.push(this.pcount);
+
+                })
+                Bandle(xx, y1);
+            }
+        });
+    }
+
+    function Bandle(xx, y1) {
+        var dom = document.getElementById("service");
+        var myChart = echarts.init(dom);
+        var posList = [
+            'left', 'right', 'top', 'bottom',
+            'inside',
+            'insideTop', 'insideLeft', 'insideRight', 'insideBottom',
+            'insideTopLeft', 'insideTopRight', 'insideBottomLeft', 'insideBottomRight'
+        ];
+
+        myChart.configParameters = {
+            rotate: {
+                min: -90,
+                max: 90
+            },
+            align: {
+                options: {
+                    left: 'left',
+                    center: 'center',
+                    right: 'right'
+                }
+            },
+            verticalAlign: {
+                options: {
+                    top: 'top',
+                    middle: 'middle',
+                    bottom: 'bottom'
+                }
+            },
+            position: {
+                options: echarts.util.reduce(posList, function (map, pos) {
+                    map[pos] = pos;
+                    return map;
+                }, {})
+            },
+            distance: {
+                min: 0,
+                max: 100
+            }
+        };
+
+        myChart.config = {
+            rotate: 90,
+            align: 'left',
+            verticalAlign: 'middle',
+            position: 'insideBottom',
+            distance: 15,
+            onChange: function () {
+                var labelOption = {
+                    normal: {
+                        rotate: myChart.config.rotate,
+                        align: myChart.config.align,
+                        verticalAlign: myChart.config.verticalAlign,
+                        position: myChart.config.position,
+                        distance: myChart.config.distance
+                    }
+                };
+                myChart.setOption({
+                    series: [{
+                        label: labelOption
+                    }]
+                });
+            }
+        };
+        var labelOption = {
+            show: true,
+            position: myChart.config.position,
+            distance: myChart.config.distance,
+            align: myChart.config.align,
+            verticalAlign: myChart.config.verticalAlign,
+            rotate: myChart.config.rotate,
+            formatter: '{c}',
+            fontSize: 16,
+            rich: {
+                name: {
+                    textBorderColor: '#fff'
+                }
+            }
+        };
+        option = {
+            color: ['#e70d55', '#0520e9', '#f2fa0a'],
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'shadow'
+                }
+            },
+            legend: {
+                data: ['物料名称']
+            },
+            toolbox: {
+                show: true,
+                orient: 'vertical',
+                left: 'right',
+                top: 'center',
+                feature: {
+                    mark: { show: true },
+                    dataView: { show: true, readOnly: false },
+                    magicType: { show: true, type: ['line', 'bar', 'stack', 'tiled'] },
+                    restore: { show: true },
+                    saveAsImage: { show: true }
+                }
+            },
+            xAxis: [
+                {
+                    type: 'category',
+                    axisTick: { show: false },
+                    data: xx
+                }
+            ],
+            yAxis: [
+                {
+                    type: 'value'
+                }
+            ],
+            series: [
+                {
+                    name: '物料名称',
+                    type: 'bar',
+                    barGap: 0,
+                    label: labelOption,
+                    data: y1
+                }
+            ]
+        };
+        if (option && typeof option === "object") {
+            myChart.setOption(option, true);
+        }
+    }
+</script>
+

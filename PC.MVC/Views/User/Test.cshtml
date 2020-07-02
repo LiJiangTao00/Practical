@@ -9,100 +9,105 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>Test</title>
+    <link rel="shortcut icon" href="../js/echarts-2.2.7/doc/asset/ico/favicon.png">
+    <script type="text/javascript" src="../js/echarts-2.2.7/doc/asset/js/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/echarts-2.2.7/doc/example/www2/js/echarts-all.js"></script>
+
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+
+    <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
 </head>
 <body>
-    <div style="margin-left:100px;margin-left:20px">
-        <div>
-            <h3 style="font-weight:600;">首页</h3>
-        </div>
-        <div style="margin-top:20px;margin-right:40px">
-            <div style="border: 1px solid #808080;width:500px;height:40px;vertical-align:central">
-                新增数据
-                <select id="DataTime" style="float:right">
-                    <option value="week">本周</option>
-                    <option value="month">本月</option>
-                    <option value="year">本季度</option>
-                </select>
-            </div>
-            <div style="border: 1px solid #808080;width:500px;height:300px">
-                <div style="margin:60px;margin-right:40px;float:left">
-                    <a href="javascript:GetUser()" style="color:black;text-decoration:none">
-                        <div id="user">
-                            <h1>  50</h1>
-                            <h4>新增用户</h4>
-                        </div>
-                    </a>
-                </div>
-                <div style="margin:60px;margin-left:40px;margin-right:40px;float:left">
-                    <a href="javascript:GetMeet()" style="color:black;text-decoration:none">
-                        <div id="meet">
-                            <h1>  50</h1>
-                            <h4>新增会议</h4>
-                        </div>
-                    </a>
-                </div>
-                <div style="margin:60px;margin-left:40px;margin-right:40px;float:left">
-                    <a href="javascript:GetWu()" style="color:black;text-decoration:none">
-                        <div id="wu">
-                            <h1>  50</h1>
-                            <h4>新增会议</h4>
-                        </div>
-                    </a>
-                </div>
-            </div>
-        </div>
-        <div style="margin-top:20px;margin-right:40px">
-            <div style="border: 1px solid #808080;width:500px;height:40px;vertical-align:central">
-                会议统计
-                <select id="MeetTime" style="float:right">
-                    <option value="week">本周</option>
-                    <option value="month">本月</option>
-                    <option value="year">本季度</option>
-                </select>
-            </div>
-            <div style="border: 1px solid #808080;width:500px;height:300px">
-                <div style="margin:60px;margin-right:40px;float:left">
-                    <a href="javascript:GetUser()" style="color:black;text-decoration:none">
-                        <div id="user">
-                            <h1>  50</h1>
-                            <h4>新增用户</h4>
-                        </div>
-                    </a>
-                </div>
-                <div style="margin:60px;margin-left:40px;margin-right:40px;float:left">
-                    <a href="javascript:GetMeet()" style="color:black;text-decoration:none">
-                        <div id="meet">
-                            <h1>  50</h1>
-                            <h4>新增会议</h4>
-                        </div>
-                    </a>
-                </div>
-                <div style="margin:60px;margin-left:40px;margin-right:40px;float:left">
-                    <a href="javascript:GetWu()" style="color:black;text-decoration:none">
-                        <div id="wu">
-                            <h1>  50</h1>
-                            <h4>新增会议</h4>
-                        </div>
-                    </a>
-                </div>
-            </div>
-        </div>
-        <div style="margin-top:20px;margin-left:40px;margin-right:40px">
-            <div>
-                会议统计
-                <select id="MeetTime">
-                    <option value="week">本周</option>
-                    <option value="month">本月</option>
-                    <option value="year">本年</option>
-                </select>
-            </div>
-            <div id="MeetState">
-
-            </div>
-        </div>
-    </div>
+    <div id="main" style="width:600px;height:400px;"></div>
 </body>
 </html>
-<script src="~/lib/jquery/dist/jquery.js"></script>
+
+
 <script>
+    $(document).ready(function () {
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('main'));
+
+
+        // 初始 option
+        option = {
+            title: {
+                text: '某站点用户访问来源',
+                subtext: '纯属虚构',
+                x: 'center'
+            },
+            tooltip: {
+                trigger: 'item',
+                formatter: "{a} <br/>{b} : {c} ({d}%)"
+            },
+            legend: {
+                orient: 'vertical',
+                x: 'left',
+                data: ['已完成', '正举办', '未举办']
+            },
+            toolbox: {
+                show: true,
+                feature: {
+                    mark: { show: true },
+                    dataView: { show: true, readOnly: false },
+                    magicType: {
+                        show: true,
+                        type: ['pie', 'funnel'],
+                        option: {
+                            funnel: {
+                                x: '25%',
+                                width: '50%',
+                                funnelAlign: 'left',
+                                max: 1548
+                            }
+                        }
+                    },
+                    restore: { show: true },
+                    saveAsImage: { show: true }
+                }
+            },
+            calculable: true,
+            series: [
+                {
+                    name: '访问来源',
+                    type: 'pie',
+                    radius: '55%',
+                    center: ['50%', '60%'],
+                    data: []
+                }
+            ]
+        };
+        //获取数据
+        $.getJSON("http://localhost:49764/api/user/GetCon?time=week", function (data11) {
+            var d = data11;
+            var nanlist = [];
+
+            for (var i = 0; i < d.length; i++) {
+                // var m=new Map();//定义一个字典或者map集合
+                // m.set("value",d[i].jine);
+                // m.set("name",d[i].dpname);
+                var m = {};
+                m["value"] = d[i].num;
+                m["name"] = d[i].name;
+                nanlist.push(m);
+
+            }
+            myChart.setOption({
+
+                legend: {
+                    data: ['已完成', '正举办', '未举办']
+                },
+                series: [{
+                    // 根据名字对应到相应的系列
+                    name: '会议状态',
+                    data: nanlist
+                },
+                ]
+            });
+        });
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+    });
+
 </script>

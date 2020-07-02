@@ -24,7 +24,7 @@ namespace PC.Common.Helpers
             using (SqlConnection con = new SqlConnection(@"Data Source=192.168.43.93;Initial Catalog=Practial;User ID=sa;Pwd=12345"))
             {
                 string tsql = "insert into LogTable values ('李江涛',";
-                string[] model = tsql.Split("Table");
+                string[] model = sql.Split("Table");
                 string[] table =model[0].Split(" ");
                 string tab = "";
                 foreach (var item in table)
@@ -32,19 +32,26 @@ namespace PC.Common.Helpers
                     tab = item;
                 }
                 tsql += "'"+tab+"Table',";
-                if (sql.Contains("insert"))
+                if (tab=="Log")
                 {
-                    tsql += "'添加','"+DateTime.Now+"')";
+
                 }
                 else
                 {
-                    tsql += "'修改','" + DateTime.Now + "')";
-                }
-                int res = con.Execute(sql);
-                if (res>0)
-                {
-                    int p = con.Execute(tsql);
-                    return p;
+                    if (sql.Contains("insert"))
+                    {
+                        tsql += "'添加','" + DateTime.Now + "')";
+                    }
+                    else
+                    {
+                        tsql += "'修改','" + DateTime.Now + "')";
+                    }
+                    int res = con.Execute(sql);
+                    if (res > 0)
+                    {
+                        int p = con.Execute(tsql);
+                        return p;
+                    }
                 }
                 return 0;
             }
