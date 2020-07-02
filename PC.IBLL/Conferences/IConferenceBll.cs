@@ -11,7 +11,7 @@ namespace PC.IBLL.Conferences
         //会议显示
         List<ConferenceShow> ShowConference();
         //添加会议
-        int AddConference(ConferenceTableModel c);
+        int AddConference(ConferenceAdd c);
         //查询会议
         SearchPageShowConference SearchConference(DateTime condate, string conplace, string constate, string conname, string conproduct, int pageindex, int pagesize);
         //删除会议

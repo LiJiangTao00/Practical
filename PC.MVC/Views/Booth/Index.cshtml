@@ -18,7 +18,7 @@
         <div style="margin-top:20px;margin-right:40px;float:left">
             <div style="border: 1px solid #808080;width:600px;float:left;height:40px;vertical-align:central">
                 新增数据
-                <select id="DataTime" style="float:right">
+                <select id="DataTime" style="float:right" onchange="ShowData()">
                     <option value="week">本周</option>
                     <option value="month">本月</option>
                     <option value="year">本季度</option>
@@ -26,21 +26,21 @@
             </div>
             <div style="border: 1px solid #808080;width:600px;height:350px;margin-top:40px" id="shownum">
                 <div style="margin:60px;float:left">
-                    <a href="javascript:GetUser()" style="color:black;text-decoration:none">
+                    <a href="/User/ShowList" style="color:black;text-decoration:none">
                         <div id="user">
 
                         </div>
                     </a>
                 </div>
                 <div style="margin:60px;margin-left:30px;float:left">
-                    <a href="javascript:GetMeet()" style="color:black;text-decoration:none">
+                    <a href="/Conference/ShowConference" style="color:black;text-decoration:none">
                         <div id="meet">
 
                         </div>
                     </a>
                 </div>
                 <div style="margin:60px;margin-left:30px;float:left">
-                    <a href="javascript:GetWu()" style="color:black;text-decoration:none">
+                    <a href="/Material/ShowMaterial" style="color:black;text-decoration:none">
                         <div id="wu">
 
                         </div>
@@ -52,10 +52,10 @@
             <div style="float:left;width:600px;">
                 <div style="border: 1px solid #808080;width:600px;height:40px;vertical-align:central">
                     会议统计
-                    <select id="MeetTime" style="float:right">
+                    <select id="MeetTime" style="float:right" onchange="ShowPie()">
                         <option value="week">本周</option>
                         <option value="month">本月</option>
-                        <option value="year">本年</option>
+                        <option value="year">本季度</option>
                     </select>
                 </div>
             </div>
@@ -66,8 +66,14 @@
     </div>
 </body>
 </html>
-<link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+<link rel="shortcut icon" href="../js/echarts-2.2.7/doc/asset/ico/favicon.png">
+<script type="text/javascript" src="../js/echarts-2.2.7/doc/asset/js/jquery.min.js"></script>
+<script type="text/javascript" src="../js/echarts-2.2.7/doc/example/www2/js/echarts-all.js"></script>
+
 <script src="~/lib/jquery/dist/jquery.js"></script>
+
+<link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
 <script>
     $(function () {
         ShowData();
@@ -111,38 +117,103 @@
                 $('#wu').empty();
                 var str = '<div id="user">' +
                     '<h1>&nbsp;&nbsp;&nbsp; ' + data.num + '</h1>' +
-                    '<h4>新增会议</h4>' +
+                    '<h4>新增物料</h4>' +
                     '</div>';
                 $('#wu').html(str);
             }
         })
     }
+
 </script>
-<script type="text/javascript">
-    gvChartInit();
+<script>
+    var myChart = echarts.init(document.getElementById('MeetState'));
     $(document).ready(function () {
-        $('#myTable5').gvChart({
-            chartType: 'PieChart',
-            gvSettings: {
-                vAxis: { title: 'No of players' },
-                hAxis: { title: 'Month' },
-                width: 600,
-                height: 350
-            }
-        });
+        // 基于准备好的dom，初始化echarts实例
+        
+
+
+        // 初始 option
+        option = {
+            title: {
+                text: '',
+                subtext: '',
+                x: 'center'
+            },
+            tooltip: {
+                trigger: 'item',
+                formatter: "{a} <br/>{b} : {c} ({d}%)"
+            },
+            legend: {
+                orient: 'vertical',
+                x: 'left',
+                data: ['已完成', '正举办', '未举办']
+            },
+            toolbox: {
+                show: true,
+                feature: {
+                    mark: { show: true },
+                    dataView: { show: true, readOnly: false },
+                    magicType: {
+                        show: true,
+                        type: ['pie', 'funnel'],
+                        option: {
+                            funnel: {
+                                x: '25%',
+                                width: '50%',
+                                funnelAlign: 'left',
+                                max: 1548
+                            }
+                        }
+                    },
+                    restore: { show: true },
+                    saveAsImage: { show: true }
+                }
+            },
+            calculable: true,
+            series: [
+                {
+                    name: '访问来源',
+                    type: 'pie',
+                    radius: '55%',
+                    center: ['50%', '60%'],
+                    data: []
+                }
+            ]
+        };
+        ShowPie();
+       
+        //获取数据
+        
     });
-</script>
-<script type="text/javascript">
-    gvChartInit();
-    $(document).ready(function () {
-        $('#myTable1').gvChart({
-            chartType: 'PieChart',
-            gvSettings: {
-                vAxis: { title: 'No of players' },
-                hAxis: { title: 'Month' },
-                width: 600,
-                height: 350
+    function ShowPie() {
+        $.getJSON("http://localhost:49764/api/user/GetCon?time=" + $('#MeetTime').val(), function (data11) {
+            var d = data11;
+            var nanlist = [];
+
+            for (var i = 0; i < d.length; i++) {
+                // var m=new Map();//定义一个字典或者map集合
+                // m.set("value",d[i].jine);
+                // m.set("name",d[i].dpname);
+                var m = {};
+                m["value"] = d[i].num;
+                m["name"] = d[i].name;
+                nanlist.push(m);
+
             }
+            myChart.setOption({
+
+                legend: {
+                    data: ['已完成', '正举办', '未举办']
+                },
+                series: [{
+                    // 根据名字对应到相应的系列
+                    name: '会议状态',
+                    data: nanlist
+                },
+                ]
+            });
         });
-    });
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+    }
 </script>

@@ -182,9 +182,9 @@ namespace PC.API.Controllers.Activity
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public List<ActivityZLY> zLies(int id)
+        public List<ActivityZLY> zLies()
         {
-            return bll.zLies(id);
+            return bll.zLies();
         }
     }
 }

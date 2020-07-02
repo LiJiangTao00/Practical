@@ -128,9 +128,9 @@ namespace PC.BLL.Activity
             return dal.ShowView();
         }
 
-        public List<ActivityZLY> zLies(int id)
+        public List<ActivityZLY> zLies()
         {
-            return dal.zLies(id);
+            return dal.zLies();
         }
     }
 }

@@ -243,6 +243,11 @@ namespace PC.API.Controllers.UserInfo
         {
             return _bll.GetLog(time,table);
         }
+        [HttpGet]
+        public List<PieModel> GetCon(string time)
+        {
 
+            return _bll.GetCon(time);
+        }
     }
 }

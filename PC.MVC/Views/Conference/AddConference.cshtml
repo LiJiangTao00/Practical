@@ -92,7 +92,7 @@
             </tr>
             <tr>
                 <td></td>
-                <td><input id="Button1" type="button" value="下一步" style="background-color:blue;color:white" onclick="AddConference()" /></td>
+                <td><input id="Button1" type="button" value="提交" style="background-color:blue;color:white" onclick="AddConference()" /></td>
                 <td><input id="Button1" type="button" value="重置" onclick="location.href=AddConference" /></td>
             </tr>
         </table>
@@ -105,41 +105,44 @@
         var con = {};
         con.Con_Name = $("#Txt_conname").val();
         con = {
-            "Con_TypeId": 1,
-            "Con_ProductId": 1,
+            "Con_TypeId": -1,
+            "Con_ProductId": -1,
             "Con_Name": $("#Txt_conname").val(),
             "Con_StartTime": $("#Txt_constarttime").val(),
             "Con_EndTime": $("#Txt_conendtime").val(),
             "Con_Place": $("#Txt_conplace").val(),
             "Con_OrganizationalUnit": $("#Txt_conorg").val(),
             "Con_QuotaEndTime": $("#Txt_conquotaend").val(),
-            "Con_QuotaNumber": Number($("#Txt_conquotanum").val()),
+            "Con_QuotaNumber": $("#Txt_conquotanum").val(),
             "Con_SupportUnit": $("#Txt_consup").val(),
-            //"Con_ConDataId": $("#Sel_constate").val(), 没做 后台默认是1
+            "Con_ConDataId": "1",
             "Con_Desc": $("#Txt_Desc").val(),
             "Con_Admin": "1",
         };
         $(".ConType").each(function () {
             if ($(this).prop("checked")) {
-                con.Con_TypeId = Number($(this).val());
+                con.Con_TypeId = $(this).val();
             }
         })
         $(".radio_conprod").each(function () {
             if ($(this).prop("checked")) {
-                con.Con_ProductId=Number($(this).val());
+                con.Con_ProductId=$(this).val();
             }
         })
         
         console.log(con);
         $.ajax({
-            type: "post",
             url: "http://localhost:49764/api/Conference/AddConference",
             data: con,
-            dataType: "json",
+            type: "post",
             contentType: "application/x-www-form-urlencoded",
+            dataType: "json",
             success: function (d) {
                 if (d>0) {
-                    alert("111111");
+                    alert("添加成功！");
+                    location.href="/Conference/ShowConference"
+                } else {
+                    alert("添加失败！");
                 }
             }
         })

@@ -22,7 +22,7 @@ namespace PC.BLL.Conferences
             return _dal.ShowConference();
         }
         //添加会议
-        public int AddConference(ConferenceTableModel c)
+        public int AddConference(ConferenceAdd c)
         {
 
             return _dal.AddConference(c);
