@@ -1,0 +1,138 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>UpdMaterial</title>
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+</head>
+<body>
+    <h2>编辑物料</h2>
+    <div>
+        <table class="tab table-bordered">
+            <tr>
+                <td>物料分类：</td>
+                <td>
+                    <select id="Mtype_name">
+
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>区域：</td>
+                <td>
+                    <select id="Material_PlaceName">
+                        <option value="北中国">北中国</option>
+                        <option value="南中国">南中国</option>
+                        <option value="西中国">西中国</option>
+                        <option value="全国">全国</option>
+                        <option value="社区">社区</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>物料编号：</td>
+                <td><input id="Material_Id" type="text" /></td>
+            </tr>
+            <tr>
+                <td>物料名称：</td>
+                <td><input id="Material_Name" type="text" /></td>
+            </tr>
+            <tr>
+                <td>描述：</td>
+                <td><textarea id="Material_Desc" rows="5" cols="30"></textarea></td>
+            </tr>
+            <tr>
+                <td>图片：</td>
+                <td><input id="Material_Image" type="text" /></td>
+            </tr>
+            <tr>
+                <td>单价：</td>
+                <td><input id="Material_Price" type="text" />元</td>
+            </tr>
+            <tr>
+                <td>数量：</td>
+                <td><input id="Material_Number" type="text" />个</td>
+            </tr>
+            <tr>
+                <td>物料状态</td>
+                <td>
+                    <input id="Material_State" type="text" />
+                    <input id="Hidden" type="hidden" value="@ViewBag.Id"/>
+                </td>
+            </tr>
+            <tr>
+                <td><input id="btnTJ" type="button" value="提交" onclick="Save()" /></td>
+                <td><input id="btnFH" type="button" value="返回" onclick="Fanhui()" /></td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>
+<script>
+    $(function () {
+        //物料类型下拉绑定
+        Typedrop();
+    })
+    //绑定下拉（物料信息）
+    function Typedrop() {
+        $.ajax({
+            url: "http://localhost:49764/api/material/GetTypes",
+            type: "Get",
+            success: function (data) {
+                console.log(data);
+                $("#Mtype_name").empty();
+                $("#Mtype_name").append("<option value=0>请选择</option>");
+                $(data).each(function () {
+                   var str = '<option value=' + this.id + '>' + this.mType_Name + '</option>'
+                    $("#Mtype_name").append(str);
+                })
+            }
+        })
+    }
+    function Save() {
+        var obj = {
+            Material_TypeId: $("#Mtype_name").val(),
+            Material_PlaceName: $("#Material_PlaceName").val(),
+            Material_Id: ($("#Material_Id").val()),
+            Material_Name: $("#Material_Name").val(),
+            Material_Desc: $("#Material_Desc").val(),
+            Material_Image: $("#Material_Image").val(),
+            Material_Price: parseFloat($("#Material_Price").val()),
+            Material_Number: parseInt($("#Material_Number").val()),
+            Material_State: parseInt($("#Material_State").val()),
+            Id: parseInt($("#Hidden").val())
+        };
+       // console.log(obj);
+        $.ajax({
+            url: "http://localhost:49764/api/material/UpdMaterial",
+            type: "post",
+            data: obj,
+            dataType:"json",
+            contentType: "application/x-www-form-urlencoded",
+            success: function (data) {
+                if (data > 0) {
+                    alert("OK");
+                    location.href = '/Material/ShowMaterial';
+                }
+                else {
+                    alert("NO");
+                }
+            }
+        })
+    }
+
+    function Fanhui() {
+        location.href = '/Material/ShowMaterial';
+    }
+
+</script>
+

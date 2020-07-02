@@ -1,13 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using PC.Model.Models;
-using PC.IDAL.IMaterialDAL;
-using PC.DAL.MaterialDal;
-using PC.IBLL.MaterialBLL;
-using PC.BLL.MaterialBll;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace PC.MVC.Controllers.MaterialManagement
 {
@@ -52,6 +43,16 @@ namespace PC.MVC.Controllers.MaterialManagement
         /// <returns></returns>
         public IActionResult BarGraph()
         {
+            return View();
+        }
+
+        /// <summary>
+        /// 编辑物料
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult UpdMaterial(int Id)
+        {
+            ViewBag.Id = Id;
             return View();
         }
     }
