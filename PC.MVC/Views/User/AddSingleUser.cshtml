@@ -101,9 +101,15 @@
             <tr>
                 <td>个人照片</td>
                 <td>
-                    <div class="layui-input-inline">
-                        <input type="file" id="User_Photo" style="height:20px;width:200px;" name="username" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
+                    <div style="position: relative;">
+                        <input id="User_Photo" style="position: absolute; top: 0; bottom: 0; left: 0;right: 0; opacity: 0;" type="file" accept="image/gif, image/jpg, image/png" onchange="showImg(this)" />
+                        <div style="text-align:top">
+                            <img id="upload" src="/wwwroot/img/0.jpg" style="width: 40px; height: 40px; vertical-align: middle;" />
+                        </div>
                     </div>
+                    @*<div class="layui-input-inline">
+                        <input type="file" id="User_Photo" style="height:20px;width:200px;" name="username" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
+                    </div>*@
                 </td>
             </tr>
             <tr>
@@ -277,5 +283,14 @@
                 }
             }
         })
+    }
+    function showImg(input) {
+        var file = input.files[0];
+        var reader = new FileReader()
+        // 图片读取成功回调函数
+        reader.onload = function (e) {
+            document.getElementById('upload').src = e.target.result
+        }
+        reader.readAsDataURL(file)
     }
 </script>

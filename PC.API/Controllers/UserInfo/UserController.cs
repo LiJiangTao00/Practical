@@ -105,6 +105,32 @@ namespace PC.API.Controllers.UserInfo
             }
             return _bll.AddSingleUser(m);
         }
+        [HttpPost]
+        public int UpdateSingleUser(string obj)
+        {
+            UserTableModel m = JsonConvert.DeserializeObject<UserTableModel>(obj);
+            var s = m.User_Photo;
+            if (Request.Form.Files.Count > 0)
+            {
+                //获取物理路径 webtootpath
+                string path = _hostEnvironment.ContentRootPath + "\\wwwroot\\img";
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
+                var file = Request.Form.Files[0];
+                string fileExt = file.FileName.Split('.')[file.FileName.Split('.').Length - 1];
+                string filename = Guid.NewGuid().ToString() + "." + fileExt;
+                string fileFullName = path + "\\" + filename;
+                using (FileStream fs = System.IO.File.Create(fileFullName))
+                {
+                    file.CopyTo(fs);
+                    fs.Flush();
+                }
+                m.User_Photo = "/img/" + filename;
+            }
+            return _bll.UpdateSingleUser(m);
+        }
         //[HttpGet]
         //public GetPage<JobTableModel> ShowJob(int page,int limit)
         //{
@@ -192,11 +218,7 @@ namespace PC.API.Controllers.UserInfo
         {
             return _bll.UpdateSome(gid, sid, action);
         }
-        [HttpPut]
-        public int UpdateSingleUser(UserTableModel m)
-        {
-            return _bll.UpdateSingleUser(m);
-        }
+        
         [HttpPut]
         public int UpdateJobState(int id)
         {
