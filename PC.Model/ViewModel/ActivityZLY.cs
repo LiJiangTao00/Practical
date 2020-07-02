@@ -6,12 +6,13 @@ namespace PC.Model.ViewModel
 {
     public class ActivityZLY
     {
+        public int Id { get; set; }
         //外键（会议表）会议编码
-        public int Activity_Do_Con_Id { get; set; }
+        public string Con_ConId { get; set; }
+        public int Activity_Do_Activity_Id { get; set; }
 
         //活动名称
         public string Activity_Name { get; set; }
-
         //医院
         public string Activity_Do_Hospital { get; set; }
 
@@ -20,7 +21,6 @@ namespace PC.Model.ViewModel
 
         //区域
         public string User_Area { get; set; }
-
         //职位
         public string Job_Name { get; set; }
 
@@ -41,5 +41,10 @@ namespace PC.Model.ViewModel
 
         //照片
         public int Picture { get; set; }
+        public int User_Department { get; set; }
+        public int User_Job { get; set; }
+        public int User_Province { get; set; }
+        public int User_City { get; set; }
+        public int User_District { get; set; }
     }
 }
