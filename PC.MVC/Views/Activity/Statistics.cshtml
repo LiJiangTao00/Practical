@@ -12,6 +12,7 @@
 </head>
 <body>
     <div id="service" style="width: 850px;height:500px;"></div>
+    <button type="button" class="layui-btn layui-btn-primary" style="float:right;margin-right:30px;" onclick="location.href = '/activity/ShowActivity'">返回列表</button>
 </body>
 </html>
 <script src="~/lib/jquery/dist/jquery.js"></script>
@@ -132,7 +133,7 @@
                 }
             },
             legend: {
-                data: ['物料名称']
+                data: ['活动类型']
             },
             toolbox: {
                 show: true,
@@ -161,7 +162,7 @@
             ],
             series: [
                 {
-                    name: '物料名称',
+                    name: '活动类型',
                     type: 'bar',
                     barGap: 0,
                     label: labelOption,
