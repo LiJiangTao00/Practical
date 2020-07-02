@@ -52,7 +52,15 @@
             </tr>
             <tr>
                 <td>图片：</td>
-                <td><input id="Material_Image" type="text" /></td>
+                <td>
+                    <div style="position: relative;">
+                        <input id="Material_Image" style="position: absolute; top: 0; bottom: 0; left: 0;right: 0; opacity: 0;" type="file" accept="image/gif, image/jpg, image/png" onchange="showImg(this)" />
+                        <div style="text-align:top">
+                            <img id="upload" style="width: 40px; height: 40px; vertical-align: middle;" />
+                        </div>
+                    </div>
+                    @*<input id="Material_Image" type="text" />*@
+                </td>
             </tr>
             <tr>
                 <td>单价：</td>
@@ -98,6 +106,17 @@
             }
         })
     }
+    function showImg(input) {
+        var file = input.files[0];
+        var reader = new FileReader()
+        // 图片读取成功回调函数
+        reader.onload = function (e) {
+            document.getElementById('upload').src = e.target.result
+        }
+        reader.readAsDataURL(file)
+    }
+
+    //$('#upload').attr("src", "http://localhost:49764" + data.图片字段);
     function Save() {
         var obj = {
             Material_TypeId: $("#Mtype_name").val(),
