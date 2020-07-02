@@ -16,76 +16,82 @@
 </head>
 <body>
     <h2>添加物料</h2> <input id="btnFH" type="button" value="返回" onclick="Fanhui()" />
-    <table class="table table-bordered">
-        <tr>
-            <td>物料分类：</td>
-            <td>
-                <select id="type">
-                </select>
-            </td>
-        </tr>
-        <tr>
-            <td>区域：</td>
-            <td>
-                <select id="place">
-                    <option>==请选择==</option>
-                    <option>北中国</option>
-                    <option>南中国</option>
-                    <option>西中国</option>
-                    <option>全国</option>
-                    <option>社区</option>
-                </select>
-            </td>
-        </tr>
-        <tr>
-            <td>物料编号：</td>
-            <td>
-                <input id="Material_Id" type="text" />
-            </td>
-        </tr>
-        <tr>
-            <td>物料名称：</td>
-            <td>
-                <input id="Material_Name" type="text" />
-            </td>
-        </tr>
-        <tr>
-            <td>描述：</td>
-            <td>
-                <textarea id="Material_Desc" rows="2" cols="20"></textarea>
-            </td>
-        </tr>
-        <tr>
-            <td>图片：</td>
-            <td>
-                <div class="layui-input-inline">
-                    <input type="file" id="Material_Image" style="height:20px;width:200px;" name="username" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td>单价：</td>
-            <td>
-                <input id="Material_Price" type="text" />元
-            </td>
-        </tr>
-        <tr>
-            <td>数量：</td>
-            <td>
-                <input id="Material_Number" type="text" />个
-            </td>
-        </tr>
-        <tr>
-            <td>物料状态：</td>
-            <td>
-                <input id="Material_State" type="text" />
-            </td>
-        </tr>
-        <tr>
-            <td><input id="btnTJ" type="button" value="提交" onclick="addmaterial()" /></td>
-            <td><input id="btnCZ" type="button" value="重置" onclick="czmaterial()" /></td>
-        </tr>
-    </table>
+                  <table class="table table-bordered">
+                      <tr>
+                          <td>物料分类：</td>
+                          <td>
+                              <select id="type">
+                              </select>
+                          </td>
+                      </tr>
+                      <tr>
+                          <td>区域：</td>
+                          <td>
+                              <select id="place">
+                                  <option>==请选择==</option>
+                                  <option value="北中国">北中国</option>
+                                  <option value="南中国">南中国</option>
+                                  <option value="西中国">西中国</option>
+                                  <option value="全国">全国</option>
+                                  <option value="社区">社区</option>
+                              </select>
+                          </td>
+                      </tr>
+                      <tr>
+                          <td>物料编号：</td>
+                          <td>
+                              <input id="Material_Id" type="text" />
+                          </td>
+                      </tr>
+                      <tr>
+                          <td>物料名称：</td>
+                          <td>
+                              <input id="Material_Name" type="text" />
+                          </td>
+                      </tr>
+                      <tr>
+                          <td>描述：</td>
+                          <td>
+                              <textarea id="Material_Desc" rows="2" cols="20"></textarea>
+                          </td>
+                      </tr>
+                      <tr>
+                          <td>图片：</td>
+                          <td>
+                              <div class="layui-input-inline">
+                                  <input type="file" id="Material_Image" style="height:20px;width:200px;" name="username" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
+                              </div>
+                          </td>
+                      </tr>
+                      <tr>
+                          <td>单价：</td>
+                          <td>
+                              <input id="Material_Price" type="text" />元
+                          </td>
+                      </tr>
+                      <tr>
+                          <td>数量：</td>
+                          <td>
+                              <input id="Material_Number" type="text" />个
+                          </td>
+                      </tr>
+                      <tr>
+                          <td>剩余数量：</td>
+                          <td>
+                              <input id="Material_LastNumber" type="text" />个
+                          </td>
+                      </tr>
+                      <tr>
+                          <td>物料状态：</td>
+                          <td>
+                              <input id="Material_State" type="text" />
+                          </td>
+                      </tr>
+                      <tr>
+                          <td><input id="btnTJ" type="button" value="提交" onclick="addmaterial()" /></td>
+                          <td><input id="btnCZ" type="button" value="重置" onclick="czmaterial()" /></td>
+                      </tr>
+                  </table>
 </body>
 </html>
 
@@ -103,9 +109,9 @@
                 console.log(data);
                 $("#type").empty();
                 $(data).each(function () {
-                    str += '<option value=' + this.Id + '>' + this.mType_Name + '</option>';
+                    var str = '<option value=' + this.id + '>' + this.mType_Name + '</option>';
+                    $("#type").append(str);
                 })
-                $("#type").append(str);
             }
         })
     }
@@ -118,11 +124,13 @@
         data.append(file.name, file);
         var obj = {
             Material_TypeId: $("#type").val(),
+            Material_PlaceName: $("#Material_PlaceName").val(),
             Material_Id: $("#Material_Id").val(),
             Material_Name: $("#Material_Name").val(),
             Material_Desc: $("#Material_Desc").val(),
             Material_Price: $("#Material_Price").val(),
             Material_Number: $("#Material_Number").val(),
+            Material_LastNumber: $("#Material_LastNumber").val(),
             Material_State: $("#Material_State").val()
         }
         $.ajax({
@@ -131,7 +139,6 @@
             data: data,
             contentType: false,
             processData: false,
-            contentType: "application/json",
             success: function (data) {
                 if (data > 0) {
                     alert("添加成功!");
