@@ -265,7 +265,7 @@ namespace PC.DAL.UserDAL
 
         public int UpdateSingleUser(UserTableModel m)
         {
-            string sql = "update UserTable set User_Id='" + m.User_Id + "',User_Name='" + m.User_Name + "',User_Pwd='" + m.User_Pwd + "',User_Sex=" + m.User_Sex + ",User_Phone='" + m.User_Phone + "',User_Email='" + m.User_Email + "',User_Wechat='" + m.User_Wechat + "',User_QQ='" + m.User_QQ + "',User_Department=" + m.User_Department + ",User_Job=" + m.User_Job + ",User_Province=" + m.User_Province + ",User_City=" + m.User_City + ",User_District=" + m.User_District + ",User_Area='" + m.User_Area + "',User_Address='" + m.User_Address + "',User_ProductId=" + m.User_ProductId + ",User_Photo='" + m.User_Photo + "' where Id="+m.Id;
+            string sql = "update UserTable set User_Id='" + m.User_Id + "',User_Name='" + m.User_Name + "',User_Pwd='" + m.User_Pwd + "',User_Sex=" + m.User_Sex + ",User_Phone='" + m.User_Phone + "',User_Email='" + m.User_Email + "',User_Wechat='" + m.User_Wechat + "',User_QQ='" + m.User_QQ + "',User_Department=" + m.User_Department + ",User_Job=" + m.User_Job + ",User_Province=" + m.User_Province + ",User_City=" + m.User_City + ",User_District=" + m.User_District + ",User_Area='" + m.User_Area + "',User_Address='" + m.User_Address + "',User_ProductId=" + m.User_ProductId + ",User_Photo='" + m.User_Photo + "' where Id=" + m.Id;
             return dapper.Execute(sql);
         }
         public int UpdateJobState(int id)
@@ -315,7 +315,7 @@ namespace PC.DAL.UserDAL
             List<ListPermission> list = new List<ListPermission>();
             foreach (PermissionTableModel model in m)
             {
-                ListPermission pr =new ListPermission
+                ListPermission pr = new ListPermission
                 {
                     Id = model.Id,
                     Permission_Name = model.Permission_Name,
@@ -348,18 +348,18 @@ namespace PC.DAL.UserDAL
         }
         public int PutPwd(string phone, string oldpwd, string newPwd)
         {
-            string sql = "select * from UserTable where User_Phone='"+ phone + "' and User_Pwd='"+oldpwd+"'";
+            string sql = "select * from UserTable where User_Phone='" + phone + "' and User_Pwd='" + oldpwd + "'";
             UserTableModel m = dapper.Query(sql).FirstOrDefault();
-            if (m!=null)
+            if (m != null)
             {
-                sql = "update UserTable set User_Pwd='"+newPwd+ "' where User_Phone='"+ phone + "'";
-                return dapper.Execute(sql); 
+                sql = "update UserTable set User_Pwd='" + newPwd + "' where User_Phone='" + phone + "'";
+                return dapper.Execute(sql);
             }
             return 0;
         }
         public int AddJob(JobTableModel m)
         {
-            string sql = " insert into JobTable values ('" + m.Job_Name + "','" + m.Job_Desc + "',1,'"+DateTime.Now +"',0,0)";
+            string sql = " insert into JobTable values ('" + m.Job_Name + "','" + m.Job_Desc + "',1,'" + DateTime.Now + "',0,0)";
             return dapper.Execute(sql);
         }
         public BoothView GetLog(string time, string table)
@@ -422,6 +422,29 @@ namespace PC.DAL.UserDAL
             }
             List<PieModel> list = booth.Query(sql).ToList();
             return list;
+        }
+        public int ChangePermission(int id, string ids)
+        {
+            string sql = "delete from PermissionRelationTable where Permission_Id=" + id;
+            int c = dapper.Execute(sql);
+            if (c > 0)
+            {
+                string[] pid = ids.Split(',');
+                foreach (var item in pid)
+                {
+                    string tsql = "insert into PermissionRelationTable values(" + id + "," + int.Parse(item) + ")";
+                    int x = dapper.Execute(tsql);
+                    if (x > 0)
+                    {
+                        return x;
+                    }
+                    else
+                    {
+                        return 0;
+                    }
+                }
+            }
+            return 0;
         }
     }
 }

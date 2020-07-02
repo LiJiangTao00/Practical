@@ -271,5 +271,10 @@ namespace PC.API.Controllers.UserInfo
 
             return _bll.GetCon(time);
         }
+        [HttpGet]
+        public int ChangePermission(int id,string ids)
+        {
+            return _bll.ChangePermission(id, ids);
+        }
     }
 }

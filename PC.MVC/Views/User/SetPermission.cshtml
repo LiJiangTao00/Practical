@@ -14,7 +14,7 @@
     <div style="margin-left:100px;margin-left:20px">
         <div>
             <h3 style="font-weight:600;">添加用户</h3>
-           <input type="button" value="返回" onclick="GoBack()" />
+            <input type="button" value="返回" onclick="GoBack()" />
         </div>
         <table id="JobTb">
         </table>
@@ -22,12 +22,13 @@
         <table class="table table-borderless" id="PermissionTb">
         </table>
         <div>
-            <input type="button" value="button" />
-            <input type="reset" value="reset" />
+            <input type="button" value="button" onclick="Save()" />
+            <input type="reset" value="reset" onclick="Resave()" />
         </div>
     </div>
 </body>
 </html>
+
 <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
 <script src="~/lib/jquery/dist/jquery.js"></script>
 <script>
@@ -44,6 +45,7 @@
             url: "http://localhost:49764/api/user/ShowSingleJob?id=" + id,
             type: "get",
             dataType: "json",
+            async: false,
             success: function (data) {
                 $('#JobTb').empty();
                 var str = '';
@@ -66,22 +68,23 @@
             url: "http://localhost:49764/api/user/ShowPermission",
             type: "get",
             dataType: "json",
+            async: false,
             success: function (data) {
-                console.log(data);
                 $('#PermissionTb').empty();
                 var str = '';
                 $.each(data, function (i, n) {
                     str += '<tr>' +
-                        '<td><input type="checkbox" id="chk' + n.id + '"  value="' + n.id + '"/>' + n.permission_Name + '</td>' +
+                        '<td><input type="checkbox" class="chk" id="chk' + n.id + '"  value="' + n.id + '"/>' + n.permission_Name + '</td>' +
                         '</tr><tr>';
                     $.each(n.modelList, function (x, y) {
-                        str += '<td><input type="checkbox" id="chk' + y.id + '" value="' + y.id + '"/>' + y.permission_Name + '</td>';
+                        str += '<td><input type="checkbox" class="chk" id="chk' + y.id + '" value="' + y.id + '"/>' + y.permission_Name + '</td>';
                     })
                     str += '</tr>';
                 })
                 $('#PermissionTb').append(str);
             }
         })
+        $('.chk').attr("checked", false);
         ChkPermission();
     }
     function ChkPermission() {
@@ -90,12 +93,14 @@
             url: "http://localhost:49764/api/user/ShowSinglePermission?id=" + id,
             type: "get",
             dataType: "json",
+            async: false,
             success: function (data) {
-                $('.chk').attr("checked", false);
+                console.log(data);
+                //$('.chk').attr("checked", false);
                 $.each(data, function (i, n) {
-                    $('#chk' + n.id).attr("checked", true);
-                    if (n.id < 5) {
-                        ChkPid(n.id);
+
+                    if (n.job_Relcation < 5) {
+                        ChkPid(n.job_Relcation);
                     }
                 })
             }
@@ -106,6 +111,7 @@
             url: "http://localhost:49764/api/user/ChkPid?id=" + id,
             type: "get",
             dataType: "json",
+            async: false,
             success: function (data) {
                 if (data != null) {
                     $.each(data, function (i, n) {
@@ -114,5 +120,29 @@
                 }
             }
         })
+        $('#chk' + id).attr("checked", true);
+    }
+    function Save() {
+        var che = [];
+        $.each($("input[class='chk']:checked"), function (i) {
+            che.push($(this).val());
+        });
+        var pid = che.join(',');
+        var ids = pid;
+        var id = localStorage["PermissionId"];
+        $.ajax({
+            url: "http://localhost:49764/api/user/ChangePermission?id=" + id + "&ids=" + ids,
+            type: "get",
+            dataType: "json",
+            async: false,
+            success: function (d) {
+                if (d > 0) {
+                    location.href = "/user/showjob";
+                }
+            }
+        })
+    }
+    function Resave() {
+        $('.chk').attr("checked", false);
     }
 </script>

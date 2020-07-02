@@ -9,33 +9,107 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>Test</title>
-    <link rel="shortcut icon" href="../js/echarts-2.2.7/doc/asset/ico/favicon.png">
-    <script type="text/javascript" src="../js/echarts-2.2.7/doc/asset/js/jquery.min.js"></script>
-    <script type="text/javascript" src="../js/echarts-2.2.7/doc/example/www2/js/echarts-all.js"></script>
 
     <script src="~/lib/jquery/dist/jquery.js"></script>
 
     <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+
 </head>
 <body>
-    <div style="position: relative;">
-        <input id="upload-input" style="position: absolute; top: 0; bottom: 0; left: 0;right: 0; opacity: 0;" type="file" accept="image/gif, image/jpg, image/png" onchange="showImg(this)" />
-        <div style="text-align:top">
-            <span style="font-size: 12px;">上传文件：</span>
-            <img id="upload" src="/wwwroot/img/0.jpg" style="width: 40px; height: 40px; vertical-align: middle;" />
-        </div>
+    <select name="sdfas">
+        <option value="a">aaa</option>
+        <option value="b">bbb</option>
+    </select>
+    <input type="button" value="锁屏" id="lockButton" />
+    <div class="popup" id="popupDiv">
+        <!--IE6下，DIV默认不能遮盖select标签，可在此处放置一个iframe，以达到遮盖效果，其他浏览器可以不要-->
+        <iframe frameborder="1" scrolling="no" height="100%" width="100%" class="fff"></iframe>
+    </div>          <div class="divv" id="alertDiv">
+        <input type="button" value="关闭" id="unlockButton" />
     </div>
+
+
 </body>
 </html>
-    <script type="text/javascript">
-        function showImg(input) {
-        var file = input.files[0];
-        var reader = new FileReader()
-        // 图片读取成功回调函数
-        reader.onload = function(e) {
-            document.getElementById('upload').src = e.target.result
-        }
-        reader.readAsDataURL(file)
+
+<style type="text/css">
+    .divv {
+        position: absolute;
+        top: 30%;
+        left: 30%;
+        width: 80px;
+        height: 60px;
+        border: 1px solid #666;
+        background-color: #9CF;
+        text-align: center;
+        display: none;
+        z-index: 300;
     }
-</script>
+
+    .popup {
+        border: 1px solid red;
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        width: 100%;
+        height: 100%;
+        background-color: #000;
+        filter: alpha(opacity=45);
+        opacity: 0.45;
+        display: none;
+        z-index: 200;
+    }
+
+
+    .fff {
+        border: 1px solid blue;
+        position: relative;
+        background-color: #000;
+    }
+</style>
+<script type="text/javascript">
+    $(document).ready(function () {
+        //页面初始化
+        goCenter();
+        //滚动条滚动
+        $(window).scroll(
+            function () {
+                goCenter();
+
+            });
+        //拖动浏览器窗口
+        $(window).resize(
+            function () {
+                goCenter();
+
+            }
+        );
+        //锁屏
+        $("#lockButton").click(
+            function () {
+                $("#popupDiv").show();
+                $("#alertDiv").show();
+
+            }
+        );
+        //解屏
+        $("#unlockButton").click(
+            function () {
+                $("#popupDiv").hide();
+                $("#alertDiv").hide();
+
+            }
+        );
+    }
+    );
+
+    function goCenter() {
+        var h = $(window).height();
+        var w = $(window).width();
+        var st = $(window).scrollTop();
+        var sl = $(window).scrollLeft();
+        $("#popupDiv").css("width", w + sl);
+        $("#popupDiv").css("height", h + st);
+        $(".divv").css("top", ((h - 60) / 2) + st);
+        $(".divv").css("left", ((w - 80) / 2) + sl);
+    }</script>

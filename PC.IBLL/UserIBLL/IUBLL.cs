@@ -35,5 +35,6 @@ namespace PC.IBLL.UserIBLL
         int AddJob(JobTableModel m);
         BoothView GetLog(string time, string table);
         List<PieModel> GetCon(string time);
+        int ChangePermission(int id, string ids);
     }
 }
