@@ -88,7 +88,9 @@
                 $("#totalcount").text(d.dataCount);
                 $("#pagetotal").text(d.pageCount);
                 $("#tb").empty();
+                console.log(d);
                 $(d.pageShowMateriallist).each(function () {
+                    
                     var list = '<tr>' +
                         '<td><input class="chk" type="checkbox" value="" /></td>'+
                         '<td>' + this.material_Id + '</td>' +
@@ -222,15 +224,15 @@
                             </tr>
                             <tr>
                                 <td>物料编号：${d.material_Id}</td>
-                               <td>物料描述：${d.material_Desc}</td>
+                               <td>物料名称：${d.material_Name}</td>
                             </tr>
                             <tr>
-                                <td>单价：${d.material_Price}</td>
-                               <td>库存数量：${d.material_Number}</td>
+                                <td>物料描述：${d.material_Desc}</td>
+                               <td>单价：${d.material_Price}</td>
                             </tr>
                             <tr>
+                                <td>库存数量：${d.material_Number}</td>
                                 <td>添加日期：${d.material_AddTime}</td>
-                                <td></td>
                             </tr>
                                 </table>
                                     </div>`;
@@ -251,8 +253,6 @@
 
     //编辑跳转页面
     function Edit(Id) {
-
-
         location.href = '/material/UpdMaterial?Id=' + Id;
     }
 </script>

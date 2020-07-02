@@ -125,5 +125,12 @@ namespace PC.IDAL.IMaterialDAL
         /// <param name="id"></param>
         /// <returns></returns>
         int UpdMaterial(MaterialTableModel model);
+
+        /// <summary>
+        /// 反填物料
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        MaterialTableModel Fillmaterial(int Id);
     }
 }
