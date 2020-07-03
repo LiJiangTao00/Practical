@@ -148,6 +148,7 @@
             dataType: "json",
             success: function (data) {
                 $('#tb').empty();
+                console.log(data);
                 var str = '';
                 $.each(data, function (i, n) {
                     str += '<tr>' +
@@ -157,18 +158,32 @@
                         '<td>' + n.user_Name + '</td>' +
                         '<td>' + n.user_Area + '</td>' +
                         '<td>' + n.job_Name + '</td>' +
-                        '<td>' + n.timeBegin + '</td>' +
-                        '<td>' + n.timeEnd + '</td>' +
+                        '<td>' + setTime(n.timeBegin) + '</td>' +
+                            '<td>' + setTime(n.timeEnd) + '</td>' +
                         '<td>' + Zhuzhu(n.activityState_Id )+ '</td>' +
                         '</td></tr>';
                 })
+                console.log(str);
                 $('#tb').append(str);
             }
         })
     }
+    function setTime(time) {
+        if (time == "0001-01-01T00:00:00") {
+            return "";
+        }
+            var data = new Date(time);
+            var year = data.getFullYear();  //获取年
+            var month = data.getMonth() + 1;    //获取月
+            var day = data.getDate(); //获取日
+            var hours = data.getHours();
+            var minutes = data.getMinutes();
+        time = year + "-" + month + "-" + day;
+        return time;
+    }
     function Zhuzhu(activityState_Id )
     {
-        if (activityState_Id  == 0)
+        if (activityState_Id  == 1)
                         {
                             return "已完成";
                         }

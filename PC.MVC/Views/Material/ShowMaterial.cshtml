@@ -23,11 +23,11 @@
                 <td><h2>筛选</h2></td>
             </tr>
             <tr>
-                <td><input id="Materialid" type="text" placeholder="物料编号"/></td>
-                <td><input id="Materialname" type="text" placeholder="物料名称"/></td>
-                <td><input id="Materialprice" type="text" placeholder="物料价格"/> —— </td>
-                <td><input id="Materialprice1" type="text" placeholder="物料价格"/></td>
-                <td><input id="screen" type="button" value="筛选" class="btn btn-info"  onclick="Screen('all')" /></td>
+                <td><input id="Materialid" type="text" placeholder="物料编号" /></td>
+                <td><input id="Materialname" type="text" placeholder="物料名称" /></td>
+                <td><input id="Materialprice" type="text" placeholder="物料价格" /> —— </td>
+                <td><input id="Materialprice1" type="text" placeholder="物料价格" /></td>
+                <td><input id="screen" type="button" value="筛选" class="btn btn-info" onclick="Screen('all')" /></td>
                 <td>
                     <input id="btnAdd" type="button" value="添加" class="btn btn-outline-primary" onclick="AddMaterial()" />
                 </td>
@@ -55,12 +55,12 @@
     </div>
 
     <div>
-        <input id="btn_First" type="button" value="首页" onclick="Screen('first')"/>
-        <input id="btn_Prev" type="button" value="上一页" onclick="Screen('prv')"/>
+        <input id="btn_First" type="button" value="首页" onclick="Screen('first')" />
+        <input id="btn_Prev" type="button" value="上一页" onclick="Screen('prv')" />
         当前第<label id="pageindex">1</label>页/每页<label id="pagesize">3</label>
         总共<label id="totalcount"></label>条/总共<label id="pagetotal"></label>页
-        <input id="btn_Next" type="button" value="下一页" onclick="Screen('next')"/>
-        <input id="btn_Last" type="button" value="尾页" onclick="Screen('last')"/>
+        <input id="btn_Next" type="button" value="下一页" onclick="Screen('next')" />
+        <input id="btn_Last" type="button" value="尾页" onclick="Screen('last')" />
     </div>
 </body>
 </html>
@@ -90,12 +90,12 @@
                 $("#tb").empty();
                 console.log(d);
                 $(d.pageShowMateriallist).each(function () {
-                    
+
                     var list = '<tr>' +
-                        '<td><input class="chk" type="checkbox" value="" /></td>'+
+                        '<td><input class="chk" type="checkbox" value="" /></td>' +
                         '<td>' + this.material_Id + '</td>' +
                         '<td>' + this.material_Name + '</td>' +
-                        '<td>' + this.material_Image + '</td>'+
+                        '<td><img src="http://localhost:49764' + this.material_Image + '" alt="" /></td>' +
                         '<td>' + this.mType_Name + '</td>' +
                         '<td>' + this.material_Price + '</td>' +
                         '<td>' + this.material_Number + '</td>' +
@@ -119,7 +119,7 @@
                 break;
             case 'first':
                 $("#pageindex").text(1);
-                
+
                 break;
             case 'prv':
                 if (PageIndex > 1) {
@@ -136,7 +136,7 @@
             case 'last':
                 $("#pageindex").text(pageCount);
                 break;
-               
+
 
             default:
 
@@ -145,22 +145,22 @@
         var Materialid = $("#Materialid").val();
         var Materialname = $("#Materialname").val();
         var Materialprice = -1;
-        if ($("#Materialprice").val()!="") {
+        if ($("#Materialprice").val() != "") {
             Materialprice = $("#Materialprice").val();
-        }    
+        }
         var Materialprice1 = -1;
-        if ($("#Materialprice1").val()!= "") {
+        if ($("#Materialprice1").val() != "") {
             Materialprice1 = $("#Materialprice1").val();
         }
 
         var PageIndex = $("#pageindex").text(); //页码
 
         var PageSize = $("#pagesize").text();  //页大小
-       // var PageCount = 0; //总页数
+        // var PageCount = 0; //总页数
         $.ajax({
             url: "http://localhost:49764/api/material/SelMaterial",
             type: "get",
-            data: {                
+            data: {
                 Materialid: Materialid,
                 Materialname: Materialname,
                 Materialprice: Materialprice,
@@ -168,7 +168,7 @@
                 PageIndex: PageIndex,
                 PageSize: PageSize
             },
-            dataType:"json",
+            dataType: "json",
             success: function (d) {
                 $("#pagetotal").text(d.pageCount);
                 $("#totalcount").text(d.dataCount);
@@ -215,7 +215,7 @@
             url: "http://localhost:49764/api/material/Fill?Id=" + id,
             type: "get",
             success: function (d) {
-                console.log(d); 
+                console.log(d);
                 InfoHtml += `<div>
                             <table>
                             <tr>
@@ -252,7 +252,7 @@
 
             }
         })
-        
+
     }
 
     //编辑跳转页面
