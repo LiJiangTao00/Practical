@@ -432,18 +432,31 @@ namespace PC.DAL.MaterialDal
             return dapper.Execute(sql);
         }
 
-    /// <summary>
-    /// 反填物料
-    /// </summary>
-    /// <param name="id"></param>
-    /// <returns></returns>
-    public MaterialTableModel Fillmaterial(int Id)
-    {
-        using (SqlConnection conn = new SqlConnection("Data Source=192.168.43.93;Initial Catalog=Practial;User ID=sa;pwd=12345"))
+         /// <summary>
+         /// 反填物料
+         /// </summary>
+         /// <param name="id"></param>
+         /// <returns></returns>
+         public MaterialTableModel Fillmaterial(int Id)
+         {
+             using (SqlConnection conn = new SqlConnection("Data Source=192.168.43.93;Initial Catalog=Practial;User ID=sa;pwd=12345"))
+             {
+                 return conn.Query<MaterialTableModel>($"select * from MaterialTable where Id = {Id}").FirstOrDefault();
+             }
+         }
+
+        /// <summary>
+        /// 删除物料
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public int DelMaterial(int Id)
         {
-            return conn.Query<MaterialTableModel>($"select * from MaterialTable where Id = {Id}").FirstOrDefault();
+            using (SqlConnection conn = new SqlConnection("Data Source=192.168.43.93;Initial Catalog=Practial;User ID=sa;pwd=12345"))
+            {
+                return conn.Execute($"delete from MaterialTable where Id = {Id}");
+            }
         }
-    }
 
 }
 }
