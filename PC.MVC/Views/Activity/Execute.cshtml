@@ -45,6 +45,7 @@
                 <td>创建时间</td>
                 <td>结束时间</td>
                 <td>活动状态</td>
+                @*<td>操作</td>*@
             </tr>
             <tbody id="tb">
             </tbody>
@@ -136,6 +137,33 @@
     function Select() {
         ShowTable();
     }
+    function ShowList() {
+        //var txt_Sel = $('#txt_Sel').val();
+        //var ShowDepartment = $('#ShowDepartment').val() == null ? 0 : $('#ShowDepartment').val();
+        //var ShowProvince = $('#ShowProvince').val() == null ? 0 : $('#ShowProvince').val();
+        //var ShowCity = parseInt($('#ShowCity').val());
+        //var ShowDistrict = parseInt($('#ShowDistrict').val());
+        //var ShowJob = $('#ShowJob').val() == null ? 0 : $('#ShowJob').val();
+        //$.ajax({
+        //    url: "http://localhost:49764/api/user/ShowUser?product=" + product + "&did=" + ShowDepartment + "&pid=" + ShowProvince + "&cid=" + ShowCity + "&dis=" + ShowDistrict + "&jid=" + ShowJob + "&name=" + txt_Sel + "&index=" + index,
+        //    type: "get",
+        //    dataType: "json",
+        //    success: function (data) {
+        //        $('#tb').empty();
+        //        var str = '';
+        //        $.each(data, function (i, n) {
+        //            str += '<tr><td><input class="chk" type="checkbox" value="' + n.id
+        //                + '" /></td><td>' + n.user_Phone + '</td><td>' + n.user_Name + '</td><td>' + n.user_Id + '</td><td>' + n.product_Name
+        //                + '</td><td>' + n.department_Name + '</td><td>' + n.job_Name + '</td><td>' + n.user_AddTime
+        //                + '</td><td><button id="test" type="button" class="layui-btn" onclick="Lok(' + n.id + ')">查看详情</button><input type="button" value="编辑" class="layui-btn layui-btn-primary" onclick="Edit(' + n.id + ')" /><input type="button" value="删除" class="layui-btn layui-btn-primary" onclick="Del(' + n.id + ')" /></td></tr>';
+        //        })
+        //        $('#tb').append(str);
+        //    }
+        //})
+        //localStorage["selectid"] = product;
+        
+        //$('input[type="checkbox"]').prop("checked", false);
+    }
     function ShowTable() {
         var txt_Sel = $('#txt_Sel').val();
         var ShowDepartment = $('#ShowDepartment').val() == null ? 0 : $('#ShowDepartment').val();
@@ -157,9 +185,10 @@
                         '<td>' + n.user_Name + '</td>' +
                         '<td>' + n.user_Area + '</td>' +
                         '<td>' + n.job_Name + '</td>' +
-                        '<td>' + n.timeBegin + '</td>' +
-                        '<td>' + n.timeEnd + '</td>' +
+                        '<td>' +GetTime(n.timeBegin) + '</td>' +
+                        '<td>' + GetTime(n.timeEnd) + '</td>' +
                         '<td>' + Zhuzhu(n.activityState_Id )+ '</td>' +
+                        //'<td><button id="test" type="button" class="layui-btn" onclick="Lok(' + n.id + ')">查看详情</button>' +
                         '</td></tr>';
                 })
                 $('#tb').append(str);
@@ -177,4 +206,13 @@
                             return "未完成";
                         }
     }
+    function GetTime(time) {
+                        var data = new Date(time);
+                        var year = data.getFullYear();  //获取年
+                        var month = data.getMonth() + 1;    //获取月
+                        var day = data.getDate(); //获取日
+                        time = year + "-" + month + "-" + day;
+                        return time;
+                    }
+
 </script>
