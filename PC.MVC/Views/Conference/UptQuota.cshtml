@@ -90,7 +90,7 @@
     }
     function Search() {
         var Qd = {
-            "conid": localStorage["QuotaAllocationId"],
+            "conid": localStorage["UptQuotaId"],
             "DaQv": $("#Sel_DaQv").find("option:selected").text(),
             "DiQv": $("#Sel_DiQv").find("option:selected").text(),
             "PhoneOrName": $("#Txt_NameOrPhone").val(),
@@ -105,7 +105,7 @@
             success: function (d) {
                 $("#tb").empty();
                 $(d).each(function (i, k) {
-                    var list = `<tr>
+                    var list = `<tr>                  
                          <td>${k.user_Name}</td>
                          <td>${k.user_Phone}</td>
                          <td>${k.user_Id}</td>
@@ -148,7 +148,7 @@
                         type: "get",
                         data: {
                             uid: id,
-                            conid: localStorage["UptQuotaId"] = id,
+                            conid: localStorage["UptQuotaId"],
                             num: Number($("#Text1").val()),
                         },
                         success: function (data) {
