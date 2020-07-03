@@ -52,7 +52,15 @@
             </tr>
             <tr>
                 <td>图片：</td>
-                <td><input id="Material_Image" type="text" /></td>
+                <td>
+                    <div style="position: relative;">
+                        <input id="Material_Image" style="position: absolute; top: 0; bottom: 0; left: 0;right: 0; opacity: 0;" type="file" accept="image/gif, image/jpg, image/png" onchange="showImg(this)" />
+                        <div style="text-align:top">
+                            <img id="upload" style="width: 40px; height: 40px; vertical-align: middle;" />
+                        </div>
+                    </div>
+                    @*<input id="Material_Image" type="text" />*@
+                </td>
             </tr>
             <tr>
                 <td>单价：</td>
@@ -81,6 +89,8 @@
     $(function () {
         //物料类型下拉绑定
         Typedrop();
+        //反填物料方法
+        FillMaterial();
     })
     //绑定下拉（物料信息）
     function Typedrop() {
@@ -98,26 +108,64 @@
             }
         })
     }
+    //显示图片
+    function showImg(input) {
+        var file = input.files[0];
+        var reader = new FileReader()
+        // 图片读取成功回调函数
+        reader.onload = function (e) {
+            document.getElementById('upload').src = e.target.result
+        }
+        reader.readAsDataURL(file)
+    }
+    //反填物料
+    function FillMaterial() {
+        $.ajax({
+            url: "http://localhost:49764/api/material/Fillmaterial?Id=" + $("#Hidden").val(),
+            type: "Get",
+            dataType: "json",
+            success: function (data) { 
+                console.log(data);
+                $('#upload').attr("src", "http://localhost:49764" + data.material_Image);
+                $("#Mtype_name").val(data.material_TypeId)
+                $("#Material_PlaceName").val(data.material_PlaceName)
+                $("#Material_Id").val(data.material_Id)
+                $("#Material_Name").val(data.material_Name)
+                $("#Material_Desc").val(data.material_Desc)
+                //$("#Material_Image").val(data.material_Image)
+                $("#Material_Price").val(data.material_Price)
+                $("#Material_Number").val(data.material_Number)
+                $("#Material_State").val(data.material_State)
+            }
+        })
+    }
+
+    //编辑物料
     function Save() {
+        var fileUpload = $("#Material_Image").get(0);
+        var file = fileUpload.files[0];
+        var data = new FormData();
+        data.append(file.name, file);
         var obj = {
             Material_TypeId: $("#Mtype_name").val(),
             Material_PlaceName: $("#Material_PlaceName").val(),
             Material_Id: ($("#Material_Id").val()),
             Material_Name: $("#Material_Name").val(),
             Material_Desc: $("#Material_Desc").val(),
-            Material_Image: $("#Material_Image").val(),
+            
             Material_Price: parseFloat($("#Material_Price").val()),
             Material_Number: parseInt($("#Material_Number").val()),
             Material_State: parseInt($("#Material_State").val()),
             Id: parseInt($("#Hidden").val())
         };
+        console.log(obj);
        // console.log(obj);
         $.ajax({
-            url: "http://localhost:49764/api/material/UpdMaterial",
+            url: "http://localhost:49764/api/material/UpdMaterial?obj=" + JSON.stringify(obj),
             type: "post",
-            data: obj,
-            dataType:"json",
-            contentType: "application/x-www-form-urlencoded",
+            data:data,
+            contentType: false,
+            processData: false,
             success: function (data) {
                 if (data > 0) {
                     alert("OK");
@@ -125,6 +173,7 @@
                 }
                 else {
                     alert("NO");
+                    location.href = '/Material/ShowMaterial';
                 }
             }
         })

@@ -10,12 +10,13 @@ using PC.Model.ViewModel;
 using PC.DAL.Activity;
 using PC.DAL.UserDAL;
 using NPOI.SS.Formula.Functions;
+using PC.Common.Helpers;
 
 namespace PC.DAL.MaterialDal
 {
     public class MaterialDAL : IMaterialDAL  // 接口
     {
-
+        DapperHelper<MaterialTableModel> dapper = new DapperHelper<MaterialTableModel>();
         SqlConnection conn = new SqlConnection("Data Source=192.168.43.93;Initial Catalog=Practial;User ID=sa;pwd=12345");
         /// <summary>
         /// 显示物料信息
@@ -23,10 +24,14 @@ namespace PC.DAL.MaterialDal
         /// <returns></returns>
         public List<MaterialTableModel> ShowMaterial()
         {
-            using (SqlConnection conn = new SqlConnection("Data Source=192.168.43.93;Initial Catalog=Practial;User ID=sa;pwd=12345"))
-            {
-                return conn.Query<MaterialTableModel>($"select * from MaterialTable m join MaterialTypeTable t on m.Material_TypeId = t.Id").ToList();
-            }
+            DapperHelper<MaterialTableModel> da = new DapperHelper<MaterialTableModel>();
+            string sql = "select* from MaterialTable a join MaterialTypeTable t on a.Material_TypeId=t.Id";
+            List<MaterialTableModel> list = da.Query(sql).ToList();
+            return list;
+            //using (SqlConnection conn = new SqlConnection("Data Source=192.168.43.93;Initial Catalog=Practial;User ID=sa;pwd=12345"))
+            //{
+            //    return conn.Query<MaterialTableModel>($"select m.Id,m.Material_Id,m.Material_Name,m.Material_TypeId,m.Material_Price,m.Material_Number,m.Material_LastNumber,m.Material_Desc,m.Material_Image,m.Material_State,m.Material_Approval,m.Material_Recycle,m.Material_AddTime,m.Material_DelState,m.Material_Activity_Id,m.Material_PlaceName,t.MType_Name from MaterialTable m join MaterialTypeTable t on m.Material_TypeId = t.Id").ToList();
+            //}
         }
 
 
@@ -61,36 +66,36 @@ namespace PC.DAL.MaterialDal
         /// <param name="materialname"></param>
         /// <param name="materialprice"></param>
         /// <returns></returns>
-        public PageShowMaterial SelMaterial(string Materialid, string Materialname, float Materialprice = -1, float Materialprice1 = -1,int PageIndex = 1, int PageSize = 3)
-       {
+        public PageShowMaterial SelMaterial(string Materialid, string Materialname, float Materialprice = -1, float Materialprice1 = -1, int PageIndex = 1, int PageSize = 3)
+        {
 
-            string sql = "select * from MaterialTable m join MaterialTypeTable t on m.Material_TypeId = t.Id where 1=1";
-            if (Materialid!= null)
+            string sql = "select m.*,t.MType_Name from MaterialTable m join MaterialTypeTable t on m.Material_TypeId = t.Id where 1=1";
+            if (Materialid != null)
             {
                 sql += " and Material_Id like '%" + Materialid + "%'";
             }
-            if (Materialname!=null)
+            if (Materialname != null)
             {
                 sql += " and Material_Name like '%" + Materialname + "%'";
             }
-            if (Materialprice!=-1)
+            if (Materialprice != -1)
             {
-                sql += " and Material_Price >"+Materialprice;
+                sql += " and Material_Price >" + Materialprice;
             }
-               
+
 
             if (Materialprice1 != -1)
             {
                 sql += " and Material_Price <" + Materialprice1;
             }
-           // sql += " and Id between" + (PageIndex - 1) * PageSize + 1 + " and  " + PageIndex * PageSize;
+            // sql += " and Id between" + (PageIndex - 1) * PageSize + 1 + " and  " + PageIndex * PageSize;
 
             List<MaterialTableModel> list = new List<MaterialTableModel>();
-            list= conn.Query<MaterialTableModel>(sql).ToList();
+            list = conn.Query<MaterialTableModel>(sql).ToList();
 
             var pagelist = list.Skip((PageIndex - 1) * PageSize).Take(PageSize).ToList();
 
-            PageShowMaterial PageShowData= new PageShowMaterial();
+            PageShowMaterial PageShowData = new PageShowMaterial();
             PageShowData.PageShowMateriallist = pagelist;
             PageShowData.DataCount = list.Count();
             PageShowData.PageSize = PageSize;
@@ -105,12 +110,9 @@ namespace PC.DAL.MaterialDal
         /// <returns></returns>
         public int AddMaterial(MaterialTableModel mod)
         {
-            using (SqlConnection conn = new SqlConnection("Data Source=192.168.43.93;Initial Catalog=Practial;User ID=sa;pwd=12345"))
-            {
-                return conn.Execute($"insert into MaterialTable values('{mod.Material_TypeId}','{mod.Material_Id}','{mod.Material_Name}','{mod.Material_Desc}','{mod.Material_Image}','{mod.Material_Price}','{mod.Material_Number}','{mod.Material_State}')");
-            }
+            var sql = $"insert into MaterialTable values('{mod.Material_Id}','{mod.Material_Name}',{mod.Material_TypeId},{mod.Material_Price},{mod.Material_Number},{mod.Material_LastNumber},'{mod.Material_Desc}','{mod.Material_Image}',{mod.Material_State},2,1,'2020-05-06',0,2,'{mod.Material_PlaceName}')";
+            return dapper.Execute(sql);
         }
-
         /// <summary>
         /// 显示订单表
         /// </summary>
@@ -208,17 +210,17 @@ namespace PC.DAL.MaterialDal
                                               on o.Order_Area_Id equals g.Id
                                               select new ShowMaterialApprove
                                               {
-                                                 Material_Id = m.Material_Id,
-                                                 Material_Name = m.Material_Name,
-                                                 Material_Image = m.Material_Image,
-                                                 MType_Name = t.MType_Name,
-                                                 Order_Proposer = o.Order_Proposer,
-                                                 Place_Name = g.Place_Name,
-                                                 Order_ApplyTime = o.Order_ApplyTime,
-                                                 Order_State = o.Order_State,
-                                                 Activity_Name = a.Activity_Name,
-                                                 Material_Price = m.Material_Price,
-                                                 Material_Number = m.Material_Number,
+                                                  Material_Id = m.Material_Id,
+                                                  Material_Name = m.Material_Name,
+                                                  Material_Image = m.Material_Image,
+                                                  MType_Name = t.MType_Name,
+                                                  Order_Proposer = o.Order_Proposer,
+                                                  Place_Name = g.Place_Name,
+                                                  Order_ApplyTime = o.Order_ApplyTime,
+                                                  Order_State = o.Order_State,
+                                                  Activity_Name = a.Activity_Name,
+                                                  Material_Price = m.Material_Price,
+                                                  Material_Number = m.Material_Number,
                                                   Product_Name = p.Product_Name,
                                                   Department_Name = d.Department_Name,
                                                   Job_Name = j.Job_Name,
@@ -257,11 +259,11 @@ namespace PC.DAL.MaterialDal
             }
             if (Order_Proposer != null)
             {
-                sql += " and Order_Proposer like '%" + Order_Proposer + "%'" ;
+                sql += " and Order_Proposer like '%" + Order_Proposer + "%'";
             }
             if (Order_ApplyTime != null)
             {
-                sql += " and Order_ApplyTime = '" + Order_ApplyTime +"'" ;
+                sql += " and Order_ApplyTime = '" + Order_ApplyTime + "'";
             }
 
             List<ShowMaterialApprove> list = new List<ShowMaterialApprove>();
@@ -283,60 +285,60 @@ namespace PC.DAL.MaterialDal
         /// <returns></returns>
         public List<ApprovalMaterial> GetApproval()
         {
-                List<ApprovalMaterial> list = (from m in ShowMaterial()
-                                               join o in GetOrder()
-                                               on m.Id equals o.Order_MId
-                                               join t in GetTypes()
-                                               on m.Material_TypeId equals t.Id
-                                               join a in ShowActivity()
-                                               on m.Material_Activity_Id equals a.Id
-                                               join u in GetUsers()
-                                               on o.Order_User_Id equals u.Id
-                                               join p in GetProduct()
-                                               on o.Order_Product_Id equals p.Id
-                                               join d in GetDepartment()
-                                               on o.Order_Department_Id equals d.Id
-                                               join j in GetJob()
-                                               on o.Order_Job_Id equals j.Id
-                                               join g in GetPlace()
-                                               on o.Order_Area_Id equals g.Id
-                                               select new ApprovalMaterial
-                                               {
-                                                   Material_Id = m.Material_Id,
-                                                   Material_Name = m.Material_Name,
-                                                   Material_Image = m.Material_Image,
-                                                   MType_Name = t.MType_Name,
-                                                   Order_Proposer = o.Order_Proposer,
-                                                   Place_Name = g.Place_Name,
-                                                   Order_SubmissionTime = o.Order_SubmissionTime,
-                                                   Order_ApproveTime = o.Order_ApproveTime,
-                                                   Material_Approval = m.Material_Approval,
-                                                   Activity_Name = a.Activity_Name,
-                                                   Material_Price = m.Material_Price,
-                                                   Material_Number = m.Material_Number,
-                                                   Product_Name = p.Product_Name,
-                                                   Department_Name = d.Department_Name,
-                                                   Job_Name = j.Job_Name,
-                                                   User_Phone = u.User_Phone,
-                                                   Order_ApplyTime = o.Order_ApplyTime
-                                               }).ToList();
-                return list;
-           
+            List<ApprovalMaterial> list = (from m in ShowMaterial()
+                                           join o in GetOrder()
+                                           on m.Id equals o.Order_MId
+                                           join t in GetTypes()
+                                           on m.Material_TypeId equals t.Id
+                                           join a in ShowActivity()
+                                           on m.Material_Activity_Id equals a.Id
+                                           join u in GetUsers()
+                                           on o.Order_User_Id equals u.Id
+                                           join p in GetProduct()
+                                           on o.Order_Product_Id equals p.Id
+                                           join d in GetDepartment()
+                                           on o.Order_Department_Id equals d.Id
+                                           join j in GetJob()
+                                           on o.Order_Job_Id equals j.Id
+                                           join g in GetPlace()
+                                           on o.Order_Area_Id equals g.Id
+                                           select new ApprovalMaterial
+                                           {
+                                               Material_Id = m.Material_Id,
+                                               Material_Name = m.Material_Name,
+                                               Material_Image = m.Material_Image,
+                                               MType_Name = t.MType_Name,
+                                               Order_Proposer = o.Order_Proposer,
+                                               Place_Name = g.Place_Name,
+                                               Order_SubmissionTime = o.Order_SubmissionTime,
+                                               Order_ApproveTime = o.Order_ApproveTime,
+                                               Material_Approval = m.Material_Approval,
+                                               Activity_Name = a.Activity_Name,
+                                               Material_Price = m.Material_Price,
+                                               Material_Number = m.Material_Number,
+                                               Product_Name = p.Product_Name,
+                                               Department_Name = d.Department_Name,
+                                               Job_Name = j.Job_Name,
+                                               User_Phone = u.User_Phone,
+                                               Order_ApplyTime = o.Order_ApplyTime
+                                           }).ToList();
+            return list;
+
         }
 
-       
-       /// <summary>
-       /// 查询审批物料
-       /// </summary>
-       /// <param name="Material_Id">物料编号</param>
-       /// <param name="Material_Name">物料名称</param>
-       /// <param name="Order_Proposer">申请人</param>
-       /// <param name="Order_ApplyTime">申请时间</param>
-       /// <param name="Order_ApproveTime">审批时间</param>
-       /// <param name="PageIndex">当前页</param>
-       /// <param name="PageSize">页大小</param>
-       /// <param name="Material_Approval">审批类型</param>
-       /// <returns></returns>
+
+        /// <summary>
+        /// 查询审批物料
+        /// </summary>
+        /// <param name="Material_Id">物料编号</param>
+        /// <param name="Material_Name">物料名称</param>
+        /// <param name="Order_Proposer">申请人</param>
+        /// <param name="Order_ApplyTime">申请时间</param>
+        /// <param name="Order_ApproveTime">审批时间</param>
+        /// <param name="PageIndex">当前页</param>
+        /// <param name="PageSize">页大小</param>
+        /// <param name="Material_Approval">审批类型</param>
+        /// <returns></returns>
         public PageShowMaterial SelApproval(string Material_Id, string Material_Name, string Order_Proposer, DateTime? Order_SubmissionTime, DateTime? Order_ApproveTime, int PageIndex = 1, int PageSize = 1, int Material_Approval = -1)
         {
 
@@ -387,7 +389,7 @@ namespace PC.DAL.MaterialDal
         /// <returns></returns>
         public List<ShowFill> Fill(int Id)
         {
-            using(SqlConnection conn = new SqlConnection("Data Source=192.168.43.93;Initial Catalog=Practial;User ID=sa;pwd=12345"))
+            using (SqlConnection conn = new SqlConnection("Data Source=192.168.43.93;Initial Catalog=Practial;User ID=sa;pwd=12345"))
             {
                 List<ShowFill> list = conn.Query<ShowFill>($"select * from MaterialTypeTable t join MaterialTable m on t.Id = m.Material_TypeId where m.Id = {Id}").ToList();
                 return list;
@@ -404,7 +406,7 @@ namespace PC.DAL.MaterialDal
             {
                 return conn.Query<ApprovalMaterial>($"select * from MaterialTable m join OrderTable o on o.Order_MId = m.Id join MaterialTypeTable t on m.Material_TypeId = t.Id join ActivityTable a on m.Material_Activity_Id = a.Id  join UserTable u on o.Order_User_Id = u.Id join ProductTable p on o.Order_Product_Id = p.Id join DepartmentTable d on o.Order_Department_Id = d.Id join JobTable j on o.Order_Job_Id = j.Id  join PlaceTable g on o.Order_Area_Id = g.Id where m.Id = {Id}").ToList();
             }
-         }
+        }
 
         /// <summary>
         /// 反填物料订单
@@ -426,12 +428,36 @@ namespace PC.DAL.MaterialDal
         /// <returns></returns>
         public int UpdMaterial(MaterialTableModel model)
         {
+            string sql = $"update MaterialTable  set Material_TypeId = {model.Material_TypeId},Material_PlaceName='{model.Material_PlaceName}',Material_Id = '{model.Material_Id}',Material_Name = '{model.Material_Name}',Material_Desc = '{model.Material_Desc}',Material_Image = '{model.Material_Image}',Material_Price = {model.Material_Price},Material_Number = {model.Material_Number},Material_State = {model.Material_State} where Id = {model.Id}";
+            return dapper.Execute(sql);
+        }
+
+         /// <summary>
+         /// 反填物料
+         /// </summary>
+         /// <param name="id"></param>
+         /// <returns></returns>
+         public MaterialTableModel Fillmaterial(int Id)
+         {
+             using (SqlConnection conn = new SqlConnection("Data Source=192.168.43.93;Initial Catalog=Practial;User ID=sa;pwd=12345"))
+             {
+                 return conn.Query<MaterialTableModel>($"select * from MaterialTable where Id = {Id}").FirstOrDefault();
+             }
+         }
+
+        /// <summary>
+        /// 删除物料
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public int DelMaterial(int Id)
+        {
             using (SqlConnection conn = new SqlConnection("Data Source=192.168.43.93;Initial Catalog=Practial;User ID=sa;pwd=12345"))
             {
-                return conn.Execute($"update MaterialTable  set Material_TypeId = {model.Material_TypeId},Material_PlaceName='{model.Material_PlaceName}',Material_Id = '{model.Material_Id}',Material_Name = '{model.Material_Name}',Material_Desc = '{model.Material_Desc}',Material_Image = '{model.Material_Image}',Material_Price = {model.Material_Price},Material_Number = {model.Material_Number},Material_State = {model.Material_State} where Id = {model.Id}");
+                return conn.Execute($"delete from MaterialTable where Id = {Id}");
             }
         }
 
-    }
+}
 }
  

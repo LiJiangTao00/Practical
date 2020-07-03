@@ -23,11 +23,11 @@
                 <td><h2>筛选</h2></td>
             </tr>
             <tr>
-                <td><input id="Materialid" type="text" placeholder="物料编号"/></td>
-                <td><input id="Materialname" type="text" placeholder="物料名称"/></td>
-                <td><input id="Materialprice" type="text" placeholder="物料价格"/> —— </td>
-                <td><input id="Materialprice1" type="text" placeholder="物料价格"/></td>
-                <td><input id="screen" type="button" value="筛选" class="btn btn-info"  onclick="Screen('all')" /></td>
+                <td><input id="Materialid" type="text" placeholder="物料编号" /></td>
+                <td><input id="Materialname" type="text" placeholder="物料名称" /></td>
+                <td><input id="Materialprice" type="text" placeholder="物料价格" /> —— </td>
+                <td><input id="Materialprice1" type="text" placeholder="物料价格" /></td>
+                <td><input id="screen" type="button" value="筛选" class="btn btn-info" onclick="Screen('all')" /></td>
                 <td>
                     <input id="btnAdd" type="button" value="添加" class="btn btn-outline-primary" onclick="AddMaterial()" />
                 </td>
@@ -38,7 +38,7 @@
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <td>选择</td>
+                    <td><input class="chk" type="checkbox" value="" /></td>
                     <td>物料编号</td>
                     <td>物料名称</td>
                     <td>缩略图</td>
@@ -55,12 +55,12 @@
     </div>
 
     <div>
-        <input id="btn_First" type="button" value="首页" onclick="Screen('first')"/>
-        <input id="btn_Prev" type="button" value="上一页" onclick="Screen('prv')"/>
+        <input id="btn_First" type="button" value="首页" onclick="Screen('first')" />
+        <input id="btn_Prev" type="button" value="上一页" onclick="Screen('prv')" />
         当前第<label id="pageindex">1</label>页/每页<label id="pagesize">3</label>
         总共<label id="totalcount"></label>条/总共<label id="pagetotal"></label>页
-        <input id="btn_Next" type="button" value="下一页" onclick="Screen('next')"/>
-        <input id="btn_Last" type="button" value="尾页" onclick="Screen('last')"/>
+        <input id="btn_Next" type="button" value="下一页" onclick="Screen('next')" />
+        <input id="btn_Last" type="button" value="尾页" onclick="Screen('last')" />
     </div>
 </body>
 </html>
@@ -88,18 +88,20 @@
                 $("#totalcount").text(d.dataCount);
                 $("#pagetotal").text(d.pageCount);
                 $("#tb").empty();
+                console.log(d);
                 $(d.pageShowMateriallist).each(function () {
+
                     var list = '<tr>' +
-                        '<td><input class="chk" type="checkbox" value="" /></td>'+
+                        '<td><input class="chk" type="checkbox" value="" /></td>' +
                         '<td>' + this.material_Id + '</td>' +
                         '<td>' + this.material_Name + '</td>' +
-                        '<td>' + this.material_Image + '</td>'+
+                        '<td><img src="http://localhost:49764' + this.material_Image + '" alt="" /></td>' +
                         '<td>' + this.mType_Name + '</td>' +
                         '<td>' + this.material_Price + '</td>' +
                         '<td>' + this.material_Number + '</td>' +
                         '<td>' + this.material_LastNumber + '</td>' +
                         '<td>' + (this.material_State == 1 ? "上架" : "下架") + '</td>' +
-                        '<td><input id="Detail" type="button" value="查看详情" onclick="detail(' + this.id + ')"/><input id="edit" type="button" value="编辑"  onclick="Edit(' + this.id + ')"/></td>' +
+                        '<td><input id="Detail" type="button" value="查看详情" onclick="detail(' + this.id + ')"/><input id="edit" type="button" value="编辑"  onclick="Edit(' + this.id + ')"/><input id="del" type="button" value="删除"  onclick="DelMaterial(' + this.id + ')"/></td>' +
                         '</tr>'
                     $("#tb").append(list);
                 })
@@ -117,7 +119,7 @@
                 break;
             case 'first':
                 $("#pageindex").text(1);
-                
+
                 break;
             case 'prv':
                 if (PageIndex > 1) {
@@ -134,7 +136,7 @@
             case 'last':
                 $("#pageindex").text(pageCount);
                 break;
-               
+
 
             default:
 
@@ -143,22 +145,22 @@
         var Materialid = $("#Materialid").val();
         var Materialname = $("#Materialname").val();
         var Materialprice = -1;
-        if ($("#Materialprice").val()!="") {
+        if ($("#Materialprice").val() != "") {
             Materialprice = $("#Materialprice").val();
-        }    
+        }
         var Materialprice1 = -1;
-        if ($("#Materialprice1").val()!= "") {
+        if ($("#Materialprice1").val() != "") {
             Materialprice1 = $("#Materialprice1").val();
         }
 
         var PageIndex = $("#pageindex").text(); //页码
 
         var PageSize = $("#pagesize").text();  //页大小
-       // var PageCount = 0; //总页数
+        // var PageCount = 0; //总页数
         $.ajax({
             url: "http://localhost:49764/api/material/SelMaterial",
             type: "get",
-            data: {                
+            data: {
                 Materialid: Materialid,
                 Materialname: Materialname,
                 Materialprice: Materialprice,
@@ -166,7 +168,7 @@
                 PageIndex: PageIndex,
                 PageSize: PageSize
             },
-            dataType:"json",
+            dataType: "json",
             success: function (d) {
                 $("#pagetotal").text(d.pageCount);
                 $("#totalcount").text(d.dataCount);
@@ -183,7 +185,7 @@
                         '<td>' + this.material_Number + '</td>' +
                         '<td>' + this.material_LastNumber + '</td>' +
                         '<td>' + (this.material_State == 1 ? "上架" : "下架") + '</td>' +
-                        '<td><input id="Detail" type="button" value="查看详情" onclick="detail(' + this.id + ')"/><input id="edit" type="button" value="编辑" onclick="Edit(' + this.id + ')"/></td>' +
+                        '<td><input id="Detail" type="button" value="查看详情" onclick="detail(' + this.id + ')"/><input id="edit" type="button" value="编辑" onclick="Edit(' + this.id + ')"/><input id="del" type="button" value="删除"  onclick="DelMaterial(' + this.id + ')"/></td>' +
                         '</tr>'
                     $("#tb").append(list);
                 })
@@ -213,7 +215,7 @@
             url: "http://localhost:49764/api/material/Fill?Id=" + id,
             type: "get",
             success: function (d) {
-                console.log(d); 
+                console.log(d);
                 InfoHtml += `<div>
                             <table>
                             <tr>
@@ -222,15 +224,19 @@
                             </tr>
                             <tr>
                                 <td>物料编号：${d.material_Id}</td>
-                               <td>物料描述：${d.material_Desc}</td>
+                               <td>物料名称：${d.material_Name}</td>
                             </tr>
                             <tr>
-                                <td>单价：${d.material_Price}</td>
-                               <td>库存数量：${d.material_Number}</td>
+                                <td>物料描述：${d.material_Desc}</td>
+                               <td>单价：${d.material_Price}</td>
                             </tr>
                             <tr>
+                                <td>库存数量：${d.material_Number}</td>
                                 <td>添加日期：${d.material_AddTime}</td>
-                                <td></td>
+                            </tr>
+                             <tr>
+                                <td><input id="btnTG" type="button" value="审批通过" onclick="ShenpiTG()"/></td>
+                                <td><input id="btnFJ" type="button" value="审批否决" onclick="ShenpiFJ()"/></td>
                             </tr>
                                 </table>
                                     </div>`;
@@ -246,13 +252,31 @@
 
             }
         })
-        
+
     }
 
     //编辑跳转页面
     function Edit(Id) {
-
-
         location.href = '/material/UpdMaterial?Id=' + Id;
+    }
+
+    //删除物料
+    function DelMaterial(Id) {
+        if (confirm("确认要删除吗?")) {
+            $.ajax({
+                url: "http://localhost:49764/api/material/DelMaterial?Id=" + Id,
+                type: "post",
+                dataType: "json",
+                success: function (data) {
+                    if (data > 0) {
+                        alert("删除成功!");
+                        location.href = '/Material/ShowMaterial';
+                    } else {
+                        alert("删除失败!");
+                        location.href = '/Material/ShowMaterial';
+                    }
+                }
+            })
+        }
     }
 </script>

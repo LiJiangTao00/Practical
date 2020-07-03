@@ -101,9 +101,16 @@
             <tr>
                 <td>个人照片</td>
                 <td>
-                    <div class="layui-input-inline">
-                        <input type="file" id="User_Photo" style="height:20px;width:200px;" name="username" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
+                    <div style="position: relative;">
+                        <input id="User_Photo" style="position: absolute; top: 0; bottom: 0; left: 0;right: 0; opacity: 0;" type="file" accept="image/gif, image/jpg, image/png" onchange="showImg(this)" />
+                        <div style="text-align:top">
+                            <img id="upload"  style="width: 40px; height: 40px; vertical-align: middle;" />
+                        </div>
                     </div>
+                    @*<div class="layui-input-inline">
+
+            <input type="file" id="User_Photo" style="height:20px;width:200px;" name="username" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
+        </div>*@
                 </td>
             </tr>
             <tr>
@@ -199,6 +206,15 @@
         })
         $('#User_City').val(pid);
     }
+    function showImg(input) {
+        var file = input.files[0];
+        var reader = new FileReader()
+        // 图片读取成功回调函数
+        reader.onload = function (e) {
+            document.getElementById('upload').src = e.target.result
+        }
+        reader.readAsDataURL(file)
+    }
     function ShowDistrict(pid) {
         //var pid = $('#User_City').val();
         $.ajax({
@@ -251,6 +267,7 @@
                 ShowCity(data.user_Province);
                 ShowDistrict(data.user_City);
                 $('#User_Address').val(data.user_Address);
+                $('#upload').attr("src", "http://localhost:49764"+data.user_Photo);
                 switch (data.user_ProductId) {
                     case 1:
                         $("input[name='User_ProductId']").get(0).checked = true;
@@ -300,6 +317,10 @@
         })
     }
     function Save() {
+        var fileUpload = $("#User_Photo").get(0);
+        var file = fileUpload.files[0];
+        var data = new FormData();
+        data.append(file.name, file);
         var Id = localStorage["editid"];
         var User_Id = $('#User_Id').val();
         var User_Name = $('#User_Name').val();
@@ -336,10 +357,11 @@
         obj.User_ProductId = parseInt(User_ProductId);
         obj.User_Area = User_Area;
         $.ajax({
-            url: "http://localhost:49764/api/user/UpdateSingleUser",
-            data: JSON.stringify(obj),
-            type: "put",
-            contentType: "application/json",
+            url: "http://localhost:49764/api/user/UpdateSingleUser?obj=" + JSON.stringify(obj),
+            data: data,
+            type: "post",
+            contentType: false,
+            processData: false,
             success: function (data) {
                 if (data > 0) {
                     location.href = "/user/showlist";

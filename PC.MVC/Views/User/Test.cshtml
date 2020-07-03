@@ -9,105 +9,107 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>Test</title>
-    <link rel="shortcut icon" href="../js/echarts-2.2.7/doc/asset/ico/favicon.png">
-    <script type="text/javascript" src="../js/echarts-2.2.7/doc/asset/js/jquery.min.js"></script>
-    <script type="text/javascript" src="../js/echarts-2.2.7/doc/example/www2/js/echarts-all.js"></script>
 
     <script src="~/lib/jquery/dist/jquery.js"></script>
 
     <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+
 </head>
 <body>
-    <div id="main" style="width:600px;height:400px;"></div>
+    <select name="sdfas">
+        <option value="a">aaa</option>
+        <option value="b">bbb</option>
+    </select>
+    <input type="button" value="锁屏" id="lockButton" />
+    <div class="popup" id="popupDiv">
+        <!--IE6下，DIV默认不能遮盖select标签，可在此处放置一个iframe，以达到遮盖效果，其他浏览器可以不要-->
+        <iframe frameborder="1" scrolling="no" height="100%" width="100%" class="fff"></iframe>
+    </div>          <div class="divv" id="alertDiv">
+        <input type="button" value="关闭" id="unlockButton" />
+    </div>
+
+
 </body>
 </html>
 
+<style type="text/css">
+    .divv {
+        position: absolute;
+        top: 30%;
+        left: 30%;
+        width: 80px;
+        height: 60px;
+        border: 1px solid #666;
+        background-color: #9CF;
+        text-align: center;
+        display: none;
+        z-index: 300;
+    }
 
-<script>
+    .popup {
+        border: 1px solid red;
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        width: 100%;
+        height: 100%;
+        background-color: #000;
+        filter: alpha(opacity=45);
+        opacity: 0.45;
+        display: none;
+        z-index: 200;
+    }
+
+
+    .fff {
+        border: 1px solid blue;
+        position: relative;
+        background-color: #000;
+    }
+</style>
+<script type="text/javascript">
     $(document).ready(function () {
-        // 基于准备好的dom，初始化echarts实例
-        var myChart = echarts.init(document.getElementById('main'));
+        //页面初始化
+        goCenter();
+        //滚动条滚动
+        $(window).scroll(
+            function () {
+                goCenter();
 
-
-        // 初始 option
-        option = {
-            title: {
-                text: '某站点用户访问来源',
-                subtext: '纯属虚构',
-                x: 'center'
-            },
-            tooltip: {
-                trigger: 'item',
-                formatter: "{a} <br/>{b} : {c} ({d}%)"
-            },
-            legend: {
-                orient: 'vertical',
-                x: 'left',
-                data: ['已完成', '正举办', '未举办']
-            },
-            toolbox: {
-                show: true,
-                feature: {
-                    mark: { show: true },
-                    dataView: { show: true, readOnly: false },
-                    magicType: {
-                        show: true,
-                        type: ['pie', 'funnel'],
-                        option: {
-                            funnel: {
-                                x: '25%',
-                                width: '50%',
-                                funnelAlign: 'left',
-                                max: 1548
-                            }
-                        }
-                    },
-                    restore: { show: true },
-                    saveAsImage: { show: true }
-                }
-            },
-            calculable: true,
-            series: [
-                {
-                    name: '访问来源',
-                    type: 'pie',
-                    radius: '55%',
-                    center: ['50%', '60%'],
-                    data: []
-                }
-            ]
-        };
-        //获取数据
-        $.getJSON("http://localhost:49764/api/user/GetCon?time=week", function (data11) {
-            var d = data11;
-            var nanlist = [];
-
-            for (var i = 0; i < d.length; i++) {
-                // var m=new Map();//定义一个字典或者map集合
-                // m.set("value",d[i].jine);
-                // m.set("name",d[i].dpname);
-                var m = {};
-                m["value"] = d[i].num;
-                m["name"] = d[i].name;
-                nanlist.push(m);
+            });
+        //拖动浏览器窗口
+        $(window).resize(
+            function () {
+                goCenter();
 
             }
-            myChart.setOption({
+        );
+        //锁屏
+        $("#lockButton").click(
+            function () {
+                $("#popupDiv").show();
+                $("#alertDiv").show();
 
-                legend: {
-                    data: ['已完成', '正举办', '未举办']
-                },
-                series: [{
-                    // 根据名字对应到相应的系列
-                    name: '会议状态',
-                    data: nanlist
-                },
-                ]
-            });
-        });
-        // 使用刚指定的配置项和数据显示图表。
-        myChart.setOption(option);
-    });
+            }
+        );
+        //解屏
+        $("#unlockButton").click(
+            function () {
+                $("#popupDiv").hide();
+                $("#alertDiv").hide();
 
-</script>
+            }
+        );
+    }
+    );
+
+    function goCenter() {
+        var h = $(window).height();
+        var w = $(window).width();
+        var st = $(window).scrollTop();
+        var sl = $(window).scrollLeft();
+        $("#popupDiv").css("width", w + sl);
+        $("#popupDiv").css("height", h + st);
+        $(".divv").css("top", ((h - 60) / 2) + st);
+        $(".divv").css("left", ((w - 80) / 2) + sl);
+    }</script>

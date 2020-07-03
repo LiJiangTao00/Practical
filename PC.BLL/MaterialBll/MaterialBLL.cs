@@ -212,5 +212,25 @@ namespace PC.BLL.MaterialBll
         {
             return _dal.UpdMaterial(model);
         }
+
+        /// <summary>
+        /// 反填物料
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public MaterialTableModel Fillmaterial(int Id)
+        {
+            return _dal.Fillmaterial(Id);
+        }
+
+        /// <summary>
+        /// 删除物料
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public int DelMaterial(int Id)
+        {
+            return _dal.DelMaterial(Id);
+        }
     }
 }

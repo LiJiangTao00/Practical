@@ -13,39 +13,47 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>修改名额</title>
+    <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+
 </head>
 <body>
-    <div>
-        <select id="Sel_DaQv" onchange="DiQvSel()">
-            <option value="0">==选择大区==</option>
+    <div style="margin-left:100px;margin-left:20px">
+        <div style="width:800px">
+            <h3 style="font-weight:600;float:left">修改名额</h3>
+            <input type="button" value="返回" onclick="location.href='ShowConference'" class="btn btn-primary" style="float:right" />
+        </div>
+        <br style="clear:both" />
+        <div>
+            <select id="Sel_DaQv" onchange="DiQvSel()" class="btn btn-default dropdown-toggle">
+                <option value="0">==选择大区==</option>
 
-        </select>
-        <select id="Sel_DiQv">
-            <option value="0">==选择地区==</option>
+            </select>
+            <select id="Sel_DiQv" class="btn btn-default dropdown-toggle">
+                <option value="0">==选择地区==</option>
 
-        </select>
-        <input id="Txt_NameOrPhone" type="text" placeholder="请输入手机号或姓名" />
-        <input id="Button1" type="button" value="筛选" onclick="Search()" />
-    </div>
-    <div>
-        <table>
-            <thead>
-                <tr>
-                    <td>姓名</td>
-                    <td>手机号</td>
-                    <td>工号</td>
-                    <td>产品组</td>
-                    <td>部门</td>
-                    <td>职位</td>
-                    <td>所在区域</td>
-                    <td>可带参会人数</td>
-                    <td>操作</td>
-                </tr>
-            </thead>
-            <tbody id="tb"></tbody>
-        </table>
-    </div>
-
+            </select>
+            <input id="Txt_NameOrPhone" type="text" placeholder="请输入手机号或姓名" />
+            <input id="Button1" type="button" value="筛选" onclick="Search()" class="btn btn-default" style="width:80px;color:blue;border:1px solid blue" />
+        </div>
+        <div>
+            <table>
+                <thead>
+                    <tr>
+                        <td>姓名</td>
+                        <td>手机号</td>
+                        <td>工号</td>
+                        <td>产品组</td>
+                        <td>部门</td>
+                        <td>职位</td>
+                        <td>所在区域</td>
+                        <td>可带参会人数</td>
+                        <td>操作</td>
+                    </tr>
+                </thead>
+                <tbody id="tb"></tbody>
+            </table>
+        </div>
+        </div>
 
 </body>
 </html>

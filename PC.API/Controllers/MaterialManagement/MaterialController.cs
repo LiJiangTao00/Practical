@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Routing;
 using PC.Model.ViewModel;
 using Newtonsoft.Json;
 using System.IO;
+using Microsoft.AspNetCore.Hosting;
 
 namespace PC.API.Controllers.MaterialManagement
 {
@@ -20,13 +21,15 @@ namespace PC.API.Controllers.MaterialManagement
     [ApiController]
     public class MaterialController : ControllerBase
     {
+        private IWebHostEnvironment _hostEnvironment;
         /// <summary>
         /// 实现继承接口
         /// </summary>
         private IMaterialBLL _bll;
-        public MaterialController(IMaterialBLL bll)
+        public MaterialController(IMaterialBLL bll, IWebHostEnvironment hostEnvironment)
         {
             _bll = bll;
+            _hostEnvironment = hostEnvironment;
         }
 
         /// <summary>
@@ -68,9 +71,31 @@ namespace PC.API.Controllers.MaterialManagement
         /// <param name="mod"></param>
         /// <returns></returns>
         [HttpPost]
-        public int AddMaterial(MaterialTableModel mod)
+        public int AddMaterial(string obj)
         {
-            return _bll.AddMaterial(mod);
+            MaterialTableModel m = JsonConvert.DeserializeObject<MaterialTableModel>(obj);
+            var s = m.Material_Image;
+            if (Request.Form.Files.Count > 0)
+            {
+                //获取物理路径 webtootpath
+                string path = _hostEnvironment.ContentRootPath + "\\wwwroot\\img";
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
+                var file = Request.Form.Files[0];
+                string fileExt = file.FileName.Split('.')[file.FileName.Split('.').Length - 1];
+                string filename = Guid.NewGuid().ToString() + "." + fileExt;
+                string fileFullName = path + "\\" + filename;
+                using (FileStream fs = System.IO.File.Create(fileFullName))
+                {
+                    file.CopyTo(fs);
+                    fs.Flush();
+                }
+                m.Material_Image = "/img/" + filename;
+            }
+
+                return _bll.AddMaterial(m);
         }
 
         /// <summary>
@@ -240,6 +265,28 @@ namespace PC.API.Controllers.MaterialManagement
         public int UpdMaterial([FromForm]MaterialTableModel model)
         {
             return _bll.UpdMaterial(model);
+        }
+
+        /// <summary>
+        /// 反填物料
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+       [HttpGet]
+        public MaterialTableModel Fillmaterial(int Id)
+        {
+            return _bll.Fillmaterial(Id);
+        }
+
+        /// <summary>
+        /// 删除物料
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+       [HttpPost]
+        public int DelMaterial(int Id)
+        {
+            return _bll.DelMaterial(Id);
         }
     }
 }

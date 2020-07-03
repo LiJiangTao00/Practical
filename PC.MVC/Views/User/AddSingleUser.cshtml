@@ -12,27 +12,28 @@
 </head>
 <body>
     <div style="margin-left:100px;margin-left:20px">
-        <div>
-            <h3 style="font-weight:600;">添加用户</h3>
-            <input type="button" value="返回" onclick="GoBack()" />
+        <div style="width:800px">
+            <h3 style="font-weight:600;float:left">添加用户</h3>
+            <input type="button" value="返回" onclick="GoBack()" class="btn btn-primary" style="float:right" />
         </div>
+        <br style="clear:both" />
         <table>
             <tr>
                 <td>姓名</td>
                 <td>
-                    <input id="User_Name" type="text" />
+                    <input id="User_Name" type="text" class="form-control" />
                 </td>
             </tr>
             <tr>
                 <td>密码</td>
                 <td>
-                    <input id="User_Pwd" type="text" value="12345" disabled="disabled" />
+                    <input id="User_Pwd" type="text" value="12345" disabled="disabled" class="form-control" />
                 </td>
             </tr>
             <tr>
                 <td>工号</td>
                 <td>
-                    <input id="User_Id" type="text" />
+                    <input id="User_Id" type="text" class="form-control" />
                 </td>
             </tr>
             <tr>
@@ -46,64 +47,70 @@
             <tr>
                 <td>联系方式</td>
                 <td>
-                    <input id="User_Phone" type="text" />
+                    <input id="User_Phone" type="text" class="form-control" />
                 </td>
             </tr>
             <tr>
                 <td>email</td>
                 <td>
-                    <input id="User_Email" type="text" />
+                    <input id="User_Email" type="text" class="form-control" />
                 </td>
             </tr>
             <tr>
                 <td>微信账号</td>
                 <td>
-                    <input id="User_Wechat" type="text" />
+                    <input id="User_Wechat" type="text" class="form-control" />
                 </td>
             </tr>
             <tr>
                 <td>QQ账号</td>
                 <td>
-                    <input id="User_QQ" type="text" />
+                    <input id="User_QQ" type="text" class="form-control" />
                 </td>
             </tr>
             <tr>
                 <td>部门</td>
                 <td>
-                    <select id="User_Department">
+                    <select id="User_Department" class="btn btn-default dropdown-toggle">
                     </select>
                 </td>
             </tr>
             <tr>
                 <td>职位</td>
                 <td>
-                    <select id="User_Job">
+                    <select id="User_Job" class="btn btn-default dropdown-toggle">
                     </select>
                 </td>
             </tr>
             <tr>
                 <td>所在区域</td>
                 <td>
-                    <select id="User_Province" onchange="ProvinceChange()">
+                    <select id="User_Province" onchange="ProvinceChange()" class="btn btn-default dropdown-toggle">
                     </select>
-                    <select id="User_City" onchange="CityChange()">
+                    <select id="User_City" onchange="CityChange()" class="btn btn-default dropdown-toggle">
                     </select>
-                    <select id="User_District">
+                    <select id="User_District" class="btn btn-default dropdown-toggle">
                     </select>
                 </td>
             </tr>
             <tr>
                 <td>联系地址</td>
                 <td>
-                    <input id="User_Address" type="text" />
+                    <input id="User_Address" type="text" class="form-control" />
                 </td>
             </tr>
             <tr>
                 <td>个人照片</td>
                 <td>
-                    <div class="layui-input-inline">
-                        <input type="file" id="User_Photo" style="height:20px;width:200px;" name="username" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
+                    <div style="position: relative;">
+                        <input id="User_Photo" style="position: absolute; top: 0; bottom: 0; left: 0;right: 0; opacity: 0;" type="file" accept="image/gif, image/jpg, image/png" onchange="showImg(this)" />
+                        <div style="text-align:top">
+                            <img id="upload" src="/wwwroot/img/0.jpg" style="width: 80px; height: 80px; vertical-align: middle;" />
+                        </div>
                     </div>
+                    @*<div class="layui-input-inline">
+                            <input type="file" id="User_Photo" style="height:20px;width:200px;" name="username" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
+                        </div>*@
                 </td>
             </tr>
             <tr>
@@ -117,18 +124,21 @@
             <tr>
                 <td></td>
                 <td>
-                    <input id="Button1" type="button" value="提交" onclick="Save()" />
-                    <input id="Button1" type="button" value="重置" />
+                    <input id="Button1" type="button" value="提交" onclick="Save()" class="btn btn-primary" style="width:80px" />
+                    <input id="Button1" type="button" value="重置" onclick="ReSave()" />
                 </td>
             </tr>
         </table>
     </div>
-    
+
 </body>
 </html>
 <script src="~/lib/jquery/dist/jquery.js"></script>
 <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
 <script>
+    function ReSave() {
+        $('#User_Id').val(); $('#User_Name').val(); $('#User_Pwd').val();
+    }
     $(function () {
         ShowDepartment();
     })
@@ -277,5 +287,14 @@
                 }
             }
         })
+    }
+    function showImg(input) {
+        var file = input.files[0];
+        var reader = new FileReader()
+        // 图片读取成功回调函数
+        reader.onload = function (e) {
+            document.getElementById('upload').src = e.target.result
+        }
+        reader.readAsDataURL(file)
     }
 </script>

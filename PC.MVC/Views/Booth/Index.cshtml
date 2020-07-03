@@ -11,14 +11,14 @@
     <title>Index</title>
 </head>
 <body>
-    <div style="margin-left:100px;margin-left:20px">
+    <div style="margin-left:100px;margin-left:50px">
         <div>
             <h3 style="font-weight:600;">首页</h3>
         </div>
         <div style="margin-top:20px;margin-right:40px;float:left">
             <div style="border: 1px solid #808080;width:600px;float:left;height:40px;vertical-align:central">
-                新增数据
-                <select id="DataTime" style="float:right" onchange="ShowData()">
+                <h3 style="float:left">新增数据</h3>
+                <select id="DataTime" style="float:right" onchange="ShowData()" class="btn btn-default dropdown-toggle">
                     <option value="week">本周</option>
                     <option value="month">本月</option>
                     <option value="year">本季度</option>
@@ -51,8 +51,8 @@
         <div style="margin-top:20px;float:left;">
             <div style="float:left;width:600px;">
                 <div style="border: 1px solid #808080;width:600px;height:40px;vertical-align:central">
-                    会议统计
-                    <select id="MeetTime" style="float:right" onchange="ShowPie()">
+                    <h3 style="float:left">会议统计</h3> 
+                    <select id="MeetTime" style="float:right" onchange="ShowPie()" class="btn btn-default dropdown-toggle">
                         <option value="week">本周</option>
                         <option value="month">本月</option>
                         <option value="year">本季度</option>

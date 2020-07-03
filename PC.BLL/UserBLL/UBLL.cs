@@ -135,5 +135,9 @@ namespace PC.BLL.UserBLL
         {
             return _dal.GetCon(time);
         }
+        public int ChangePermission(int id, string ids)
+        {
+            return _dal.ChangePermission(id, ids);
+        }
     }
 }

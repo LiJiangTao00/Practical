@@ -16,15 +16,15 @@
         <div style="margin:20px">
             <div style="border: 1px solid #808080;height:55px;padding-top:5px;">
                 <div style="float:left;padding-bottom:5px">
-                    <select id="ShowDepartment"  class="btn btn-default dropdown-toggle">
+                    <select id="ShowDepartment" class="btn btn-default dropdown-toggle">
                     </select>
-                    <select id="ShowProvince" onchange="ProvinceChange()"  class="btn btn-default dropdown-toggle">
+                    <select id="ShowProvince" onchange="ProvinceChange()" class="btn btn-default dropdown-toggle">
                     </select>
-                    <select id="ShowCity" onchange="CityChange()"  class="btn btn-default dropdown-toggle">
+                    <select id="ShowCity" onchange="CityChange()" class="btn btn-default dropdown-toggle">
                     </select>
-                    <select id="ShowDistrict"  class="btn btn-default dropdown-toggle">
+                    <select id="ShowDistrict" class="btn btn-default dropdown-toggle">
                     </select>
-                    <select id="ShowJob"  class="btn btn-default dropdown-toggle">
+                    <select id="ShowJob" class="btn btn-default dropdown-toggle">
                     </select>
                 </div>
                 <input id="txt_Sel" type="text" placeholder="输入手机号或姓名或工号" class="form-control" style="width:200px;height:40px;float:left;" />
@@ -36,7 +36,7 @@
 
                 <input type="button" value="添加" class="layui-btn layui-btn-normal" onclick="Add()" />
                 @*<input type="button" value="导出" class="layui-btn layui-btn-primary" onclick="Derive()" />
-                <input id="File1" type="file" />*@
+                    <input id="File1" type="file" />*@
                 <input type="button" value="修改职务" class="layui-btn layui-btn-primary" onclick="UpdateJob()" />
                 <input type="button" value="修改部门" class="layui-btn layui-btn-primary" onclick="UpdateDepartment()" />
                 <input type="button" value="停用用户" class="layui-btn layui-btn-primary" onclick="Dead()" />
@@ -67,10 +67,10 @@
                 <input id="chk" type="checkbox" onclick="GetChk()" />全选
                 <input type="button" value="批量删除" onclick="PiDel()" />
                 <div id="pagenum" style="float:right">
-                    <input type="button" value="首页" onclick="Page('first')"/>
-                    <input type="button" value="上一页" onclick="Page('last')"/>
-                    <input type="button" value="下一页" onclick="Page('next')"/>
-                    <input type="button" value="尾页" onclick="Page('end')"/>
+                    <input type="button" value="首页" onclick="Page('first')" />
+                    <input type="button" value="上一页" onclick="Page('last')" />
+                    <input type="button" value="下一页" onclick="Page('next')" />
+                    <input type="button" value="尾页" onclick="Page('end')" />
                 </div>
             </div>
         </div>
@@ -192,7 +192,7 @@
             }
         })
     }
-    function ShowList(product,index) {
+    function ShowList(product, index) {
         var txt_Sel = $('#txt_Sel').val();
         var ShowDepartment = $('#ShowDepartment').val() == null ? 0 : $('#ShowDepartment').val();
         var ShowProvince = $('#ShowProvince').val() == null ? 0 : $('#ShowProvince').val();
@@ -219,7 +219,7 @@
             }
         })
         localStorage["selectid"] = product;
-        
+
         $('input[type="checkbox"]').prop("checked", false);
     }
     function Page(num) {
@@ -314,11 +314,11 @@
         }
     }
     function PiDel() {
-        var che = [];
-        $.each($("input[class='chk']:checked"), function (i) {
-            che.push($(this).val());
-        });
-        var pid = che.join(',');
+        var ids = GetChkId();
+        if (ids == "") {
+            alert("未选中");
+            return;
+        }
         Del(pid);
     }
     function Del(id) {
@@ -355,7 +355,7 @@
     }
     function UpdateJob() {
         var ids = GetChkId();
-        if (dis == "") {
+        if (ids == "") {
             alert("未选中");
             return;
         }
@@ -455,7 +455,7 @@
     }
     function UpdateDepartment() {
         var ids = GetChkId();
-         if (dis == "") {
+        if (ids == "") {
             alert("未选中");
             return;
         }
@@ -556,7 +556,7 @@
     }
     function Dead() {
         var ids = GetChkId();
-         if (dis == "") {
+        if (ids == "") {
             alert("未选中");
             return;
         }
@@ -631,7 +631,7 @@
     }
     function Freeze() {
         var ids = GetChkId();
-         if (dis == "") {
+        if (ids == "") {
             alert("未选中");
             return;
         }
