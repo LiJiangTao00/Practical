@@ -277,5 +277,16 @@ namespace PC.API.Controllers.MaterialManagement
         {
             return _bll.Fillmaterial(Id);
         }
+
+        /// <summary>
+        /// 删除物料
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+       [HttpPost]
+        public int DelMaterial(int Id)
+        {
+            return _bll.DelMaterial(Id);
+        }
     }
 }

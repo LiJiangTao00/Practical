@@ -132,5 +132,12 @@ namespace PC.IDAL.IMaterialDAL
         /// <param name="id"></param>
         /// <returns></returns>
         MaterialTableModel Fillmaterial(int Id);
+
+        /// <summary>
+        /// 删除物料
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        int DelMaterial(int Id);
     }
 }

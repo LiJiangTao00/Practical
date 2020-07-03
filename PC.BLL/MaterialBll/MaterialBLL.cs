@@ -222,5 +222,15 @@ namespace PC.BLL.MaterialBll
         {
             return _dal.Fillmaterial(Id);
         }
+
+        /// <summary>
+        /// 删除物料
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public int DelMaterial(int Id)
+        {
+            return _dal.DelMaterial(Id);
+        }
     }
 }
