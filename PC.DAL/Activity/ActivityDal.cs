@@ -194,6 +194,28 @@ namespace PC.DAL.Activity
 
                                       }).ToList();
             list = list.Where(x => x.Activity_Do_Activity_Id == id).ToList();
+            if (did != 0)
+            {
+                list = list.Where(x => x.User_Department == did).ToList();
+            }
+            if (pid != 0)
+            {
+                list = list.Where(x => x.User_Province == pid).ToList();
+            }
+            if (cid != 0)
+            {
+                list = list.Where(x => x.User_City == cid).ToList();
+            }
+            if (dis != 0)
+            {
+                list = list.Where(x => x.User_District == dis).ToList();
+            }
+            
+            if (!string.IsNullOrEmpty(name))
+            {
+                list = list.Where(x => x.User_Name.Contains(name) ).ToList();
+
+            }
             //string sql = "select c.Con_ConId,a.Activity_Name,d.Activity_Do_Hospital,u.User_Name,u.User_Area,j.Job_Name,d.Activity_Do_CreateTime,d.Activity_Do_EndTime,d.Activity_Do_State 
             //              from Activity_DoTable d join ActivityTable a
             //              on d.Activity_Do_Activity_Id = a.Id join UserTable u
