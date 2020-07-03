@@ -18,10 +18,23 @@
 
 
     <script type="text/html" id="barDemo">
-        <a class="layui-btn layui-btn-primary layui-btn-xs"  lay-event="detail">查看详情</a>
+        {{#  if(d.activityState_Id == 1){ }}
+        <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看详情</a>
+        <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="edit">编辑</a>
+        <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="del">删除</a>
+        <a class="layui-btn layui-btn-xs layui-btn-disabled" lay-event="sel">查看执行情况</a>
+        {{#  }else{ }}
+        <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看详情</a>
         <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="edit">编辑</a>
         <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="del">删除</a>
         <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="sel">查看执行情况</a>
+        {{#  } }}
+        @*<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看详情</a>
+        <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="edit">编辑</a>
+        <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="del">删除</a>
+        <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="sel">查看执行情况</a>*@
+
+
     </script>
 
     <form class="layui-form">
@@ -54,7 +67,7 @@
             <li>社区组</li>
         </ul>
         <div class="layui-tab-content" style="height: 100px;">
-            <table id="ShowData"  lay-filter="TestTT"></table>
+            <table id="ShowData" lay-filter="TestTT"></table>
         </div>
     </div>
     <div>
@@ -69,8 +82,7 @@
         var layer = layui.layer;
         var d = -1;
         element.on('tab(docDemoTabBrief)', function (data) {
-            if (data.index == 0)
-            {
+            if (data.index == 0) {
                 d = -1;
                 table.reload('ShowData', {
                     url: "http://localhost:49764/api/activity/ShowActivity",
@@ -81,20 +93,18 @@
                     }
                 });
             }
-            else if (data.index == 1)
-            {
+            else if (data.index == 1) {
                 d = 0;
                 table.reload('ShowData', {
                     url: "http://localhost:49764/api/activity/ShowActivity",
                     method: 'get'
-                    , where: { ActivityType_Id: Number($("#Type1").val()), ActivityState_Id: Number($("#State1").val()), Search: $("#Search").val(), Activity_Product_Id: 0}
+                    , where: { ActivityType_Id: Number($("#Type1").val()), ActivityState_Id: Number($("#State1").val()), Search: $("#Search").val(), Activity_Product_Id: 0 }
                     , page: {
                         curr: 1
                     }
                 });
             }
-            else if (data.index == 2)
-            {
+            else if (data.index == 2) {
                 d = 1;
                 table.reload('ShowData', {
                     url: "http://localhost:49764/api/activity/ShowActivity",
@@ -105,8 +115,7 @@
                     }
                 });
             }
-            else if (data.index == 3)
-            {
+            else if (data.index == 3) {
                 d = 2;
                 table.reload('ShowData', {
                     url: "http://localhost:49764/api/activity/ShowActivity",
@@ -136,16 +145,14 @@
                 }
             })
         }
-        function GetDepart(id)
-        {
+        function GetDepart(id) {
             $.ajax({
                 url: " http://localhost:49764/api/activity/GetdepartName?id=" + id
                 , type: "Get"
-                , success: function (data)
-                {
-                  
-                    Name= data;
-                 }
+                , success: function (data) {
+
+                    Name = data;
+                }
             })
             console.log(Name);
             return Name;
@@ -183,57 +190,49 @@
             , height: 312
             , url: 'http://localhost:49764/api/activity/ShowActivity' //数据接口
             , page: true //开启分页
-            ,totalRow: true //开启合计行
+            , totalRow: true //开启合计行
             , cols: [[ //表头
                 { field: 'activity_Name', title: '活动名称', width: 150, sort: true, fixed: 'left' }
                 , {
                     field: 'activityType_Id', title: '活动类型', width: 150
-                , sort: true, templet: function (d) {
-                        if (d.activityType_Id == 0)
-                        {
+                    , sort: true, templet: function (d) {
+                        if (d.activityType_Id == 0) {
                             return "市场活动";
                         }
-                        else if (d.activityType_Id == 1)
-                        {
+                        else if (d.activityType_Id == 1) {
                             return "科室会";
                         }
-                        else if (d.activityType_Id == 2)
-                        {
+                        else if (d.activityType_Id == 2) {
                             return "城市会";
                         }
-                        else
-                        {
+                        else {
                             return "圆桌会";
                         }
                     }
                 }
                 , {
                     field: 'activity_Product_Id', title: '产品组', width: 80, sort: true, templet: function (d) {
-                        if (d.activity_Product_Id == 0)
-                        {
+                        if (d.activity_Product_Id == 0) {
                             return "CV组";
                         }
-                        else if (d.activity_Product_Id == 1)
-                        {
+                        else if (d.activity_Product_Id == 1) {
                             return "DIA组";
                         }
-                        else
-                        {
+                        else {
                             return "社区组";
                         }
                     }
                 }
                 , {
                     field: 'acticity_Department_Id', title: '部门', width: 80, sort: true, templet: function (d) {
-                        if (d.acticity_Department_Id == 0)
-                        {
+                        if (d.acticity_Department_Id == 0) {
                             return "市场部";
                         }
-                        else
-                        {
+                        else {
                             return "销售部";
                         }
-                    }}
+                    }
+                }
                 , {
                     field: 'timeBegin', title: '开始时间', width: 180, templet: function (d) {
                         var data = new Date(d.timeBegin);
@@ -244,28 +243,30 @@
                         return time;
                     }
                 }
-                , { field: 'timeEnd', title: '结束时间', width: 180, sort: true, templet: function (d) {
+                , {
+                    field: 'timeEnd', title: '结束时间', width: 180, sort: true, templet: function (d) {
                         var data = new Date(d.timeBegin);
                         var year = data.getFullYear();  //获取年
                         var month = data.getMonth() + 1;    //获取月
                         var day = data.getDate(); //获取日
                         time = year + "-" + month + "-" + day;
                         return time;
-                    } }
+                    }
+                }
                 , {
                     field: 'activityState_Id', title: '状态', width: 80, sort: true, templet: function (d) {
-                        if (d.activityState_Id == 0)
-                        {
+                        if (d.activityState_Id == 1) {
                             return "未开始";
                         }
-                        else if(d.activityState_Id == 1){
+                        else if (d.activityState_Id == 2) {
                             return "已结束";
                         }
                         else {
                             return "进行中";
                         }
-                    } }
-                , { field: 'Caozuo', title: '操作', width: 710, templet: '#barDemo' }
+                    }
+                }
+                , { field: 'activityState_Id', title: '操作', width: 710, templet: '#barDemo' }
             ]], where: { ActivityType_Id: Number($("#Type1").val()), ActivityState_Id: Number($("#State1").val()), Search: $("#Search").val() },
             request: {
                 pageName: 'page',   // 页码的参数名称，默认：page
@@ -274,7 +275,7 @@
         });
         table.on('tool(TestTT)', function (obj) { //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
             var data = obj.data //获得当前行数据
-            , layEvent = obj.event; //获得 lay-event 对应的值
+                , layEvent = obj.event; //获得 lay-event 对应的值
             if (layEvent === 'detail') {
                 location.href = "/activity/Details?id=" + data.id;
             } else if (layEvent === 'del') {
@@ -296,8 +297,7 @@
                                     }
                                 });
                             }
-                            else
-                            {
+                            else {
                                 layer.msg('删除失败');
                             }
                         }
@@ -314,20 +314,20 @@
 
 
         function Edit(id) {
-            location.href = "/Activity/UpdActivity?id="+id;
+            location.href = "/Activity/UpdActivity?id=" + id;
         };
         form.on('submit(add)', function (data) {
             table.reload('ShowData', {
                 url: "http://localhost:49764/api/activity/ShowActivity",
                 method: 'get'
-                , where: { ActivityType_Id: Number($("#Type1").val()), ActivityState_Id: Number($("#State1").val()), Search: $("#Search").val(), Acticity_Department_Id:d }
+                , where: { ActivityType_Id: Number($("#Type1").val()), ActivityState_Id: Number($("#State1").val()), Search: $("#Search").val(), Acticity_Department_Id: d }
                 , page: {
                     curr: 1
                 }
             });
         });
     });
-    
+
     //function Type() {
     //    $.ajax({
     //        url: "http://localhost:49764/api/activity/ShowType"
