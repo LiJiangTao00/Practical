@@ -51,6 +51,7 @@
         <table class="table table-hover">
             <tr>
                 <td><input id="Ck_all" type="checkbox" onclick="Select_Ck() " /> 选择</td> @*利用该复选框的id值来操作(全选/反选)数据行中的复选框*@
+                <td>会议ID</td>
                 <td>会议名称</td>
                 <td>会议地点</td>
                 <td>会议日期</td>
@@ -114,6 +115,7 @@
 
                     var list = `<tr> `
                         + `<td><input id="Checkbox1" type="checkbox" name="Ck_id" value="${k.id}" /></td>`//利用多选框的name值进行循环遍历 获取选中的复选框
+                        + `<td>${k.id}</td>`
                         + `<td>${k.con_Name}</td>`
                         + `<td>${k.con_Place}</td>`
                         + `<td>${k.con_StartTime}到${k.con_EndTime}</td>`
@@ -225,6 +227,7 @@
 
                     var list = `<tr>
                          <td><input id="Checkbox1" type="checkbox" name="Ck_id" value="${k.id}" /></td>
+                         <td>${k.id}</td>
                          <td>${k.con_Name}</td>
                          <td>${k.con_Place}</td>
                          <td>${k.con_StartTime}到${k.con_EndTime}</td>

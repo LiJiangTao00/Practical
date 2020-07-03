@@ -30,7 +30,7 @@ namespace PC.DAL.Conference
             c.Con_DelState = 1;
             c.Con_ConDataId = 1;//没做 默认是1
             DapperHelper<ConferenceAdd> ConferenceDapper = new DapperHelper<ConferenceAdd>();
-            return ConferenceDapper.Execute($"insert into ConferenceTable values('{c.Con_Name}','{c.Con_ConId}','{c.Con_TypeId}','{c.Con_StartTime}','{c.Con_EndTime}','{c.Con_Place}','{c.Con_OrganizationalUnit}','{c.Con_SupportUnit}','{c.Con_ProductId}','{c.Con_QuotaEndTime}','{c.Con_QuotaNumber}','{c.Con_ConDataId}','{c.Con_Desc}','{c.Con_State}','{c.Con_Admin}','1')");
+            return ConferenceDapper.Execute($"insert into ConferenceTable values('{c.Con_ConId}','{c.Con_Name}','{c.Con_TypeId}','{c.Con_StartTime}','{c.Con_EndTime}','{c.Con_Place}','{c.Con_OrganizationalUnit}','{c.Con_SupportUnit}','{c.Con_ProductId}','{c.Con_QuotaEndTime}','{c.Con_QuotaNumber}','{c.Con_ConDataId}','{c.Con_Desc}','{c.Con_State}','{c.Con_Admin}','1')");
         }
         /// <summary>
         /// 查询会议
@@ -241,7 +241,7 @@ namespace PC.DAL.Conference
             DapperHelper<ParticipantTable> ParticipantTableDapper = new DapperHelper<ParticipantTable>();
             return ParticipantTableDapper.Query(sql);
         }
-        //分配名额 即贼关系表中添加数据
+        //分配名额 即往关系表中添加数据
         public int AddQuota(int uid, int conid, int num)
         {
             DapperHelper<QuotaTableModel> QuotaTableModelDapper = new DapperHelper<QuotaTableModel>();
