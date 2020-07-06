@@ -190,7 +190,7 @@ namespace PC.API.Controllers.MaterialManagement
         /// <param name="PageSize">页大小</param>
         /// <returns></returns>
         [HttpGet]
-        public PageShowMaterial SelOrder(string Material_Id, string Material_Name, string Order_Proposer, DateTime? Order_ApplyTime, int PageIndex = 1, int PageSize = 1, int Order_State = -1)
+        public PageShowMaterial SelOrder(string Material_Id, string Material_Name, string Order_Proposer, DateTime? Order_ApplyTime, int PageIndex = 1, int PageSize = 2, int Order_State = -1)
         {
 
             return _bll.SelOrder(Material_Id, Material_Name, Order_Proposer, Order_ApplyTime, PageIndex, PageSize, Order_State);
@@ -219,7 +219,7 @@ namespace PC.API.Controllers.MaterialManagement
         /// <param name="Material_Approval">审批类型</param>
         /// <returns></returns>
        [HttpGet]
-        public PageShowMaterial SelApproval(string Material_Id, string Material_Name, string Order_Proposer, DateTime? Order_SubmissionTime, DateTime? Order_ApproveTime, int PageIndex = 1, int PageSize = 1, int Material_Approval = -1)
+        public PageShowMaterial SelApproval(string Material_Id, string Material_Name, string Order_Proposer, DateTime? Order_SubmissionTime, DateTime? Order_ApproveTime, int PageIndex = 1, int PageSize = 2, int Material_Approval = -1)
         {
             return _bll.SelApproval(Material_Id, Material_Name, Order_Proposer, Order_SubmissionTime, Order_ApproveTime, PageIndex, PageSize, Material_Approval);
         }

@@ -62,7 +62,7 @@
     })
     function DaQvSel() {//大区下拉
         $.ajax({
-            url: "http://localhost:49764/api/User/ShowProvince",
+            url: "http://49.234.34.192:8034/api/User/ShowProvince",
             type: "get",
             success: function (data) {
                 $(data).each(function (i, k) {
@@ -74,7 +74,7 @@
     }
     function DiQvSel() {//地区下拉
         $.ajax({
-            url: "http://localhost:49764/api/User/ShowProvince?pid=" + $("#Sel_DaQv").val(),
+            url: "http://49.234.34.192:8034/api/User/ShowProvince?pid=" + $("#Sel_DaQv").val(),
             type: "get",
             success: function (data) {
                 $("#Sel_DiQv").empty();
@@ -95,7 +95,7 @@
         };
         console.log(Qd);
         $.ajax({
-            url: "http://localhost:49764/api/Conference/ShowUsersNoConid",
+            url: "http://49.234.34.192:8034/api/Conference/ShowUsersNoConid",
             data: Qd,
             type: "post",
             contentType: "application/x-www-form-urlencoded",
@@ -141,7 +141,7 @@
                         return;
                     }
                     $.ajax({
-                        url: "http://localhost:49764/api/Conference/AddQuota",
+                        url: "http://49.234.34.192:8034/api/Conference/AddQuota",
                         type: "get",
                         data: {
                             uid: id,

@@ -93,7 +93,7 @@
         function Show() {
             var id = location.search.split('?')[1].split('=')[1];
                     $.ajax({
-            url: "http://localhost:49764/api/activity/GetActivity?id="+id,
+            url: "http://49.234.34.192:8034/api/activity/GetActivity?id="+id,
             type: "get",
             success: function (result)
             {
@@ -122,7 +122,7 @@
 
         function Type() {
             $.ajax({
-                url: "http://localhost:49764/api/activity/ShowType"
+                url: "http://49.234.34.192:8034/api/activity/ShowType"
                 , type: "Get"
                 , success: function (data) {
                     console.log(data);
@@ -138,7 +138,7 @@
         }
         function Department() {
             $.ajax({
-                url: "http://localhost:49764/api/activity/ShowDep"
+                url: "http://49.234.34.192:8034/api/activity/ShowDep"
                 , type: "Get"
                 , success: function (data) {
                     var list = '<option value="0" >请选择</option>';
@@ -165,7 +165,7 @@
             console.log(data.field);
             //var obj = JSON.stringify(data.field);
             $.ajax({
-                url: "http://localhost:49764/api/activity/UpdActivity",
+                url: "http://49.234.34.192:8034/api/activity/UpdActivity",
                 type: "put",
                 contentType: "application/json",
                 data: JSON.stringify(data.field),

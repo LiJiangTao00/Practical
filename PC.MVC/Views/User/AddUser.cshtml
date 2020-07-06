@@ -149,7 +149,7 @@
     });
     function ShowDepartment() {
         $.ajax({
-            url: "http://localhost:49764/api/user/ShowDepartment",
+            url: "http://49.234.34.192:8034/api/user/ShowDepartment",
             type: "get",
             dataType: "json",
             success: function (data) {
@@ -165,7 +165,7 @@
     }
     function ShowJob() {
         $.ajax({
-            url: "http://localhost:49764/api/user/ShowJob",
+            url: "http://49.234.34.192:8034/api/user/ShowJob",
             type: "get",
             dataType: "json",
             success: function (data) {
@@ -181,7 +181,7 @@
     }
     function ShowProvince() {
         $.ajax({
-            url: "http://localhost:49764/api/user/ShowProvince",
+            url: "http://49.234.34.192:8034/api/user/ShowProvince",
             type: "get",
             dataType: "json",
             success: function (data) {
@@ -216,7 +216,7 @@
     }
     function ProvinceChange(pid) {
         $.ajax({
-            url: "http://localhost:49764/api/user/ShowProvince?pid=" + pid,
+            url: "http://49.234.34.192:8034/api/user/ShowProvince?pid=" + pid,
             type: "get",
             dataType: "json",
             success: function (data) {
@@ -235,7 +235,7 @@
     }
     function CityChange(pid) {
         $.ajax({
-            url: "http://localhost:49764/api/user/ShowProvince?pid=" + pid,
+            url: "http://49.234.34.192:8034/api/user/ShowProvince?pid=" + pid,
             type: "get",
             dataType: "json",
             success: function (data) {

@@ -16,100 +16,114 @@
 
 </head>
 <body>
-    <select name="sdfas">
-        <option value="a">aaa</option>
-        <option value="b">bbb</option>
-    </select>
-    <input type="button" value="锁屏" id="lockButton" />
-    <div class="popup" id="popupDiv">
-        <!--IE6下，DIV默认不能遮盖select标签，可在此处放置一个iframe，以达到遮盖效果，其他浏览器可以不要-->
-        <iframe frameborder="1" scrolling="no" height="100%" width="100%" class="fff"></iframe>
-    </div>          <div class="divv" id="alertDiv">
-        <input type="button" value="关闭" id="unlockButton" />
+    <div class="sliding">
+        请按住滑块，拖至最右侧。
+        <p></p>
+        <span class="span1_back"></span>
+        
     </div>
-
-
+    <input id="Button1" type="button" disabled="disabled" value="button" />
 </body>
 </html>
 
-<style type="text/css">
-    .divv {
-        position: absolute;
-        top: 30%;
-        left: 30%;
-        width: 80px;
-        height: 60px;
-        border: 1px solid #666;
-        background-color: #9CF;
+<style>
+    * {
+        margin: 0px;
+        padding: 0px;
+    }
+
+    .sliding {
+        width: 400px;
+        height: 40px;
+        margin: 50px auto;
+        background: rgba(212, 212, 212, 1);
         text-align: center;
-        display: none;
-        z-index: 300;
-    }
-
-    .popup {
-        border: 1px solid red;
-        position: absolute;
-        top: 0px;
-        left: 0px;
-        width: 100%;
-        height: 100%;
-        background-color: #000;
-        filter: alpha(opacity=45);
-        opacity: 0.45;
-        display: none;
-        z-index: 200;
-    }
-
-
-    .fff {
-        border: 1px solid blue;
+        line-height: 40px;
         position: relative;
-        background-color: #000;
+    }
+
+        .sliding > p {
+            width: 0px;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            background: #7BBB55;
+            z-index: 99;
+            color: #FFFFFF;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .sliding > span {
+            display: block;
+            width: 46px;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            background-size: cover;
+            cursor: pointer;
+            z-index: 999;
+        }
+
+    .span1_back {
+        background: url(left.png) no-repeat center center;
+    }
+
+    .span2_back {
+        background: url(ok.png)no-repeat center center;
     }
 </style>
 <script type="text/javascript">
-    $(document).ready(function () {
-        //页面初始化
-        goCenter();
-        //滚动条滚动
-        $(window).scroll(
-            function () {
-                goCenter();
-
-            });
-        //拖动浏览器窗口
-        $(window).resize(
-            function () {
-                goCenter();
-
+    $(function () {
+        $('#Button1').attr("disabled", true);
+        $('.sliding > span').on('mousedown', function (ev) {
+            //获取鼠标摁下的位置
+            var down_X = ev.clientX;
+            //获取p,span的宽度
+            var p_W = $('.sliding > p').get(0).offsetWidth;
+            var span_X = $('.sliding > span').get(0).offsetLeft;
+            $(document).get(0).onmousemove = function (ev) {
+                //获取鼠标移动的位置
+                var move_X = ev.clientX;
+                //用移动过后的位置减去鼠标摁下的位置加上p的宽度或者 span 的left 值 因为俩者是同步的 所以 减去 其中一个就好
+                var size = move_X - down_X + p_W;
+                if (size > 0) {// 移动的时候判断size>0的时候执行，Math.min选取最小值，让拖动过程中不至于超出
+                    size = Math.min(($('.sliding').get(0).offsetWidth - $('.sliding > span').get(0).offsetWidth), size);
+                } else {
+                    //小于0的时候 size =0； 防止有无聊的用户拖回 超出边界
+                    size = 0;
+                }
+                $('.sliding > p').css('width', size + 'px');
+                $('.sliding > span').css('left', size + 'px');
+                //防止拖拽过程中选中文字
+                return false;
             }
-        );
-        //锁屏
-        $("#lockButton").click(
-            function () {
-                $("#popupDiv").show();
-                $("#alertDiv").show();
-
+            $(document).get(0).onmouseup = function () {
+                //鼠标松开执行,判段span到达边界时候执行
+                if (($('.sliding > span').get(0).offsetLeft) >= ($('.sliding').get(0).offsetWidth - $('.sliding > span').get(0).offsetWidth)) {
+                    //更改span的背景图片
+                    $('.sliding > span').attr('class', 'span2_back');
+                    //更改p标签中的内容
+                    $('.sliding > p').text('验证通过');
+                    //验证成功之后执行的方法
+                    successAfter();
+                    
+                    //删除鼠标摁下方法防止用户 无聊往回 推拽
+                    $('.sliding > span').off('mousedown');
+                } else {
+                    //判断没到达边界让它再回到起点
+                    //利用jquery让p 和 span 回到起始状态
+                    $('.sliding > span').animate({ left: '0px' }, 300);
+                    $('.sliding > p').animate({ width: '0px' }, 300);
+                }
+                $(document).get(0).onmousemove = null; //最后让 鼠标移动 和 鼠标松开 事件停止 
+                $(document).get(0).onmouseup = null;
             }
-        );
-        //解屏
-        $("#unlockButton").click(
-            function () {
-                $("#popupDiv").hide();
-                $("#alertDiv").hide();
-
-            }
-        );
+        })
+    });
+    function successAfter() {
+        $('#Button1').removeAttr("disabled");
     }
-    );
-
-    function goCenter() {
-        var h = $(window).height();
-        var w = $(window).width();
-        var st = $(window).scrollTop();
-        var sl = $(window).scrollLeft();
-        $("#popupDiv").css("width", w + sl);
-        $("#popupDiv").css("height", h + st);
-        $(".divv").css("top", ((h - 60) / 2) + st);
-        $(".divv").css("left", ((w - 80) / 2) + sl);
-    }</script>
+</script>

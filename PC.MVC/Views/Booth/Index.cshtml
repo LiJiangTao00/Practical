@@ -82,7 +82,7 @@
         var time = $('#DataTime').val();
         var tab = "UserTable";
         $.ajax({
-            url: "http://localhost:49764/api/user/GetLog?time=" + time + "&table=" + tab,
+            url: "http://49.234.34.192:8034/api/user/GetLog?time=" + time + "&table=" + tab,
             type: "get",
             dataType: "json",
             success: function (data) {
@@ -96,7 +96,7 @@
         })
         tab = "ConferenceTable";
         $.ajax({
-            url: "http://localhost:49764/api/user/GetLog?time=" + time + "&table=" + tab,
+            url: "http://49.234.34.192:8034/api/user/GetLog?time=" + time + "&table=" + tab,
             type: "get",
             dataType: "json",
             success: function (data) {
@@ -110,7 +110,7 @@
         })
         tab = "MaterialTable";
         $.ajax({
-            url: "http://localhost:49764/api/user/GetLog?time=" + time + "&table=" + tab,
+            url: "http://49.234.34.192:8034/api/user/GetLog?time=" + time + "&table=" + tab,
             type: "get",
             dataType: "json",
             success: function (data) {
@@ -186,7 +186,7 @@
         
     });
     function ShowPie() {
-        $.getJSON("http://localhost:49764/api/user/GetCon?time=" + $('#MeetTime').val(), function (data11) {
+        $.getJSON("http://49.234.34.192:8034/api/user/GetCon?time=" + $('#MeetTime').val(), function (data11) {
             var d = data11;
             var nanlist = [];
 

@@ -92,7 +92,7 @@
             "pagesize": $("#lab_pagesize").text(),
         };
         $.ajax({
-            url: "http://localhost:49764/api/Conference/SearchConference",
+            url: "http://49.234.34.192:8034/api/Conference/SearchConference",
             data: spc,
             type: "post",
             contentType: "application/x-www-form-urlencoded",
@@ -159,6 +159,7 @@
         switch (SearchType) {
             case 'all'://多条件查询 默认显示第一页
                 pageindex = 1;
+                $("#lab_pageindex").text(1);
                 break;
             case 'CV'://CV组
                 conproduct = 'CV';
@@ -205,7 +206,7 @@
             "pagesize": $("#lab_pagesize").text(),
         };
         $.ajax({
-            url: "http://localhost:49764/api/Conference/SearchConference",
+            url: "http://49.234.34.192:8034/api/Conference/SearchConference",
             data: spc,
             type: "post",
             contentType: "application/x-www-form-urlencoded",
@@ -282,7 +283,7 @@
         }
         //有被选中的数据行时
         $.ajax({
-            url: "http://localhost:49764/api/Conference/DelConference",
+            url: "http://49.234.34.192:8034/api/Conference/DelConference",
             data: {
                 ids: DelIds
             },
@@ -301,7 +302,7 @@
     //单删  点击数据行中的删除  将此行数据删除
     function Del_Single(con_id) {
         $.ajax({
-            url: "http://localhost:49764/api/Conference/DelConference",
+            url: "http://49.234.34.192:8034/api/Conference/DelConference",
             data: {
                 ids: con_id
             },
@@ -320,7 +321,7 @@
     function Con_Info(Cid) {
         var InfoHtml = `<div><table>`;
         $.ajax({
-            url: "http://localhost:49764/api/Conference/ConferenceInfo?cid=" + Cid,
+            url: "http://49.234.34.192:8034/api/Conference/ConferenceInfo?cid=" + Cid,
             type: "get",
             success: function (d) {
                 console.log(2);

@@ -33,14 +33,14 @@
     function SelectData() {
         var phone = localStorage["Phone"];
         $.ajax({
-            url: "http://localhost:49764/api/user/SelectUserPhone?phone=" + phone,
+            url: "http://49.234.34.192:8034/api/user/SelectUserPhone?phone=" + phone,
             type: "get",
             dataType: "json",
             success: function (data) {
                 $('#ShowDiv').empty();
                 console.log(data);
                 var str = '';
-                str += '<div style="float:left;"><img src="http://localhost:49764' + data.user_Photo + '" style="width:50px;height:70px"/></div>';
+                str += '<div style="float:left;"><img src="http://49.234.34.192:8034' + data.user_Photo + '" style="width:50px;height:70px"/></div>';
                 str += '<table><tr><td>姓名：' + data.user_Name + '</td>' +
                     '<td> 工号：' + data.user_Id + '</td>' +
                     '<td>性别：' + data.user_Sex + '</td></tr >' +
@@ -62,7 +62,7 @@
     function PutData() {
         var phone = localStorage["Phone"];
         $.ajax({
-            url: "http://localhost:49764/api/user/SelectUserPhone?phone=" + phone,
+            url: "http://49.234.34.192:8034/api/user/SelectUserPhone?phone=" + phone,
             type: "get",
             dataType: "json",
             success: function (data) {
@@ -202,7 +202,7 @@
                 return;
             }
             $.ajax({
-                url: "http://localhost:49764/api/user/PutPwd?phone=" + phone + "&oldpwd=" + oldpwd + "&newPwd=" + newPwd,
+                url: "http://49.234.34.192:8034/api/user/PutPwd?phone=" + phone + "&oldpwd=" + oldpwd + "&newPwd=" + newPwd,
                 type: "get",
                 dataType: "json",
                 success: function (data) {

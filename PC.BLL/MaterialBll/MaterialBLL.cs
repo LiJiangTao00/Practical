@@ -142,7 +142,7 @@ namespace PC.BLL.MaterialBll
         /// <param name="PageIndex">当前页</param>
         /// <param name="PageSize">页大小</param>
         /// <returns></returns>
-        public PageShowMaterial SelOrder(string Material_Id, string Material_Name, string Order_Proposer, DateTime? Order_ApplyTime, int PageIndex = 1, int PageSize = 1, int Order_State = -1)
+        public PageShowMaterial SelOrder(string Material_Id, string Material_Name, string Order_Proposer, DateTime? Order_ApplyTime, int PageIndex = 1, int PageSize = 2, int Order_State = -1)
         {
 
             return _dal.SelOrder(Material_Id, Material_Name, Order_Proposer, Order_ApplyTime, PageIndex, PageSize, Order_State);
@@ -169,7 +169,7 @@ namespace PC.BLL.MaterialBll
         /// <param name="PageSize">页大小</param>
         /// <param name="Material_Approval">审批类型</param>
         /// <returns></returns>
-        public PageShowMaterial SelApproval(string Material_Id, string Material_Name, string Order_Proposer, DateTime? Order_SubmissionTime, DateTime? Order_ApproveTime, int PageIndex = 1, int PageSize = 1, int Material_Approval = -1)
+        public PageShowMaterial SelApproval(string Material_Id, string Material_Name, string Order_Proposer, DateTime? Order_SubmissionTime, DateTime? Order_ApproveTime, int PageIndex = 1, int PageSize = 2, int Material_Approval = -1)
         {
             return _dal.SelApproval(Material_Id, Material_Name, Order_Proposer, Order_SubmissionTime, Order_ApproveTime, PageIndex, PageSize, Material_Approval);
         }

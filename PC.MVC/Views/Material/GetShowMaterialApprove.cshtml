@@ -18,42 +18,38 @@
     <link href="~/layuiadmin/layui/css/layui.css" rel="stylesheet" />
 </head>
 <body>
-    <div>
-        <h2>筛选</h2>
-        <input id="Material_Id" type="text" placeholder="物料编号" />
-        <input id="Material_Name" type="text" placeholder="物料名称" />
-        <select id="szt">
-            <option value="-1">==订单状态==</option>
-            <option value="1">已发货</option>
-            <option value="0">待收货</option>
-            <option value="2">已签收</option>
-        </select>
-        <input id="Order_Proposer" type="text" placeholder="申请人" />
-        <input id="Order_SubmissionTime" type="date" placeholder="申请时间"/>
-        <input id="btnSX" type="button" class="btn btn-info" value="筛选" onclick="ShaiXuan()" />
-    </div>
-    <div>
-        <table class="tab-content table-bordered">
-            <thead>
-                <tr>
-                    <td>物料编号</td>
-                    <td>物料名称</td>
-                    <td>缩略图</td>
-                    <td>物料类型</td>
-                    <td>申请人</td>
-                    <td>区域</td>
-                    <td>申请时间</td>
-                    <td>订单状态</td>
-                    <td>操作</td>
-                </tr>
-            </thead>
-            <tbody id="tb">
-            </tbody>
-        </table>
+    <div style="margin-left:100px;margin-left:20px">
+        <h3 style="font-weight:600;">筛选</h3>
+        <div style="margin:20px">
+            <input id="Material_Id" type="text" placeholder="物料编号" class="form-control" style="width:200px;height:40px;float:left;" />
+            <input id="Material_Name" type="text" placeholder="物料名称" class="form-control" style="width:200px;height:40px;float:left;" />
+            <input id="Order_Proposer" type="text" placeholder="申请人" class="form-control" style="width:200px;height:40px;float:left;" />
+            <input id="Order_SubmissionTime" type="date" placeholder="申请时间" class="form-control" style="width:200px;height:40px;float:left;" />
+            <input id="btnSX" type="button" value="筛选" class="layui-btn layui-btn-warm" style="margin-left:20px" onclick="ShaiXuan()" />
+        </div>
+        <h3 style="font-weight:600;">显示物料订单</h3>
+        <div>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <td>物料编号</td>
+                        <td>物料名称</td>
+                        <td>缩略图</td>
+                        <td>物料类型</td>
+                        <td>申请人</td>
+                        <td>区域</td>
+                        <td>申请时间</td>
+                        <td>操作</td>
+                    </tr>
+                </thead>
+                <tbody id="tb">
+                </tbody>
+            </table>
+        </div>
         <div>
             <input id="btn_First" type="button" value="首页" onclick="ShaiXuan('first')" />
             <input id="btn_Prev" type="button" value="上一页" onclick="ShaiXuan('prv')" />
-            当前第<label id="pageindex">1</label>页/每页<label id="pagesize">1</label>
+            当前第<label id="pageindex">1</label>页/每页<label id="pagesize">2</label>
             总共<label id="totalcount"></label>条/总共<label id="pagetotal"></label>页
             <input id="btn_Next" type="button" value="下一页" onclick="ShaiXuan('next')" />
             <input id="btn_Last" type="button" value="尾页" onclick="ShaiXuan('last')" />
@@ -68,11 +64,11 @@
     //显示物料订单信息
     function ShowOrder() {
         $.ajax({
-            url: "http://localhost:49764/api/material/SelOrder",
+            url: "http://49.234.34.192:8034/api/Material/SelOrder",
             dataType: "json",
             data: {
                 PageIndex: "1",
-                PageSize: "1",
+                PageSize: "2",
                 Order_State:-1
             },
             type: "get",
@@ -85,13 +81,12 @@
                     var list = '<tr>' +
                         '<td>' + this.material_Id + '</td>' +
                         '<td>' + this.material_Name + '</td>' +
-                        '<td>' + this.material_Image + '</td>' +
+                        '<td><img src="http://49.234.34.192:8034' + this.material_Image + '" style="width:50px;height:40px" /></td>' +
                         '<td>' + this.mType_Name + '</td>' +
                         '<td>' + this.order_Proposer + '</td>' +
                         '<td>' + this.place_Name + '</td>' +
                         '<td>' + this.order_ApplyTime + '</td>' +
-                        '<td>' + (this.order_State == 1 ? "已发货" : this.order_State == 0 ? "待发货" : "已签收") + '</td>' +
-                        '<td><input id="Detail" type="button" value="查看详情" onclick="detail(' + this.id +')"/></td>' +
+                        '<td><input id="Detail" type="button" value="查看详情" class="layui-btn" onclick="detail(' + this.id +')"/></td>' +
                         '</tr>'
                     $("#tb").append(list);
                 })
@@ -134,21 +129,19 @@
         }
         var Material_Id = $("#Material_Id").val();
         var Material_Name = $("#Material_Name").val();
-        var Order_State = $("#szt").val();
         var Order_Proposer = $("#Order_Proposer").val();
-        var Order_ApplyTime = $("#Order_ApplyTime").val();
+        var Order_ApplyTime = $("#Order_SubmissionTime").val();
 
         var PageIndex = $("#pageindex").text(); //页码
 
         var PageSize = $("#pagesize").text();  //页大小
         // var PageCount = 0; //总页数
         $.ajax({
-            url: "http://localhost:49764/api/material/SelOrder",
+            url: "http://49.234.34.192:8034/api/Material/SelOrder",
             type: "get",
             data: {
                 Material_Id: Material_Id,
                 Material_Name: Material_Name,
-                Order_State: Order_State,
                 Order_Proposer: Order_Proposer,
                 Order_ApplyTime: Order_ApplyTime,
                 PageIndex: PageIndex,
@@ -165,13 +158,12 @@
                     var list = '<tr>' +
                         '<td>' + this.material_Id + '</td>' +
                         '<td>' + this.material_Name + '</td>' +
-                        '<td>' + this.material_Image + '</td>' +
+                        '<td><img src="http://49.234.34.192:8034' + this.material_Image + '" style="width:50px;height:40px" /></td>' +
                         '<td>' + this.mType_Name + '</td>' +
                         '<td>' + this.order_Proposer + '</td>' +
                         '<td>' + this.place_Name + '</td>' +
                         '<td>' + this.order_ApplyTime + '</td>' +
-                        '<td>' + (this.order_State == 1 ? "已发货" : this.order_State == 0 ? "待发货" : "已签收") + '</td>' +
-                        '<td><input id="Detail" type="button" value="查看详情" onclick="detail(' + this.id +')"/></td>' +
+                        '<td><input id="Detail" type="button" value="查看详情" class="layui-btn" onclick="detail(' + this.id +')"/></td>' +
                         '</tr>'
                     $("#tb").append(list);
                 })
@@ -184,7 +176,7 @@
     function detail(id) {
         var InfoHtml = `<div><table>`;
         $.ajax({
-            url: "http://localhost:49764/api/material/ShowMaterialFill?Id=" + id,
+            url: "http://49.234.34.192:8034/api/Material/ShowMaterialFill?Id=" + id,
             type: "get",
             success: function (d) {
                 console.log(d);

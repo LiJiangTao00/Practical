@@ -15,94 +15,213 @@
     <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
 </head>
 <body>
-    <h2>添加物料</h2> <input id="btnFH" type="button" value="返回" onclick="Fanhui()" />
-                  <table class="table table-bordered">
-                      <tr>
-                          <td>物料分类：</td>
-                          <td>
-                              <select id="type">
-                              </select>
-                          </td>
-                      </tr>
-                      <tr>
-                          <td>区域：</td>
-                          <td>
-                              <select id="place">
-                                  <option>==请选择==</option>
-                                  <option value="北中国">北中国</option>
-                                  <option value="南中国">南中国</option>
-                                  <option value="西中国">西中国</option>
-                                  <option value="全国">全国</option>
-                                  <option value="社区">社区</option>
-                              </select>
-                          </td>
-                      </tr>
-                      <tr>
-                          <td>物料编号：</td>
-                          <td>
-                              <input id="Material_Id" type="text" />
-                          </td>
-                      </tr>
-                      <tr>
-                          <td>物料名称：</td>
-                          <td>
-                              <input id="Material_Name" type="text" />
-                          </td>
-                      </tr>
-                      <tr>
-                          <td>描述：</td>
-                          <td>
-                              <textarea id="Material_Desc" rows="2" cols="20"></textarea>
-                          </td>
-                      </tr>
-                      <tr>
-                          <td>图片：</td>
-                          <td>
-                              <div style="position: relative;">
-                                  <input id="Material_Image" style="position: absolute; top: 0; bottom: 0; left: 0;right: 0; opacity: 0;" type="file" accept="image/gif, image/jpg, image/png" onchange="showImg(this)" />
-                                  <div style="text-align:top">
-                                      <span style="font-size: 12px;"></span>
-                                      <img id="upload" src="/wwwroot/img/0.jpg" style="width: 40px; height: 40px; vertical-align: middle;" />
-                                  </div>
-                              </div>
-                              @*<div class="layui-input-inline">
-                                  <input type="file" id="Material_Image" style="height:20px;width:200px;" name="username" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
-                              </div>*@
-                          </td>
-                      </tr>
-                      <tr>
-                          <td>单价：</td>
-                          <td>
-                              <input id="Material_Price" type="text" />元
-                          </td>
-                      </tr>
-                      <tr>
-                          <td>数量：</td>
-                          <td>
-                              <input id="Material_Number" type="text" />个
-                          </td>
-                      </tr>
-                      <tr>
-                          <td>剩余数量：</td>
-                          <td>
-                              <input id="Material_LastNumber" type="text" />个
-                          </td>
-                      </tr>
-                      <tr>
-                          <td>物料状态：</td>
-                          <td>
-                              <input id="Material_State" type="text" />
-                          </td>
-                      </tr>
-                      <tr>
-                          <td><input id="btnTJ" type="button" value="提交" onclick="addmaterial()" /></td>
-                          <td><input id="btnCZ" type="button" value="重置" onclick="czmaterial()" /></td>
-                      </tr>
-                  </table>
+    <div style="margin-left:100px;margin-left:20px">
+        <h3 style="font-weight:600;">添加物料</h3>
+        <div style="margin:20px">
+            <table class="table table-striped">
+                <tr>
+                    <td>物料分类：</td>
+                    <td>
+                        <select class="btn btn-default dropdown-toggle" id="type">
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>区域：</td>
+                    <td>
+                        <select class="btn btn-default dropdown-toggle" id="place">
+                            <option>==请选择==</option>
+                            <option value="北中国">北中国</option>
+                            <option value="南中国">南中国</option>
+                            <option value="西中国">西中国</option>
+                            <option value="全国">全国</option>
+                            <option value="社区">社区</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>物料编号：</td>
+                    <td>
+                        <input id="Material_Id" type="text" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>物料名称：</td>
+                    <td>
+                        <input id="Material_Name" type="text" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>描述：</td>
+                    <td>
+                        <textarea id="Material_Desc" rows="2" cols="20"></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td>图片：</td>
+                    <td>
+                        <div style="position: relative;">
+                            <input id="Material_Image" style="position: absolute; top: 0; bottom: 0; left: 0;right: 0; opacity: 0;" type="file" accept="image/gif, image/jpg, image/png" onchange="showImg(this)" />
+                            <div style="text-align:top">
+                                <span style="font-size: 12px;"></span>
+                                <img id="upload" src="/wwwroot/img/0.jpg" style="width: 40px; height: 40px; vertical-align: middle;" />
+                            </div>
+                        </div>
+                        @*<div class="layui-input-inline">
+                                <input type="file" id="Material_Image" style="height:20px;width:200px;" name="username" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
+                            </div>*@
+                    </td>
+                </tr>
+                <tr>
+                    <td>单价：</td>
+                    <td>
+                        <input id="Material_Price" type="text" />元
+                    </td>
+                </tr>
+                <tr>
+                    <td>数量：</td>
+                    <td>
+                        <input id="Material_Number" type="text" />个
+                    </td>
+                </tr>
+                <tr>
+                    <td>剩余数量：</td>
+                    <td>
+                        <input id="Material_LastNumber" type="text" />个
+                    </td>
+                </tr>
+                <tr>
+                    <td>物料状态：</td>
+                    <td>
+                        <div class="testswitch">			<input class="testswitch-checkbox" id="onoffswitch" type="checkbox">			<label class="testswitch-label" for="onoffswitch">				<span class="testswitch-inner" data-on="ON" data-off="OFF"></span>				<span class="testswitch-switch"></span>			</label>		</div>
+                        <input id="Material_State" type="hidden" />
+                        @*<input id="Material_State" type="text" />*@
+                    </td>
+                </tr>
+                <tr>
+                    <td><input id="btnTJ" type="button" value="提交" onclick="addmaterial()" class="btn btn-primary" style="width:80px" /></td>
+                    <td><input id="btnFH" type="button" value="返回" onclick="Fanhui()" class="layui-btn layui-btn-primary" /></td>
+                </tr>
+            </table>
+        </div>
+    </div>
 </body>
 </html>
+<style>
 
+    .testswitch {
+        position: relative;
+        float: left;
+        width: 90px;
+        margin: 0;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+    }
+
+
+
+    .testswitch-checkbox {
+        display: none;
+    }
+
+
+
+    .testswitch-label {
+        display: block;
+        overflow: hidden;
+        cursor: pointer;
+        border: 2px solid #999999;
+        border-radius: 20px;
+    }
+
+
+
+    .testswitch-inner {
+        display: block;
+        width: 200%;
+        margin-left: -100%;
+        transition: margin 0.3s ease-in 0s;
+    }
+
+
+
+        .testswitch-inner::before, .testswitch-inner::after {
+            display: block;
+            float: right;
+            width: 50%;
+            height: 30px;
+            padding: 0;
+            line-height: 30px;
+            font-size: 14px;
+            color: white;
+            font-family: Trebuchet, Arial, sans-serif;
+            font-weight: bold;
+            box-sizing: border-box;
+        }
+
+
+
+        .testswitch-inner::after {
+            content: attr(data-on);
+            padding-left: 10px;
+            background-color: #00e500;
+            color: #FFFFFF;
+        }
+
+
+
+        .testswitch-inner::before {
+            content: attr(data-off);
+            padding-right: 10px;
+            background-color: #EEEEEE;
+            color: #999999;
+            text-align: right;
+        }
+
+
+
+    .testswitch-switch {
+        position: absolute;
+        display: block;
+        width: 22px;
+        height: 22px;
+        margin: 4px;
+        background: #FFFFFF;
+        top: 0;
+        bottom: 0;
+        right: 56px;
+        border: 2px solid #999999;
+        border-radius: 20px;
+        transition: all 0.3s ease-in 0s;
+    }
+
+
+
+    .testswitch-checkbox:checked + .testswitch-label .testswitch-inner {
+        margin-left: 0;
+    }
+
+
+
+    .testswitch-checkbox:checked + .testswitch-label .testswitch-switch {
+        right: 0px;
+    }
+</style>
 <script>
+    $(document).ready(function () {
+        $("#onoffswitch").on('click', function () {
+            clickSwitch()
+        }); var clickSwitch = function () {
+            if ($("#onoffswitch").is(':checked')) {
+                $("#Material_State").val(1)
+                console.log($("#Material_State").val());
+            } else {
+                $("#Material_State").val(0)
+                console.log($("#Material_State").val());
+            }
+        };
+    });
     $(function () {
         //物料类型下拉绑定
         Typedrop();
@@ -110,7 +229,7 @@
     //绑定下拉（物料信息）
     function Typedrop() {
         $.ajax({
-            url: "http://localhost:49764/api/material/GetTypes",
+            url: "http://49.234.34.192:8034/api/Material/GetTypes",
             type: "Get",
             success: function (data) {
                 console.log(data);
@@ -141,7 +260,7 @@
             Material_State: $("#Material_State").val()
         }
         $.ajax({
-            url: "http://localhost:49764/api/material/AddMaterial?obj=" + JSON.stringify(obj),
+            url: "http://49.234.34.192:8034/api/Material/AddMaterial?obj=" + JSON.stringify(obj),
             type: "Post",
             data: data,
             contentType: false,
@@ -167,7 +286,7 @@
         reader.readAsDataURL(file)
     }
     function Fanhui() {
-        location.href = '/material/ShowMaterial';
+        location.href = '/Material/ShowMaterial';
     }
 </script>
 

@@ -42,7 +42,7 @@
         var photo = '/img/u829.png';
         var id = localStorage["PermissionId"];
         $.ajax({
-            url: "http://localhost:49764/api/user/ShowSingleJob?id=" + id,
+            url: "http://49.234.34.192:8034/api/user/ShowSingleJob?id=" + id,
             type: "get",
             dataType: "json",
             async: false,
@@ -65,7 +65,7 @@
     }
     function ShowPermission() {
         $.ajax({
-            url: "http://localhost:49764/api/user/ShowPermission",
+            url: "http://49.234.34.192:8034/api/user/ShowPermission",
             type: "get",
             dataType: "json",
             async: false,
@@ -90,7 +90,7 @@
     function ChkPermission() {
         var id = localStorage["PermissionId"];
         $.ajax({
-            url: "http://localhost:49764/api/user/ShowSinglePermission?id=" + id,
+            url: "http://49.234.34.192:8034/api/user/ShowSinglePermission?id=" + id,
             type: "get",
             dataType: "json",
             async: false,
@@ -108,7 +108,7 @@
     }
     function ChkPid(id) {
         $.ajax({
-            url: "http://localhost:49764/api/user/ChkPid?id=" + id,
+            url: "http://49.234.34.192:8034/api/user/ChkPid?id=" + id,
             type: "get",
             dataType: "json",
             async: false,
@@ -131,7 +131,7 @@
         var ids = pid;
         var id = localStorage["PermissionId"];
         $.ajax({
-            url: "http://localhost:49764/api/user/ChangePermission?id=" + id + "&ids=" + ids,
+            url: "http://49.234.34.192:8034/api/user/ChangePermission?id=" + id + "&ids=" + ids,
             type: "get",
             dataType: "json",
             async: false,

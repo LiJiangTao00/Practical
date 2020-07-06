@@ -18,44 +18,44 @@
     <link href="~/layuiadmin/layui/css/layui.css" rel="stylesheet" />
 </head>
 <body>
-    <div>
-        <h2>筛选</h2>
-        <input id="Material_Id" type="text" placeholder="物料编号" />
-        <input id="Material_Name" type="text" placeholder="物料名称" />
-        <select id="szt">
-            <option value="-1">==审批类型==</option>
-            <option value="2">等待审批</option>
-            <option value="1">审批通过</option>
-            <option value="0">审批否决</option>
-        </select>
-        <input id="Order_Proposer" type="text" placeholder="申请人" />
-        <input id="order_SubmissionTime" type="date" placeholder="提交时间" />
-        <input id="Order_ApproveTime" type="date" placeholder="审批时间" />
-        <input id="btnSX" type="button" class="btn btn-info" value="筛选" onclick="ShaiXuan()" />
-    </div>
-    <div>
-        <table class="tab-content table-bordered">
-            <thead>
+    <div style="margin-left:100px;margin-left:20px">
+        <h3 style="font-weight:600;">筛选</h3>
+        <div style="margin:20px">
+            <table>
                 <tr>
-                    <td>物料编号</td>
-                    <td>物料名称</td>
-                    <td>缩略图</td>
-                    <td>物料类型</td>
-                    <td>申请人</td>
-                    <td>区域</td>
-                    <td>提交时间</td>
-                    <td>审批时间</td>
-                    <td>审批状态</td>
-                    <td>操作</td>
+                    <td> <input id="Material_Id" type="text" placeholder="物料编号" class="form-control" style="width:200px;height:40px;float:left;" /></td>
+                    <td><input id="Material_Name" type="text" placeholder="物料名称" class="form-control" style="width:200px;height:40px;float:left;" /></td>
+                    <td><input id="Order_Proposer" type="text" placeholder="申请人" class="form-control" style="width:200px;height:40px;float:left;" /></td>
+                    <td><input id="order_SubmissionTime" type="date" placeholder="提交时间" class="form-control" style="width:200px;height:40px;float:left;" />——</td>
+                    <td><input id="Order_ApproveTime" type="date" placeholder="审批时间" class="form-control" style="width:200px;height:40px;float:left;" /></td>
+                    <td><input id="btnSX" type="button" value="筛选" class="layui-btn layui-btn-warm" style="margin-left:20px" onclick="ShaiXuan()" /></td>
                 </tr>
-            </thead>
-            <tbody id="tb">
-            </tbody>
-        </table>
+            </table>  
+        </div>
+        <h3 style="font-weight:600;">物料审批信息</h3>
+        <div>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <td>物料编号</td>
+                        <td>物料名称</td>
+                        <td>缩略图</td>
+                        <td>物料类型</td>
+                        <td>申请人</td>
+                        <td>区域</td>
+                        <td>提交时间</td>
+                        <td>审批时间</td>
+                        <td>操作</td>
+                    </tr>
+                </thead>
+                <tbody id="tb">
+                </tbody>
+            </table>
+        </div>
         <div>
             <input id="btn_First" type="button" value="首页" onclick="ShaiXuan('first')" />
             <input id="btn_Prev" type="button" value="上一页" onclick="ShaiXuan('prv')" />
-            当前第<label id="pageindex">1</label>页/每页<label id="pagesize">1</label>
+            当前第<label id="pageindex">1</label>页/每页<label id="pagesize">2</label>
             总共<label id="totalcount"></label>条/总共<label id="pagetotal"></label>页
             <input id="btn_Next" type="button" value="下一页" onclick="ShaiXuan('next')" />
             <input id="btn_Last" type="button" value="尾页" onclick="ShaiXuan('last')" />
@@ -70,11 +70,11 @@
     //显示物料订单信息
     function ShowApproval() {
         $.ajax({
-            url: "http://localhost:49764/api/material/SelApproval",
+            url: "http://49.234.34.192:8034/api/Material/SelApproval",
             dataType: "json",
             data: {
                 PageIndex: "1",
-                PageSize: "1",
+                PageSize: "2",
                 Material_Approval: -1
             },
             type: "get",
@@ -82,19 +82,18 @@
                 console.log(d);
                 $("#totalcount").text(d.dataCount);
                 $("#pagetotal").text(d.pageCount);
-                $("#tb").empty();
+                $("#tb").empty(); 
                 $(d.pageShowMateriallist2).each(function () {
                     var list = '<tr>' +
                         '<td>' + this.material_Id + '</td>' +
                         '<td>' + this.material_Name + '</td>' +
-                        '<td>' + this.material_Image + '</td>' +
+                        '<td><img src="http://49.234.34.192:8034' + this.material_Image + '" style="width:50px;height:40px" /></td>' +
                         '<td>' + this.mType_Name + '</td>' +
                         '<td>' + this.order_Proposer + '</td>' +
                         '<td>' + this.place_Name + '</td>' +
                         '<td>' + this.order_SubmissionTime + '</td>' +
                         '<td>' + this.order_ApproveTime + '</td>' +
-                        '<td>' + (this.material_Approval == 1 ? "审批通过" : this.material_Approval == 0 ? "审批否决" : "等待审批") + '</td>' +
-                        '<td><input id="Detail" type="button" value="查看详情" onclick="detail(' + this.id +')"/></td>' +
+                        '<td><input id="Detail" type="button" value="查看详情"  class="layui-btn" onclick="detail(' + this.id +')"/></td>' +
                         '</tr>'
                     $("#tb").append(list);
                 })
@@ -137,7 +136,6 @@
         }
         var Material_Id = $("#Material_Id").val();
         var Material_Name = $("#Material_Name").val();
-        var Material_Approval = $("#szt").val();
         var Order_Proposer = $("#Order_Proposer").val();
         var order_SubmissionTime = $("#order_SubmissionTime").val();
         var Order_ApproveTime = $("#Order_ApproveTime").val();
@@ -147,12 +145,11 @@
         var PageSize = $("#pagesize").text();  //页大小
         // var PageCount = 0; //总页数
         $.ajax({
-            url: "http://localhost:49764/api/material/SelApproval",
+            url: "http://49.234.34.192:8034/api/Material/SelApproval",
             type: "get",
             data: {
                 Material_Id: Material_Id,
                 Material_Name: Material_Name,
-                Material_Approval: Material_Approval,
                 Order_Proposer: Order_Proposer,
                 order_SubmissionTime: order_SubmissionTime,
                 Order_ApproveTime: Order_ApproveTime,
@@ -170,14 +167,13 @@
                     var list = '<tr>' +
                         '<td>' + this.material_Id + '</td>' +
                         '<td>' + this.material_Name + '</td>' +
-                        '<td>' + this.material_Image + '</td>' +
+                        '<td><img src="http://49.234.34.192:8034' + this.material_Image + '" style="width:50px;height:40px" /></td>' +
                         '<td>' + this.mType_Name + '</td>' +
                         '<td>' + this.order_Proposer + '</td>' +
                         '<td>' + this.place_Name + '</td>' +
                         '<td>' + this.order_SubmissionTime + '</td>' +
                         '<td>' + this.order_ApproveTime + '</td>' +
-                        '<td>' + (this.material_Approval == 1 ? "审批通过" : this.material_Approval == 0 ? "审批否决" : "等待审批") + '</td>' +
-                        '<td><input id="Detail" type="button" value="查看详情" onclick="detail(' + this.id +')"/></td>' +
+                        '<td><input id="Detail" type="button" value="查看详情"  class="layui-btn" onclick="detail(' + this.id +')"/></td>' +
                         '</tr>'
                     $("#tb").append(list);
                 })
@@ -190,7 +186,7 @@
     function detail(id) {
         var InfoHtml = `<div><table>`;
         $.ajax({
-            url: "http://localhost:49764/api/material/FillApproval?Id=" + id,
+            url: "http://49.234.34.192:8034/api/Material/FillApproval?Id=" + id,
             type: "get",
             success: function (d) {
                 console.log(d);

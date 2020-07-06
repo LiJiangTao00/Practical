@@ -101,7 +101,7 @@
     })
     function ShowDepartment() {
         $.ajax({
-            url: "http://localhost:49764/api/user/ShowDepartment",
+            url: "http://49.234.34.192:8034/api/user/ShowDepartment",
             type: "get",
             dataType: "json",
             success: function (data) {
@@ -117,7 +117,7 @@
     }
     function ShowProvince() {
         $.ajax({
-            url: "http://localhost:49764/api/user/ShowProvince",
+            url: "http://49.234.34.192:8034/api/user/ShowProvince",
             type: "get",
             dataType: "json",
             success: function (data) {
@@ -146,7 +146,7 @@
     }
     function ShowJob() {
         $.ajax({
-            url: "http://localhost:49764/api/user/ShowJob",
+            url: "http://49.234.34.192:8034/api/user/ShowJob",
             type: "get",
             dataType: "json",
             success: function (data) {
@@ -163,7 +163,7 @@
     function ProvinceChange() {
         var pid = $('#ShowProvince').val();
         $.ajax({
-            url: "http://localhost:49764/api/user/ShowProvince?pid=" + pid,
+            url: "http://49.234.34.192:8034/api/user/ShowProvince?pid=" + pid,
             type: "get",
             dataType: "json",
             success: function (data) {
@@ -179,7 +179,7 @@
     function CityChange() {
         var pid = $('#ShowCity').val();
         $.ajax({
-            url: "http://localhost:49764/api/user/ShowProvince?pid=" + pid,
+            url: "http://49.234.34.192:8034/api/user/ShowProvince?pid=" + pid,
             type: "get",
             dataType: "json",
             success: function (data) {
@@ -200,7 +200,7 @@
         var ShowDistrict = parseInt($('#ShowDistrict').val());
         var ShowJob = $('#ShowJob').val() == null ? 0 : $('#ShowJob').val();
         $.ajax({
-            url: "http://localhost:49764/api/user/ShowUser?product=" + product + "&did=" + ShowDepartment + "&pid=" + ShowProvince + "&cid=" + ShowCity + "&dis=" + ShowDistrict + "&jid=" + ShowJob + "&name=" + txt_Sel + "&index=" + index,
+            url: "http://49.234.34.192:8034/api/user/ShowUser?product=" + product + "&did=" + ShowDepartment + "&pid=" + ShowProvince + "&cid=" + ShowCity + "&dis=" + ShowDistrict + "&jid=" + ShowJob + "&name=" + txt_Sel + "&index=" + index,
             type: "get",
             dataType: "json",
             success: function (data) {
@@ -251,11 +251,11 @@
     function Lok(id) {
         var html = '<div id="upt"></div>';
         $.ajax({
-            url: "http://localhost:49764/api/user/SelectUser?id=" + id,
+            url: "http://49.234.34.192:8034/api/user/SelectUser?id=" + id,
             type: "get",
             dataType: "json",
             success: function (data) {
-                str = '<div style="float:left;"><img src="http://localhost:49764' + data.user_Photo + '" style="width:50px;height:70px"/></div>';
+                str = '<div style="float:left;"><img src="http://49.234.34.192:8034' + data.user_Photo + '" style="width:50px;height:70px"/></div>';
                 tab = '<table><tr><td>姓名：' + data.user_Name + '</td>' +
                     '<td> 工号：' + data.user_Id + '</td>' +
                     '<td>性别：' + IsBoy(data.user_Sex) + '</td></tr >' +
@@ -323,7 +323,7 @@
     }
     function Del(id) {
         $.ajax({
-            url: "http://localhost:49764/api/user/DelUser?id=" + id,
+            url: "http://49.234.34.192:8034/api/user/DelUser?id=" + id,
             type: "delete",
             dataType: "json",
             success: function (data) {
@@ -335,7 +335,7 @@
     function Derive() {///导出报错
         var path = $('#File1').val();
         $.ajax({
-            url: "http://localhost:49764/api/user/PutOut",
+            url: "http://49.234.34.192:8034/api/user/PutOut",
             type: "post",
             data: JSON.stringify(path),
             contentType: "application/json",
@@ -387,7 +387,7 @@
             '</tr>    ' +
             '</table >';
         $.ajax({
-            url: "http://localhost:49764/api/user/ShowJob",
+            url: "http://49.234.34.192:8034/api/user/ShowJob",
             type: "get",
             dataType: "json",
             success: function (data) {
@@ -400,7 +400,7 @@
             }
         });
         $.ajax({
-            url: "http://localhost:49764/api/user/SelectSomeUser?id=" + ids,
+            url: "http://49.234.34.192:8034/api/user/SelectSomeUser?id=" + ids,
             type: "get",
             dataType: "json",
             success: function (data) {
@@ -431,7 +431,7 @@
                     var job = $('#TanJob').val();
                     var desc = $('#Desc').val();
                     $.ajax({
-                        url: "http://localhost:49764/api/user/UpdateSome?gid=" + jid + "&sid=" + job + "&desc=" + desc + "&action=job",
+                        url: "http://49.234.34.192:8034/api/user/UpdateSome?gid=" + jid + "&sid=" + job + "&desc=" + desc + "&action=job",
                         type: "get",
                         contentType: "application/json",
                         success: function (data) {
@@ -487,7 +487,7 @@
             '</tr>    ' +
             '</table >';
         $.ajax({
-            url: "http://localhost:49764/api/user/ShowDepartment",
+            url: "http://49.234.34.192:8034/api/user/ShowDepartment",
             type: "get",
             dataType: "json",
             success: function (data) {
@@ -501,7 +501,7 @@
             }
         })
         $.ajax({
-            url: "http://localhost:49764/api/user/SelectSomeUser?id=" + ids,
+            url: "http://49.234.34.192:8034/api/user/SelectSomeUser?id=" + ids,
             type: "get",
             dataType: "json",
             success: function (data) {
@@ -532,7 +532,7 @@
                     var job = $('#TanDepartment').val();
                     var desc = $('#Desc').val();
                     $.ajax({
-                        url: "http://localhost:49764/api/user/UpdateSome?gid=" + jid + "&sid=" + job + "&desc=" + desc + "&action=department",
+                        url: "http://49.234.34.192:8034/api/user/UpdateSome?gid=" + jid + "&sid=" + job + "&desc=" + desc + "&action=department",
                         type: "get",
                         contentType: "application/json",
                         success: function (data) {
@@ -579,7 +579,7 @@
             '</tr>' +
             '</table >';
         $.ajax({
-            url: "http://localhost:49764/api/user/SelectSomeUser?id=" + ids,
+            url: "http://49.234.34.192:8034/api/user/SelectSomeUser?id=" + ids,
             type: "get",
             dataType: "json",
             success: function (data) {
@@ -609,7 +609,7 @@
                     var jid = tags.toString();
                     var desc = $('#Desc').val();
                     $.ajax({
-                        url: "http://localhost:49764/api/user/UpdateSome?gid=" + jid + "&sid=1&desc=" + desc + "&action=Dead",
+                        url: "http://49.234.34.192:8034/api/user/UpdateSome?gid=" + jid + "&sid=1&desc=" + desc + "&action=Dead",
                         type: "get",
                         contentType: "application/json",
                         success: function (data) {
@@ -654,7 +654,7 @@
             '</tr>' +
             '</table >';
         $.ajax({
-            url: "http://localhost:49764/api/user/SelectSomeUser?id=" + ids,
+            url: "http://49.234.34.192:8034/api/user/SelectSomeUser?id=" + ids,
             type: "get",
             dataType: "json",
             success: function (data) {
@@ -684,7 +684,7 @@
                     var jid = tags.toString();
                     var desc = $('#Desc').val();
                     $.ajax({
-                        url: "http://localhost:49764/api/user/UpdateSome?gid=" + jid + "&sid=2&desc=" + desc + "&action=Freeze",
+                        url: "http://49.234.34.192:8034/api/user/UpdateSome?gid=" + jid + "&sid=2&desc=" + desc + "&action=Freeze",
                         type: "get",
                         contentType: "application/json",
                         success: function (data) {

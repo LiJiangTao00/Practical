@@ -87,7 +87,7 @@ namespace PC.IBLL.MaterialBLL
         /// 查询订单
         /// </summary>
         /// <returns></returns>
-        PageShowMaterial SelOrder(string Material_Id, string Material_Name, string Order_Proposer, DateTime? Order_ApplyTime, int PageIndex = 1, int PageSize = 1, int Order_State = -1);
+        PageShowMaterial SelOrder(string Material_Id, string Material_Name, string Order_Proposer, DateTime? Order_ApplyTime, int PageIndex = 1, int PageSize = 2, int Order_State = -1);
 
         /// <summary>
         /// 显示物料审批
@@ -99,7 +99,7 @@ namespace PC.IBLL.MaterialBLL
         /// 查询审批物料
         /// </summary>
         /// <returns></returns>
-        PageShowMaterial SelApproval(string Material_Id, string Material_Name, string Order_Proposer, DateTime? Order_SubmissionTime, DateTime? Order_ApproveTime, int PageIndex = 1, int PageSize = 1, int Material_Approval = -1);
+        PageShowMaterial SelApproval(string Material_Id, string Material_Name, string Order_Proposer, DateTime? Order_SubmissionTime, DateTime? Order_ApproveTime, int PageIndex = 1, int PageSize = 2, int Material_Approval = -1);
 
         /// <summary>
         /// 反填物料

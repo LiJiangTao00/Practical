@@ -13,7 +13,7 @@ namespace PC.Common.Helpers
         {
             //1.109
             ///Data Source=192.168.43.93;Initial Catalog=Practial;User ID=sa;Pwd=12345
-            using (SqlConnection con = new SqlConnection(@"Data Source=192.168.43.93;Initial Catalog=Practial;User ID=sa;Pwd=12345"))
+            using (SqlConnection con = new SqlConnection(@"Data Source=49.234.34.192;Initial Catalog=Practial;User ID=sa;Pwd=sa1234.."))
             {
                 List<T> list = con.Query<T>(sql).ToList();
                 return list;
@@ -21,7 +21,7 @@ namespace PC.Common.Helpers
         }
         public int Execute(string sql)
         {
-            using (SqlConnection con = new SqlConnection(@"Data Source=192.168.43.93;Initial Catalog=Practial;User ID=sa;Pwd=12345"))
+            using (SqlConnection con = new SqlConnection(@"Data Source=49.234.34.192;Initial Catalog=Practial;User ID=sa;Pwd=sa1234.."))
             {
                 string tsql = "insert into LogTable values ('李江涛',";
                 string[] model = sql.Split("Table");

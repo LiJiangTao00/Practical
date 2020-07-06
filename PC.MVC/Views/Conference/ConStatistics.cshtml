@@ -69,7 +69,7 @@
     }
     function DepSel() {//部门下拉
         $.ajax({
-            url: "http://localhost:49764/api/Conference/DepSel",
+            url: "http://49.234.34.192:8034/api/Conference/DepSel",
             type: "get",
             success: function (data) {
                 $(data).each(function (i, k) {
@@ -83,7 +83,7 @@
     }
     function ConTypeSel() {//会议类型下拉
         $.ajax({
-            url: "http://localhost:49764/api/Conference/ConTypeSel",
+            url: "http://49.234.34.192:8034/api/Conference/ConTypeSel",
             type: "get",
             success: function (data) {
                 $(data).each(function (i, k) {
@@ -113,7 +113,7 @@
         }
         $("#hid_product").val(conproduct);//将要查询的产品组名称放入隐藏域 防止变动
         $.ajax({
-            url: "http://localhost:49764/api/Conference/ConStatistics",
+            url: "http://49.234.34.192:8034/api/Conference/ConStatistics",
             type: "get",
             data: {
                 "conproduct": $("#hid_product").val(),

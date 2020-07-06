@@ -50,7 +50,15 @@ namespace PC.API
             services.AddSingleton<IConferenceBll, ConferenceBll>();
             services.AddSingleton<IUDAL, UDAL>();
             services.AddSingleton<IUBLL, UBLL>();
-            services.AddCors(options => options.AddPolicy("cors", option => option.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
+            services.AddCors(builder =>
+            {
+                builder.AddPolicy("cors", p =>
+                {
+                    p.WithOrigins("http://localhost:49764", "http://localhost:53518", "http://49.234.34.192:8034", "http://49.234.34.192:8035")
+                    .AllowAnyHeader().AllowAnyMethod().AllowCredentials();
+                });
+            });
+            //services.AddCors(options => options.AddPolicy("cors", option => option.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
 
         }
 
