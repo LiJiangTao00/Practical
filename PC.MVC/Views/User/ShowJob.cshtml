@@ -16,7 +16,7 @@
             <h3 style="font-weight:600;">职务列表</h3>
         </div>
 
-        <input type="button" value="添加职务" onclick="Add()" />
+        <input type="button" value="添加职务" class="btn btn-primary" style="width:80px" onclick="Add()" />
         <table>
             <tr>
                 <td>选择</td>
@@ -130,7 +130,7 @@
     })
     function ShowTb() {
         $.ajax({
-            url: "http://49.234.34.192:8034/api/user/ShowJob",
+            url: "http://localhost:49764/api/user/ShowJob",
             type: "get",
             dataType: "json",
             success: function (data) {
@@ -162,7 +162,7 @@
     }
     function PutState(id) {
         $.ajax({
-            url: "http://49.234.34.192:8034/api/user/UpdateJobState?id=" + id,
+            url: "http://localhost:49764/api/user/UpdateJobState?id=" + id,
             type: "put",
             success: function (data) {
                 ShowTb();
@@ -190,7 +190,7 @@
     }
     function Del(id) {
         $.ajax({
-            url: "http://49.234.34.192:8034/api/user/DelJob?id=" + id,
+            url: "http://localhost:49764/api/user/DelJob?id=" + id,
             type: "get",
             dataType: "text",
             success: function (data) {
@@ -230,7 +230,7 @@
                     obj.Job_Name = $('#Job_Name').val();
                     obj.Job_Desc = $('#Job_Desc').val();
                     $.ajax({
-                        url: "http://49.234.34.192:8034/api/user/AddJob",
+                        url: "http://localhost:49764/api/user/AddJob",
                         type: "post",
                         data: JSON.stringify(obj),
                         contentType: "application/json",
@@ -253,7 +253,7 @@
     function Edit(id) {
         var html = '<table style="width:400px;height:300px;margin-top:20px" id="uptTb"></table>';
         $.ajax({
-            url: "http://49.234.34.192:8034/api/user/ShowSingleJob?id=" + id,
+            url: "http://localhost:49764/api/user/ShowSingleJob?id=" + id,
             type: "get",
             dataType: "json",
             success: function (data) {
@@ -289,7 +289,7 @@
                     obj.Job_Name = $('#Job_Name').val();
                     obj.Job_Desc = $('#Job_Desc').val();
                     $.ajax({
-                        url: "http://49.234.34.192:8034/api/user/PutJob",
+                        url: "http://localhost:49764/api/user/PutJob",
                         type: "put",
                         data: JSON.stringify(obj),
                         contentType: "application/json",

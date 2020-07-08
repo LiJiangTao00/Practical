@@ -97,7 +97,7 @@
     //绑定下拉（物料信息）
     function Typedrop() {
         $.ajax({
-            url: "http://49.234.34.192:8034/api/Material/GetTypes",
+            url: "http://localhost:49764/api/Material/GetTypes",
             type: "Get",
             success: function (data) {
                 console.log(data);
@@ -123,12 +123,12 @@
     //反填物料
     function FillMaterial() {
         $.ajax({
-            url: "http://49.234.34.192:8034/api/Material/Fillmaterial?Id=" + $("#Hidden").val(),
+            url: "http://localhost:49764/api/Material/Fillmaterial?Id=" + $("#Hidden").val(),
             type: "Get",
             dataType: "json",
             success: function (data) { 
                 console.log(data);
-                $('#upload').attr("src", "http://49.234.34.192:8034" + data.material_Image);
+                $('#upload').attr("src", "http://localhost:49764" + data.material_Image);
                 $("#Mtype_name").val(data.material_TypeId)
                 $("#Material_PlaceName").val(data.material_PlaceName)
                 $("#Material_Id").val(data.material_Id)
@@ -163,7 +163,7 @@
         console.log(obj);
        // console.log(obj);
         $.ajax({
-            url: "http://49.234.34.192:8034/api/Material/UpdMaterial?obj=" + JSON.stringify(obj),
+            url: "http://localhost:49764/api/Material/UpdMaterial?obj=" + JSON.stringify(obj),
             type: "post",
             data:data,
             contentType: false,

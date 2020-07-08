@@ -53,12 +53,12 @@
             </table>
         </div>
         <div>
-            <input id="btn_First" type="button" value="首页" onclick="Screen('first')" />
-            <input id="btn_Prev" type="button" value="上一页" onclick="Screen('prv')" />
+            <input id="btn_First" type="button" value="首页" class="btn btn-default" style="width:80px;height:37px;color:blue;border:1px solid blue;margin-left:5px" onclick="Screen('first')" />
+            <input id="btn_Prev" type="button" value="上一页" class="btn btn-default" style="width:80px;height:37px;color:blue;border:1px solid blue;margin-left:5px" onclick="Screen('prv')" />
             当前第<label id="pageindex">1</label>页/每页<label id="pagesize">3</label>
             总共<label id="totalcount"></label>条/总共<label id="pagetotal"></label>页
-            <input id="btn_Next" type="button" value="下一页" onclick="Screen('next')" />
-            <input id="btn_Last" type="button" value="尾页" onclick="Screen('last')" />
+            <input id="btn_Next" type="button" value="下一页" class="btn btn-default" style="width:80px;height:37px;color:blue;border:1px solid blue;margin-left:5px" onclick="Screen('next')" />
+            <input id="btn_Last" type="button" value="尾页" class="btn btn-default" style="width:80px;height:37px;color:blue;border:1px solid blue;margin-left:5px" onclick="Screen('last')" />
         </div>
     </div>
 </body>
@@ -74,7 +74,7 @@
     //ajax显示物料信息
     function Show() {
         $.ajax({
-            url: "http://49.234.34.192:8034/api/Material/SelMaterial",
+            url: "http://localhost:49764/api/Material/SelMaterial",
             dataType: "json",
             data: {
                 Materialprice: -1,
@@ -94,7 +94,7 @@
                         '<td><input class="chk" type="checkbox" value="" /></td>' +
                         '<td>' + this.material_Id + '</td>' +
                         '<td>' + this.material_Name + '</td>' +
-                        '<td><img src="http://49.234.34.192:8034' + this.material_Image + '" style="width:50px;height:40px" /></td>' +
+                        '<td><img src="http://localhost:49764' + this.material_Image + '" style="width:50px;height:40px" /></td>' +
                         '<td>' + this.mType_Name + '</td>' +
                         '<td>' + this.material_Price + '</td>' +
                         '<td>' + this.material_Number + '</td>' +
@@ -138,7 +138,7 @@
 
 
             default:
-
+                $("#pageindex").text(1);
                 break;
         }
         var Materialid = $("#Materialid").val();
@@ -157,7 +157,7 @@
         var PageSize = $("#pagesize").text();  //页大小
         // var PageCount = 0; //总页数
         $.ajax({
-            url: "http://49.234.34.192:8034/api/Material/SelMaterial",
+            url: "http://localhost:49764/api/Material/SelMaterial",
             type: "get",
             data: {
                 Materialid: Materialid,
@@ -178,7 +178,7 @@
                         '<td><input class="chk" type="checkbox" value="" /></td>' +
                         '<td>' + this.material_Id + '</td>' +
                         '<td>' + this.material_Name + '</td>' +
-                        '<td><img src="http://49.234.34.192:8034' + this.material_Image + '" style="width:50px;height:40px" /></td>' +
+                        '<td><img src="http://localhost:49764' + this.material_Image + '" style="width:50px;height:40px" /></td>' +
                         '<td>' + this.mType_Name + '</td>' +
                         '<td>' + this.material_Price + '</td>' +
                         '<td>' + this.material_Number + '</td>' +
@@ -211,7 +211,7 @@
     function detail(id) {
         var InfoHtml = `<div><table>`;
         $.ajax({
-            url: "http://49.234.34.192:8034/api/Material/Fill?Id=" + id,
+            url: "http://localhost:49764/api/Material/Fill?Id=" + id,
             type: "get",
             success: function (d) {
                 console.log(d);
@@ -257,9 +257,10 @@
 
     //删除物料
     function DelMaterial(Id) {
-        if (confirm("确认要删除吗?")) {
+        if (confirm("确认要删除吗?"))
+        {
             $.ajax({
-                url: "http://49.234.34.192:8034/api/Material/DelMaterial?Id=" + Id,
+                url: "http://localhost:49764/api/Material/DelMaterial?Id=" + Id,
                 type: "post",
                 dataType: "json",
                 success: function (data) {

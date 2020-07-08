@@ -229,7 +229,7 @@
     //绑定下拉（物料信息）
     function Typedrop() {
         $.ajax({
-            url: "http://49.234.34.192:8034/api/Material/GetTypes",
+            url: "http://localhost:49764/api/Material/GetTypes",
             type: "Get",
             success: function (data) {
                 console.log(data);
@@ -260,7 +260,7 @@
             Material_State: $("#Material_State").val()
         }
         $.ajax({
-            url: "http://49.234.34.192:8034/api/Material/AddMaterial?obj=" + JSON.stringify(obj),
+            url: "http://localhost:49764/api/Material/AddMaterial?obj=" + JSON.stringify(obj),
             type: "Post",
             data: data,
             contentType: false,

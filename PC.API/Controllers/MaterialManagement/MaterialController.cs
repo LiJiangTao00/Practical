@@ -60,7 +60,7 @@ namespace PC.API.Controllers.MaterialManagement
         /// <param name="materialprice"></param>
         /// <returns></returns>
         [HttpGet]
-        public PageShowMaterial SelMaterial(string Materialid, string Materialname, float Materialprice, float Materialprice1, int PageIndex = 1, int PageSize = 3)
+        public PageShowMaterial SelMaterial(string Materialid, string Materialname, float Materialprice=0, float Materialprice1=0, int PageIndex = 1, int PageSize = 3)
         {
             return _bll.SelMaterial(Materialid, Materialname, Materialprice,Materialprice1, PageIndex, PageSize);
         }
@@ -203,6 +203,10 @@ namespace PC.API.Controllers.MaterialManagement
         [HttpGet]
         public List<ApprovalMaterial> GetApproval()
         {
+          //  var list= 
+
+          
+
             return _bll.GetApproval();
         }
 

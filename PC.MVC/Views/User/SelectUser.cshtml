@@ -11,7 +11,7 @@
     <title>个人设置</title>
 </head>
 <body>
-    <div>
+    <div style="margin-left:50px;margin-top:40px;">
         <h3>个人设置</h3>
         <div class="btn-group" data-toggle="buttons-checkbox">
             <button type="button" class="btn btn-primary" onclick="SelectData()">基本信息</button>
@@ -19,7 +19,7 @@
             <button type="button" class="btn btn-primary" onclick="PutPwd()">修改密码</button>
         </div>
     </div>
-    <div id="ShowDiv">
+    <div id="ShowDiv" style="margin-left:40px">
 
     </div>
 </body>
@@ -33,17 +33,17 @@
     function SelectData() {
         var phone = localStorage["Phone"];
         $.ajax({
-            url: "http://49.234.34.192:8034/api/user/SelectUserPhone?phone=" + phone,
+            url: "http://localhost:49764/api/user/SelectUserPhone?phone=" + phone,
             type: "get",
             dataType: "json",
             success: function (data) {
                 $('#ShowDiv').empty();
                 console.log(data);
                 var str = '';
-                str += '<div style="float:left;"><img src="http://49.234.34.192:8034' + data.user_Photo + '" style="width:50px;height:70px"/></div>';
-                str += '<table><tr><td>姓名：' + data.user_Name + '</td>' +
+                str += '<div style="margin:20px;"><img src="http://localhost:49764' + data.user_Photo + '" style="width:50px;height:70px"/>';
+                str += '<table class="table table-hover"><tr><td>姓名：' + data.user_Name + '</td>' +
                     '<td> 工号：' + data.user_Id + '</td>' +
-                    '<td>性别：' + data.user_Sex + '</td></tr >' +
+                    '<td>性别：' +SetSex(data.user_Sex) + '</td></tr >' +
                     '<tr><td>联系方式：' + data.user_Phone + '</td>' +
                     '<td>邮箱：' + data.user_Email + '</td>' +
                     '<td>微信账号：' + data.user_Wechat + '</td></tr >' +
@@ -53,21 +53,34 @@
                     '<tr><td>所在区域：' + data.user_Area + '</td>' +
                     '<td>联系地址：' + data.user_Address + '</td>' +
                     '<td></td></tr > <tr><td>产品组：' + data.product_Name + '</td>' +
-                    '<td></td><td></td></tr ></table >';
+                    '<td></td><td></td></tr ></table></div>';
                 console.log(str);
                 $("#ShowDiv").append(str);
             }
         })
     }
+    function SetSex(sex) {
+        switch (sex) {
+            case 1:
+                return "男";
+                break;
+            case 2:
+                return "女";
+                break;
+            default:
+                return "保密";
+                break;
+        }
+    }
     function PutData() {
         var phone = localStorage["Phone"];
         $.ajax({
-            url: "http://49.234.34.192:8034/api/user/SelectUserPhone?phone=" + phone,
+            url: "http://localhost:49764/api/user/SelectUserPhone?phone=" + phone,
             type: "get",
             dataType: "json",
             success: function (data) {
                 $('#ShowDiv').empty();
-                var str = '<table>' +
+                var str = '<table  class="table table-hover">' +
                     '<tr>' +
                     '<td>姓名</td>' +
                     '<td>' +
@@ -135,8 +148,8 @@
                     '<tr>' +
                     '<td></td>' +
                     '<td>' +
-                    '<input id="Button1" type="button" value="提交" onclick="Save()" />' +
-                    '<input id="Button1" type="button" value="重置" />' +
+                    '<input id="Button1" type="button" class="btn btn-primary" style="width:80px" value="提交" onclick="Save()" />' +
+                    '<input id="Button1" type="button" class="btn btn-default" style="width:80px;color:blue;border:1px solid blue"  value="重置" />' +
                     '</td>' +
                     '</tr>' +
                     '</table>';
@@ -171,7 +184,7 @@
     function PutPwd() {
         var str = '';
         $('#ShowDiv').empty();
-        str = '<table style="margin:90px">' +
+        str = '<table  class="table table-hover">' +
             '<tr>' +
             '<td>原密码</td>' +
             '<td><input id="oldPwd" type="text" /></td>' +
@@ -185,8 +198,8 @@
             '<td><input id="RePwd" type="password" /></td>' +
             '</tr>' +
             '<tr>' +
-            '<td><input id="Button1" type="button" value="提交" /></td>' +
-            '<td><input id="Reset1" type="reset" value="重置" /></td>' +
+            '<td><input id="Button1" type="button" class="btn btn-primary" style="width:80px" value="提交" /></td>' +
+            '<td><input id="Reset1" type="reset" class="btn btn-default" style="width:80px;color:blue;border:1px solid blue"  value="重置" /></td>' +
             '</tr>' +
             '</table>';
         $("#ShowDiv").append(str);
@@ -202,7 +215,7 @@
                 return;
             }
             $.ajax({
-                url: "http://49.234.34.192:8034/api/user/PutPwd?phone=" + phone + "&oldpwd=" + oldpwd + "&newPwd=" + newPwd,
+                url: "http://localhost:49764/api/user/PutPwd?phone=" + phone + "&oldpwd=" + oldpwd + "&newPwd=" + newPwd,
                 type: "get",
                 dataType: "json",
                 success: function (data) {

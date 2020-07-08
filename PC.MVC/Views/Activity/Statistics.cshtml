@@ -19,7 +19,7 @@
 
 <link rel="shortcut icon" href="../js/echarts-2.2.7/doc/asset/ico/favicon.png">
 <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+<script type="text/javascript" src="http://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
 <script type="text/javascript" src="../js/echarts-2.2.7/doc/asset/js/jquery.min.js"></script>
 <script type="text/javascript" src="../js/echarts-2.2.7/doc/example/www2/js/echarts-all.js"></script>
 <script>
@@ -29,7 +29,7 @@
     });
     function Frons() {
         $.ajax({
-            url: "http://49.234.34.192:8034/api/activity/ShowView",
+            url: "http://localhost:49764/api/activity/ShowView",
             type: "get",
             dataType: "json",
             success: function (data) {

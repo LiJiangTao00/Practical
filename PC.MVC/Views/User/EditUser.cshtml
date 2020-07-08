@@ -143,7 +143,7 @@
     }
     function ShowDepartment() {
         $.ajax({
-            url: "http://49.234.34.192:8034/api/user/ShowDepartment",
+            url: "http://localhost:49764/api/user/ShowDepartment",
             type: "get",
             dataType: "json",
             success: function (data) {
@@ -159,7 +159,7 @@
     }
     function ShowJob() {
         $.ajax({
-            url: "http://49.234.34.192:8034/api/user/ShowJob",
+            url: "http://localhost:49764/api/user/ShowJob",
             type: "get",
             dataType: "json",
             success: function (data) {
@@ -175,7 +175,7 @@
     }
     function ShowProvince() {
         $.ajax({
-            url: "http://49.234.34.192:8034/api/user/ShowProvince",
+            url: "http://localhost:49764/api/user/ShowProvince",
             type: "get",
             dataType: "json",
             success: function (data) {
@@ -192,7 +192,7 @@
     function ShowCity(pid) {
         //var pid = $('#User_Province').val();
         $.ajax({
-            url: "http://49.234.34.192:8034/api/user/ShowProvince?pid=" + pid,
+            url: "http://localhost:49764/api/user/ShowProvince?pid=" + pid,
             type: "get",
             dataType: "json",
             success: function (data) {
@@ -218,7 +218,7 @@
     function ShowDistrict(pid) {
         //var pid = $('#User_City').val();
         $.ajax({
-            url: "http://49.234.34.192:8034/api/user/ShowProvince?pid=" + pid,
+            url: "http://localhost:49764/api/user/ShowProvince?pid=" + pid,
             type: "get",
             dataType: "json",
             success: function (data) {
@@ -237,7 +237,7 @@
         var cid = "";
         var did = "";
         $.ajax({
-            url: "http://49.234.34.192:8034/api/user/SelectUser?id=" + id,
+            url: "http://localhost:49764/api/user/SelectUser?id=" + id,
             type: "get",
             dataType: "json",
             success: function (data) {
@@ -267,7 +267,7 @@
                 ShowCity(data.user_Province);
                 ShowDistrict(data.user_City);
                 $('#User_Address').val(data.user_Address);
-                $('#upload').attr("src", "http://49.234.34.192:8034"+data.user_Photo);
+                $('#upload').attr("src", "http://localhost:49764"+data.user_Photo);
                 switch (data.user_ProductId) {
                     case 1:
                         $("input[name='User_ProductId']").get(0).checked = true;
@@ -287,7 +287,7 @@
     function ProvinceChange() {
         var pid = $('#User_Province').val();
         $.ajax({
-            url: "http://49.234.34.192:8034/api/user/ShowProvince?pid=" + pid,
+            url: "http://localhost:49764/api/user/ShowProvince?pid=" + pid,
             type: "get",
             dataType: "json",
             success: function (data) {
@@ -303,7 +303,7 @@
     function CityChange() {
         var pid = $('#User_City').val();
         $.ajax({
-            url: "http://49.234.34.192:8034/api/user/ShowProvince?pid=" + pid,
+            url: "http://localhost:49764/api/user/ShowProvince?pid=" + pid,
             type: "get",
             dataType: "json",
             success: function (data) {
@@ -357,7 +357,7 @@
         obj.User_ProductId = parseInt(User_ProductId);
         obj.User_Area = User_Area;
         $.ajax({
-            url: "http://49.234.34.192:8034/api/user/UpdateSingleUser?obj=" + JSON.stringify(obj),
+            url: "http://localhost:49764/api/user/UpdateSingleUser?obj=" + JSON.stringify(obj),
             data: data,
             type: "post",
             contentType: false,

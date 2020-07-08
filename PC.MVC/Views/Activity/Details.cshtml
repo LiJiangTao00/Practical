@@ -37,7 +37,7 @@
 
     function show() {
         $.ajax({
-        url: "http://49.234.34.192:8034/api/activity/Details?Id=" + @ViewBag.show,
+        url: "http://localhost:49764/api/activity/Details?Id=" + @ViewBag.show,
         type: "get",
         success: function (result) {
                 var str = result[0].activity_Desc;

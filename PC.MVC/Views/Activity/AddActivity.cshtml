@@ -156,7 +156,7 @@
         Department();
         function Type() {
             $.ajax({
-                url: "http://49.234.34.192:8034/api/activity/ShowType"
+                url: "http://localhost:49764/api/activity/ShowType"
                 , type: "Get"
                 , success: function (data) {
                     console.log(data);
@@ -171,7 +171,7 @@
         }
         function Department() {
             $.ajax({
-                url: "http://49.234.34.192:8034/api/activity/ShowDep"
+                url: "http://localhost:49764/api/activity/ShowDep"
                 , type: "Get"
                 , type: "Get"
                 , success: function (data) {
@@ -197,7 +197,7 @@
             delete data.field.Time;//删除属性
             console.log(JSON.stringify(data.field))
             $.ajax({
-                url: "http://49.234.34.192:8034/api/activity/AddActivity",
+                url: "http://localhost:49764/api/activity/AddActivity",
                 type: "post",
                 contentType: "application/json",
                 data: JSON.stringify(data.field),
@@ -237,7 +237,7 @@
     //        list.Acticity_Department_Id = 1,//$("#AcDepart").val();
     //    console.log(JSON.stringify(list));
     //    $.ajax({
-    //        url: "http://49.234.34.192:8034/api/activity/AddActivity?json=" + JSON.stringify(list),
+    //        url: "http://localhost:49764/api/activity/AddActivity?json=" + JSON.stringify(list),
     //        type: "get",
     //      //  data: JSON.stringify(list),
     //        dataType:"json",

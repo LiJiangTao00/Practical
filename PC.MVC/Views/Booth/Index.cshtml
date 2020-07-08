@@ -67,13 +67,13 @@
 </body>
 </html>
 <link rel="shortcut icon" href="../js/echarts-2.2.7/doc/asset/ico/favicon.png">
-<script type="text/javascript" src="../js/echarts-2.2.7/doc/asset/js/jquery.min.js"></script>
-<script type="text/javascript" src="../js/echarts-2.2.7/doc/example/www2/js/echarts-all.js"></script>
+@*<script type="text/javascript" src="../js/echarts-2.2.7/doc/asset/js/jquery.min.js"></script>*@
+@*<script type="text/javascript" src="../js/echarts-2.2.7/doc/example/www2/js/echarts-all.js"></script>*@
 
 <script src="~/lib/jquery/dist/jquery.js"></script>
 
 <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+<script type="text/javascript" src="http://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
 <script>
     $(function () {
         ShowData();
@@ -82,7 +82,7 @@
         var time = $('#DataTime').val();
         var tab = "UserTable";
         $.ajax({
-            url: "http://49.234.34.192:8034/api/user/GetLog?time=" + time + "&table=" + tab,
+            url: "http://localhost:49764/api/user/GetLog?time=" + time + "&table=" + tab,
             type: "get",
             dataType: "json",
             success: function (data) {
@@ -96,7 +96,7 @@
         })
         tab = "ConferenceTable";
         $.ajax({
-            url: "http://49.234.34.192:8034/api/user/GetLog?time=" + time + "&table=" + tab,
+            url: "http://localhost:49764/api/user/GetLog?time=" + time + "&table=" + tab,
             type: "get",
             dataType: "json",
             success: function (data) {
@@ -110,7 +110,7 @@
         })
         tab = "MaterialTable";
         $.ajax({
-            url: "http://49.234.34.192:8034/api/user/GetLog?time=" + time + "&table=" + tab,
+            url: "http://localhost:49764/api/user/GetLog?time=" + time + "&table=" + tab,
             type: "get",
             dataType: "json",
             success: function (data) {
@@ -186,7 +186,7 @@
         
     });
     function ShowPie() {
-        $.getJSON("http://49.234.34.192:8034/api/user/GetCon?time=" + $('#MeetTime').val(), function (data11) {
+        $.getJSON("http://localhost:49764/api/user/GetCon?time=" + $('#MeetTime').val(), function (data11) {
             var d = data11;
             var nanlist = [];
 

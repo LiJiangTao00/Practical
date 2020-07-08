@@ -17,7 +17,7 @@ namespace PC.DAL.MaterialDal
     public class MaterialDAL : IMaterialDAL  // 接口
     {
         DapperHelper<MaterialTableModel> dapper = new DapperHelper<MaterialTableModel>();
-        SqlConnection conn = new SqlConnection("Data Source=49.234.34.192;Initial Catalog=Practial;User ID=sa;pwd=12345");
+        SqlConnection conn = new SqlConnection("Data Source=192.168.43.93;Initial Catalog=Practial;User ID=sa;Pwd=12345");
         /// <summary>
         /// 显示物料信息
         /// </summary>
@@ -28,7 +28,7 @@ namespace PC.DAL.MaterialDal
             string sql = "select* from MaterialTable a join MaterialTypeTable t on a.Material_TypeId=t.Id";
             List<MaterialTableModel> list = da.Query(sql).ToList();
             return list;
-            //using (SqlConnection conn = new SqlConnection("Data Source=192.168.43.93;Initial Catalog=Practial;User ID=sa;pwd=12345"))
+            //using (SqlConnection conn = new SqlConnection("Data Source=192.168.43.93;Initial Catalog=Practial;User ID=sa;pwd=sa1234.."))
             //{
             //    return conn.Query<MaterialTableModel>($"select m.Id,m.Material_Id,m.Material_Name,m.Material_TypeId,m.Material_Price,m.Material_Number,m.Material_LastNumber,m.Material_Desc,m.Material_Image,m.Material_State,m.Material_Approval,m.Material_Recycle,m.Material_AddTime,m.Material_DelState,m.Material_Activity_Id,m.Material_PlaceName,t.MType_Name from MaterialTable m join MaterialTypeTable t on m.Material_TypeId = t.Id").ToList();
             //}
@@ -41,7 +41,7 @@ namespace PC.DAL.MaterialDal
         /// <returns></returns>
         public List<ActivityTableModel> ShowActivity()
         {
-            using (SqlConnection conn = new SqlConnection("Data Source=49.234.34.192;Initial Catalog=Practial;User ID=sa;Pwd=sa1234.."))
+            using (SqlConnection conn = new SqlConnection("Data Source=192.168.43.93;Initial Catalog=Practial;User ID=sa;Pwd=12345"))
             {
                 return conn.Query<ActivityTableModel>("select * from ActivityTable").ToList();
             }
@@ -53,7 +53,7 @@ namespace PC.DAL.MaterialDal
         /// <returns></returns>
         public List<MaterialTypeTableModel> GetTypes()
         {
-            using (SqlConnection conn = new SqlConnection("Data Source=49.234.34.192;Initial Catalog=Practial;User ID=sa;Pwd=sa1234.."))
+            using (SqlConnection conn = new SqlConnection("Data Source=192.168.43.93;Initial Catalog=Practial;User ID=sa;Pwd=12345"))
             {
                 return conn.Query<MaterialTypeTableModel>("select * from MaterialTypeTable").ToList();
             }
@@ -119,7 +119,7 @@ namespace PC.DAL.MaterialDal
         /// <returns></returns>
         public List<OrderTableModel> GetOrder()
         {
-            using (SqlConnection conn = new SqlConnection("Data Source=49.234.34.192;Initial Catalog=Practial;User ID=sa;Pwd=sa1234.."))
+            using (SqlConnection conn = new SqlConnection("Data Source=192.168.43.93;Initial Catalog=Practial;User ID=sa;Pwd=12345"))
             {
                 return conn.Query<OrderTableModel>("select * from OrderTable").ToList();
             }
@@ -131,7 +131,7 @@ namespace PC.DAL.MaterialDal
         /// <returns></returns>
         public List<UserTableModel> GetUsers()
         {
-            using (SqlConnection conn = new SqlConnection("Data Source=49.234.34.192;Initial Catalog=Practial;User ID=sa;Pwd=sa1234.."))
+            using (SqlConnection conn = new SqlConnection("Data Source=192.168.43.93;Initial Catalog=Practial;User ID=sa;Pwd=12345"))
             {
                 return conn.Query<UserTableModel>("select * from UserTable").ToList();
             }
@@ -143,7 +143,7 @@ namespace PC.DAL.MaterialDal
         /// <returns></returns>
         public List<ProductTableModel> GetProduct()
         {
-            using (SqlConnection conn = new SqlConnection("Data Source=49.234.34.192;Initial Catalog=Practial;User ID=sa;Pwd=sa1234.."))
+            using (SqlConnection conn = new SqlConnection("Data Source=192.168.43.93;Initial Catalog=Practial;User ID=sa;Pwd=12345"))
             {
                 return conn.Query<ProductTableModel>("select * from ProductTable").ToList();
             }
@@ -155,7 +155,7 @@ namespace PC.DAL.MaterialDal
         /// <returns></returns>
         public List<DepartmentTableModel> GetDepartment()
         {
-            using (SqlConnection conn = new SqlConnection("Data Source=49.234.34.192;Initial Catalog=Practial;User ID=sa;Pwd=sa1234.."))
+            using (SqlConnection conn = new SqlConnection("Data Source=192.168.43.93;Initial Catalog=Practial;User ID=sa;Pwd=12345"))
             {
                 return conn.Query<DepartmentTableModel>("select * from DepartmentTable").ToList();
             }
@@ -167,7 +167,7 @@ namespace PC.DAL.MaterialDal
         /// <returns></returns>
         public List<JobTableModel> GetJob()
         {
-            using (SqlConnection conn = new SqlConnection("Data Source=49.234.34.192;Initial Catalog=Practial;User ID=sa;Pwd=sa1234.."))
+            using (SqlConnection conn = new SqlConnection("Data Source=192.168.43.93;Initial Catalog=Practial;User ID=sa;Pwd=12345"))
             {
                 return conn.Query<JobTableModel>("select * from JobTable").ToList();
             }
@@ -179,7 +179,7 @@ namespace PC.DAL.MaterialDal
         /// <returns></returns>
         public List<PlaceTableModel> GetPlace()
         {
-            using (SqlConnection conn = new SqlConnection("Data Source=49.234.34.192;Initial Catalog=Practial;User ID=sa;Pwd=sa1234.."))
+            using (SqlConnection conn = new SqlConnection("Data Source=192.168.43.93;Initial Catalog=Practial;User ID=sa;Pwd=12345"))
             {
                 return conn.Query<PlaceTableModel>("select * from PlaceTable").ToList();
             }
@@ -243,7 +243,7 @@ namespace PC.DAL.MaterialDal
         public PageShowMaterial SelOrder(string Material_Id, string Material_Name, string Order_Proposer, DateTime? Order_ApplyTime, int PageIndex = 1, int PageSize = 2, int Order_State = -1)
         {
 
-            string sql = "select o.Id,m.Material_Id,m.Material_Name,m.Material_Image,t.MType_Name,o.Order_Proposer,g.Place_Name,o.Order_ApplyTime,o.Order_State,a.Activity_Name,m.Material_Price,m.Material_Number,p.Product_Name,d.Department_Name,j.Job_Name,u.User_Phone from  MaterialTable m  join OrderTable o on o.Order_MId = m.Id join MaterialTypeTable t on m.Material_TypeId = t.Id join ActivityTable a on m.Material_Activity_Id = a.Id join UserTable u on o.Order_User_Id = u.Id join ProductTable p on o.Order_Product_Id = p.Id join DepartmentTable d on o.Order_Department_Id = d.Id join JobTable j on o.Order_Job_Id = j.Id join PlaceTable g on o.Order_Area_Id = g.Id where 1 = 1";
+            string sql = "select m.Id,m.Material_Id,m.Material_Name,m.Material_Image,t.MType_Name,o.Order_Proposer,g.Place_Name,o.Order_ApplyTime,o.Order_State,a.Activity_Name,m.Material_Price,m.Material_Number,p.Product_Name,d.Department_Name,j.Job_Name,u.User_Phone from  MaterialTable m  join OrderTable o on o.Order_MId = m.Id join MaterialTypeTable t on m.Material_TypeId = t.Id join ActivityTable a on m.Material_Activity_Id = a.Id join UserTable u on o.Order_User_Id = u.Id join ProductTable p on o.Order_Product_Id = p.Id join DepartmentTable d on o.Order_Department_Id = d.Id join JobTable j on o.Order_Job_Id = j.Id join PlaceTable g on o.Order_Area_Id = g.Id where 1 = 1";
 
             if (Material_Id != null)
             {
@@ -389,7 +389,7 @@ namespace PC.DAL.MaterialDal
         /// <returns></returns>
         public List<ShowFill> Fill(int Id)
         {
-            using (SqlConnection conn = new SqlConnection("Data Source=49.234.34.192;Initial Catalog=Practial;User ID=sa;Pwd=sa1234.."))
+            using (SqlConnection conn = new SqlConnection("Data Source=192.168.43.93;Initial Catalog=Practial;User ID=sa;Pwd=12345"))
             {
                 List<ShowFill> list = conn.Query<ShowFill>($"select * from MaterialTypeTable t join MaterialTable m on t.Id = m.Material_TypeId where m.Id = {Id}").ToList();
                 return list;
@@ -402,7 +402,7 @@ namespace PC.DAL.MaterialDal
         /// <returns></returns>
         public List<ApprovalMaterial> FillApproval(int Id)
         {
-            using (SqlConnection conn = new SqlConnection("Data Source=49.234.34.192;Initial Catalog=Practial;User ID=sa;Pwd=sa1234.."))
+            using (SqlConnection conn = new SqlConnection("Data Source=192.168.43.93;Initial Catalog=Practial;User ID=sa;Pwd=12345"))
             {
                 return conn.Query<ApprovalMaterial>($"select * from MaterialTable m join OrderTable o on o.Order_MId = m.Id join MaterialTypeTable t on m.Material_TypeId = t.Id join ActivityTable a on m.Material_Activity_Id = a.Id  join UserTable u on o.Order_User_Id = u.Id join ProductTable p on o.Order_Product_Id = p.Id join DepartmentTable d on o.Order_Department_Id = d.Id join JobTable j on o.Order_Job_Id = j.Id  join PlaceTable g on o.Order_Area_Id = g.Id where m.Id = {Id}").ToList();
             }
@@ -415,7 +415,7 @@ namespace PC.DAL.MaterialDal
         /// <returns></returns>
         public List<ShowMaterialApprove> ShowMaterialFill(int Id)
         {
-            using (SqlConnection conn = new SqlConnection("Data Source=49.234.34.192;Initial Catalog=Practial;User ID=sa;Pwd=sa1234.."))
+            using (SqlConnection conn = new SqlConnection("Data Source=192.168.43.93;Initial Catalog=Practial;User ID=sa;Pwd=12345"))
             {
                 return conn.Query<ShowMaterialApprove>($"select *  from  MaterialTable m  join OrderTable o on o.Order_MId = m.Id join MaterialTypeTable t on m.Material_TypeId = t.Id join ActivityTable a on m.Material_Activity_Id = a.Id join UserTable u on o.Order_User_Id = u.Id join ProductTable p on o.Order_Product_Id = p.Id join DepartmentTable d on o.Order_Department_Id = d.Id join JobTable j on o.Order_Job_Id = j.Id join PlaceTable g on o.Order_Area_Id = g.Id where o.Id = {Id}").ToList();
             }
@@ -439,7 +439,7 @@ namespace PC.DAL.MaterialDal
          /// <returns></returns>
          public MaterialTableModel Fillmaterial(int Id)
          {
-             using (SqlConnection conn = new SqlConnection("Data Source=49.234.34.192;Initial Catalog=Practial;User ID=sa;Pwd=sa1234.."))
+             using (SqlConnection conn = new SqlConnection("Data Source=192.168.43.93;Initial Catalog=Practial;User ID=sa;Pwd=12345"))
              {
                  return conn.Query<MaterialTableModel>($"select * from MaterialTable where Id = {Id}").FirstOrDefault();
              }
@@ -452,7 +452,7 @@ namespace PC.DAL.MaterialDal
         /// <returns></returns>
         public int DelMaterial(int Id)
         {
-            using (SqlConnection conn = new SqlConnection("Data Source=49.234.34.192;Initial Catalog=Practial;User ID=sa;Pwd=sa1234.."))
+            using (SqlConnection conn = new SqlConnection("Data Source=192.168.43.93;Initial Catalog=Practial;User ID=sa;Pwd=12345"))
             {
                 return conn.Execute($"delete from MaterialTable where Id = {Id}");
             }

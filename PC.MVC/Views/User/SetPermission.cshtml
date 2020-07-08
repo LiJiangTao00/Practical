@@ -12,18 +12,18 @@
 </head>
 <body>
     <div style="margin-left:100px;margin-left:20px">
-        <div>
-            <h3 style="font-weight:600;">添加用户</h3>
-            <input type="button" value="返回" onclick="GoBack()" />
+        <div style="width:1000px;">
+            <h3 style="font-weight:600;">更改权限</h3>
+            <input type="button" style="float:right" value="返回" onclick="GoBack()" />
         </div>
         <table id="JobTb">
         </table>
         <h2>操作权限</h2>
         <table class="table table-borderless" id="PermissionTb">
         </table>
-        <div>
-            <input type="button" value="button" onclick="Save()" />
-            <input type="reset" value="reset" onclick="Resave()" />
+        <div style="float:left;margin-left:200px">
+            <input type="button" class="btn btn-primary" style="width:80px"  value="保存" onclick="Save()" />
+            <input type="reset" class="btn btn-default" style="width:80px;color:blue;border:1px solid blue;margin-left:20px"  value="重置" onclick="Resave()" />
         </div>
     </div>
 </body>
@@ -42,7 +42,7 @@
         var photo = '/img/u829.png';
         var id = localStorage["PermissionId"];
         $.ajax({
-            url: "http://49.234.34.192:8034/api/user/ShowSingleJob?id=" + id,
+            url: "http://localhost:49764/api/user/ShowSingleJob?id=" + id,
             type: "get",
             dataType: "json",
             async: false,
@@ -65,7 +65,7 @@
     }
     function ShowPermission() {
         $.ajax({
-            url: "http://49.234.34.192:8034/api/user/ShowPermission",
+            url: "http://localhost:49764/api/user/ShowPermission",
             type: "get",
             dataType: "json",
             async: false,
@@ -89,8 +89,11 @@
     }
     function ChkPermission() {
         var id = localStorage["PermissionId"];
+        if (id == 1) {
+            $('.chk').attr("checked", true);
+        }
         $.ajax({
-            url: "http://49.234.34.192:8034/api/user/ShowSinglePermission?id=" + id,
+            url: "http://localhost:49764/api/user/ShowSinglePermission?id=" + id,
             type: "get",
             dataType: "json",
             async: false,
@@ -108,7 +111,7 @@
     }
     function ChkPid(id) {
         $.ajax({
-            url: "http://49.234.34.192:8034/api/user/ChkPid?id=" + id,
+            url: "http://localhost:49764/api/user/ChkPid?id=" + id,
             type: "get",
             dataType: "json",
             async: false,
@@ -131,7 +134,7 @@
         var ids = pid;
         var id = localStorage["PermissionId"];
         $.ajax({
-            url: "http://49.234.34.192:8034/api/user/ChangePermission?id=" + id + "&ids=" + ids,
+            url: "http://localhost:49764/api/user/ChangePermission?id=" + id + "&ids=" + ids,
             type: "get",
             dataType: "json",
             async: false,

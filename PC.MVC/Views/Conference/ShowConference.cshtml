@@ -92,7 +92,7 @@
             "pagesize": $("#lab_pagesize").text(),
         };
         $.ajax({
-            url: "http://49.234.34.192:8034/api/Conference/SearchConference",
+            url: "http://localhost:49764/api/Conference/SearchConference",
             data: spc,
             type: "post",
             contentType: "application/x-www-form-urlencoded",
@@ -123,7 +123,6 @@
                                <a href="#" OnClick="Del_Single(${k.id})">删除</a>
                                <a href="#" OnClick="QuotaAllocation(${k.id})">分配名额</a>
                                <a href="#" OnClick="UptQuota(${k.id})">修改名额</a>
-                               //<a href="#" OnClick="s(${k.id})">审批名单</a>
                            </td>`
                         + `</tr>`
                     $("#tb").append(list);
@@ -206,7 +205,7 @@
             "pagesize": $("#lab_pagesize").text(),
         };
         $.ajax({
-            url: "http://49.234.34.192:8034/api/Conference/SearchConference",
+            url: "http://localhost:49764/api/Conference/SearchConference",
             data: spc,
             type: "post",
             contentType: "application/x-www-form-urlencoded",
@@ -235,7 +234,6 @@
                                <a href="#" OnClick="Del_Single(${k.id})">删除</a>
                                <a href="#" OnClick="QuotaAllocation(${k.id})">分配名额</a>
                                <a href="#" OnClick="UptQuota(${k.id})">修改名额</a>
-                               <a href="#" OnClick="s(${k.id})">审批名单</a>
                            </td>
                          </tr>`
                     $("#tb").append(list);
@@ -244,8 +242,6 @@
         })
 
     }
-
-
 
     //通过点击总复选框实现全选或者反选
     function Select_Ck() {
@@ -283,7 +279,7 @@
         }
         //有被选中的数据行时
         $.ajax({
-            url: "http://49.234.34.192:8034/api/Conference/DelConference",
+            url: "http://localhost:49764/api/Conference/DelConference",
             data: {
                 ids: DelIds
             },
@@ -302,7 +298,7 @@
     //单删  点击数据行中的删除  将此行数据删除
     function Del_Single(con_id) {
         $.ajax({
-            url: "http://49.234.34.192:8034/api/Conference/DelConference",
+            url: "http://localhost:49764/api/Conference/DelConference",
             data: {
                 ids: con_id
             },
@@ -321,7 +317,7 @@
     function Con_Info(Cid) {
         var InfoHtml = `<div><table>`;
         $.ajax({
-            url: "http://49.234.34.192:8034/api/Conference/ConferenceInfo?cid=" + Cid,
+            url: "http://localhost:49764/api/Conference/ConferenceInfo?cid=" + Cid,
             type: "get",
             success: function (d) {
                 console.log(2);

@@ -147,7 +147,7 @@
     }
     function ShowDepartment() {
         $.ajax({
-            url: "http://49.234.34.192:8034/api/user/ShowDepartment",
+            url: "http://localhost:49764/api/user/ShowDepartment",
             type: "get",
             dataType: "json",
             success: function (data) {
@@ -163,7 +163,7 @@
     }
     function ShowJob() {
         $.ajax({
-            url: "http://49.234.34.192:8034/api/user/ShowJob",
+            url: "http://localhost:49764/api/user/ShowJob",
             type: "get",
             dataType: "json",
             success: function (data) {
@@ -179,7 +179,7 @@
     }
     function ShowProvince() {
         $.ajax({
-            url: "http://49.234.34.192:8034/api/user/ShowProvince",
+            url: "http://localhost:49764/api/user/ShowProvince",
             type: "get",
             dataType: "json",
             success: function (data) {
@@ -207,7 +207,7 @@
     function ProvinceChange() {
         var pid = $('#User_Province').val();
         $.ajax({
-            url: "http://49.234.34.192:8034/api/user/ShowProvince?pid=" + pid,
+            url: "http://localhost:49764/api/user/ShowProvince?pid=" + pid,
             type: "get",
             dataType: "json",
             success: function (data) {
@@ -223,7 +223,7 @@
     function CityChange() {
         var pid = $('#User_City').val();
         $.ajax({
-            url: "http://49.234.34.192:8034/api/user/ShowProvince?pid=" + pid,
+            url: "http://localhost:49764/api/user/ShowProvince?pid=" + pid,
             type: "get",
             dataType: "json",
             success: function (data) {
@@ -275,7 +275,7 @@
         obj.User_ProductId = parseInt(User_ProductId);
         obj.User_Area = User_Area;
         $.ajax({
-            url: "http://49.234.34.192:8034/api/user/AddSingleUser?obj=" + JSON.stringify(obj),
+            url: "http://localhost:49764/api/user/AddSingleUser?obj=" + JSON.stringify(obj),
             data: data,
             type: "post",
             contentType: false,

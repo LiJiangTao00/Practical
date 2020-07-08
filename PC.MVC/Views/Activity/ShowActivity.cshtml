@@ -85,7 +85,7 @@
             if (data.index == 0) {
                 d = -1;
                 table.reload('ShowData', {
-                    url: "http://49.234.34.192:8034/api/activity/ShowActivity",
+                    url: "http://localhost:49764/api/activity/ShowActivity",
                     method: 'get'
                     , where: { ActivityType_Id: Number($("#Type1").val()), ActivityState_Id: Number($("#State1").val()), Search: $("#Search").val(), Activity_Product_Id: -1 }
                     , page: {
@@ -96,7 +96,7 @@
             else if (data.index == 1) {
                 d = 0;
                 table.reload('ShowData', {
-                    url: "http://49.234.34.192:8034/api/activity/ShowActivity",
+                    url: "http://localhost:49764/api/activity/ShowActivity",
                     method: 'get'
                     , where: { ActivityType_Id: Number($("#Type1").val()), ActivityState_Id: Number($("#State1").val()), Search: $("#Search").val(), Activity_Product_Id: 0 }
                     , page: {
@@ -107,7 +107,7 @@
             else if (data.index == 2) {
                 d = 1;
                 table.reload('ShowData', {
-                    url: "http://49.234.34.192:8034/api/activity/ShowActivity",
+                    url: "http://localhost:49764/api/activity/ShowActivity",
                     method: 'get'
                     , where: { ActivityType_Id: Number($("#Type1").val()), ActivityState_Id: Number($("#State1").val()), Search: $("#Search").val(), Activity_Product_Id: 1 }
                     , page: {
@@ -118,7 +118,7 @@
             else if (data.index == 3) {
                 d = 2;
                 table.reload('ShowData', {
-                    url: "http://49.234.34.192:8034/api/activity/ShowActivity",
+                    url: "http://localhost:49764/api/activity/ShowActivity",
                     method: 'get'
                     , where: { ActivityType_Id: Number($("#Type1").val()), ActivityState_Id: Number($("#State1").val()), Search: $("#Search").val(), Activity_Product_Id: 2 }
                     , page: {
@@ -132,7 +132,7 @@
         var Name = "";
         function Type() {
             $.ajax({
-                url: "http://49.234.34.192:8034/api/activity/ShowType"
+                url: "http://localhost:49764/api/activity/ShowType"
                 , type: "Get"
                 , success: function (data) {
                     console.log(data);
@@ -147,7 +147,7 @@
         }
         function GetDepart(id) {
             $.ajax({
-                url: " http://49.234.34.192:8034/api/activity/GetdepartName?id=" + id
+                url: " http://localhost:49764/api/activity/GetdepartName?id=" + id
                 , type: "Get"
                 , success: function (data) {
 
@@ -159,7 +159,7 @@
         }
         function GetActivity(id) {
             $.ajax({
-                url: " http://49.234.34.192:8034/api/activity/GetActivityName?id=" + id
+                url: " http://localhost:49764/api/activity/GetActivityName?id=" + id
                 , type: "Get"
                 , success: function (data) {
                     console.log(data);
@@ -170,7 +170,7 @@
         }
         function State() {
             $.ajax({
-                url: "http://49.234.34.192:8034/api/activity/ShowState"
+                url: "http://localhost:49764/api/activity/ShowState"
                 , type: "Get"
                 , success: function (data) {
                     $("#State1").empty();
@@ -188,7 +188,7 @@
         table.render({
             elem: '#ShowData'
             , height: 312
-            , url: 'http://49.234.34.192:8034/api/activity/ShowActivity' //数据接口
+            , url: 'http://localhost:49764/api/activity/ShowActivity' //数据接口
             , page: true //开启分页
             , totalRow: true //开启合计行
             , cols: [[ //表头
@@ -281,14 +281,14 @@
             } else if (layEvent === 'del') {
                 layer.confirm('真的删除行么', function (index) {
                     $.ajax({
-                        url: "http://49.234.34.192:8034/api/activity/DelActivity?id=" + data.id,
+                        url: "http://localhost:49764/api/activity/DelActivity?id=" + data.id,
                         type: "get",
                         success: function (result) {
                             if (result > 0) {
                                 layer.msg('删除成功');
                                 //调用显示方法进行局部刷新
                                 table.reload('ShowData', {
-                                    url: "http://49.234.34.192:8034/api/activity/ShowActivity",
+                                    url: "http://localhost:49764/api/activity/ShowActivity",
                                     method: 'get'
                                     , where: { ActivityType_Id: Number($("#Type1").val()), ActivityState_Id: Number($("#State1").val()), Search: $("#Search").val(), Acticity_Department_Id: d }
                                     , page:
@@ -318,7 +318,7 @@
         };
         form.on('submit(add)', function (data) {
             table.reload('ShowData', {
-                url: "http://49.234.34.192:8034/api/activity/ShowActivity",
+                url: "http://localhost:49764/api/activity/ShowActivity",
                 method: 'get'
                 , where: { ActivityType_Id: Number($("#Type1").val()), ActivityState_Id: Number($("#State1").val()), Search: $("#Search").val(), Acticity_Department_Id: d }
                 , page: {
@@ -330,7 +330,7 @@
 
     //function Type() {
     //    $.ajax({
-    //        url: "http://49.234.34.192:8034/api/activity/ShowType"
+    //        url: "http://localhost:49764/api/activity/ShowType"
     //        , type: "Get"
     //        , success: function (data) {
     //            $("#Type1").empty();
@@ -348,7 +348,7 @@
         var Type1 = $("#Type1").val();
         var State1 = $("#State1").val();
         $.ajax({
-            url: "http://49.234.34.192:8034/api/activity/ShowActivity"
+            url: "http://localhost:49764/api/activity/ShowActivity"
             , type: "Get"
             , success: function (data) {
                 //显示结果
@@ -377,7 +377,7 @@
     function recycle(id) {
         if (confirm("是否确认删除？")) {
             $.ajax({
-                url: "http://49.234.34.192:8034/api/activity/DelActivity",
+                url: "http://localhost:49764/api/activity/DelActivity",
                 type: "Delete",
                 data: { id: id },
                 dataType: "text",

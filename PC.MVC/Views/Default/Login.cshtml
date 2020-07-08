@@ -17,7 +17,7 @@
             <h2 style="color:blue;font-weight:800;margin-left:50px">药企内部管理平台</h2>
             <div class="input-group" style="margin-top:30px">
                 <span class="input-group-addon"><img src="~/img/u12.svg" style="width:30px;height:30px" /></span>
-                <input id="User_Phone" type="text" class="form-control" placeholder="twitterhandle" style="width:50px">
+                <input id="User_Phone" type="text" class="form-control" placeholder="请输入手机号...." style="width:50px">
             </div>
             @*<div class="input-group" style="margin-top:30px">
                     <span class="input-group-addon">
@@ -97,11 +97,11 @@
         }
 
     .span1_back {
-        background: url('~/img/left.png') no-repeat center center;
+        background: url(http://localhost:49764/img/left.png) no-repeat center center;
     }
 
     .span2_back {
-        background: url('~/img/left.png')no-repeat center center;
+        background: url(http://localhost:49764/img/left.png)no-repeat center center;
     }
 </style>
 <script src="~/lib/jquery/dist/jquery.js"></script>
@@ -169,7 +169,7 @@
         var User_Phone = $('#User_Phone').val();
         var User_Pwd = $('#User_Pwd').val();
         $.ajax({
-            url: "http://49.234.34.192:8034/api/user/Login?User_Phone=" + User_Phone + "&User_Pwd=" + User_Pwd,
+            url: "http://localhost:49764/api/user/Login?User_Phone=" + User_Phone + "&User_Pwd=" + User_Pwd,
             type: "get",
             success: function (data) {
                 localStorage["Phone"] = User_Phone;
@@ -181,7 +181,7 @@
     }
     function ShowName(phone) {
         $.ajax({
-            url: "http://49.234.34.192:8034/api/user/SelectName?User_Phone=" + phone,
+            url: "http://localhost:49764/api/user/SelectName?User_Phone=" + phone,
             type: "get",
             dataType: "text",
             success: function (data) {

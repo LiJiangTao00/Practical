@@ -16,7 +16,7 @@
     <script src="~/lib/jquery/dist/jquery.js"></script>
 
     <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+    <script type="text/javascript" src="http://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
 </head>
 <body>
     <div id="service" style="width: 850px;height:500px;"></div>
@@ -29,7 +29,7 @@
     });
     function Frons() {
         $.ajax({
-            url: "http://49.234.34.192:8034/api/Material/ShowMaterial",
+            url: "http://localhost:49764/api/Material/ShowMaterial",
             type: "get",
             dataType: "json",
             success: function (data) {
