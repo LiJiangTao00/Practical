@@ -53,11 +53,9 @@
             <input class="layui-input" name="Search" id="Search" autocomplete="off">
         </div>
         <button class="layui-btn" type="button" lay-submit lay-filter="add">搜索</button>
-
-    </form>
-    <div>
         <input type="button" value="添加" class="layui-btn layui-btn-normal" onclick="Add()" />
-    </div>
+    </form>
+
 
     <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
         <ul class="layui-tab-title">
@@ -187,12 +185,12 @@
         //第一个实例
         table.render({
             elem: '#ShowData'
-            , height: 312
+            , height: 500
             , url: 'http://localhost:49764/api/activity/ShowActivity' //数据接口
             , page: true //开启分页
             , totalRow: true //开启合计行
             , cols: [[ //表头
-                { field: 'activity_Name', title: '活动名称', width: 150, sort: true, fixed: 'left' }
+                { field: 'activity_Name', title: '活动名称', width: 180, sort: true, fixed: 'left' }
                 , {
                     field: 'activityType_Id', title: '活动类型', width: 150
                     , sort: true, templet: function (d) {
@@ -211,7 +209,7 @@
                     }
                 }
                 , {
-                    field: 'activity_Product_Id', title: '产品组', width: 80, sort: true, templet: function (d) {
+                    field: 'activity_Product_Id', title: '产品组', width: 180, sort: true, templet: function (d) {
                         if (d.activity_Product_Id == 0) {
                             return "CV组";
                         }
@@ -224,7 +222,7 @@
                     }
                 }
                 , {
-                    field: 'acticity_Department_Id', title: '部门', width: 80, sort: true, templet: function (d) {
+                    field: 'acticity_Department_Id', title: '部门', width: 180, sort: true, templet: function (d) {
                         if (d.acticity_Department_Id == 0) {
                             return "市场部";
                         }
@@ -254,7 +252,7 @@
                     }
                 }
                 , {
-                    field: 'activityState_Id', title: '状态', width: 80, sort: true, templet: function (d) {
+                    field: 'activityState_Id', title: '状态', width: 180, sort: true, templet: function (d) {
                         if (d.activityState_Id == 1) {
                             return "未开始";
                         }
@@ -266,7 +264,7 @@
                         }
                     }
                 }
-                , { field: 'activityState_Id', title: '操作', width: 710, templet: '#barDemo' }
+                , { field: 'activityState_Id', title: '操作', width: 300, templet: '#barDemo' }
             ]], where: { ActivityType_Id: Number($("#Type1").val()), ActivityState_Id: Number($("#State1").val()), Search: $("#Search").val() },
             request: {
                 pageName: 'page',   // 页码的参数名称，默认：page
