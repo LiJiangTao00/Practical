@@ -190,17 +190,17 @@
             , page: true //开启分页
             , totalRow: true //开启合计行
             , cols: [[ //表头
-                { field: 'activity_Name', title: '活动名称', width: 180, sort: true, fixed: 'left' }
+                { field: 'activity_Name', title: '活动名称', width: 150, sort: true, fixed: 'left' }
                 , {
                     field: 'activityType_Id', title: '活动类型', width: 150
                     , sort: true, templet: function (d) {
-                        if (d.activityType_Id == 0) {
+                        if (d.activityType_Id == 1) {
                             return "市场活动";
                         }
-                        else if (d.activityType_Id == 1) {
+                        else if (d.activityType_Id == 2) {
                             return "科室会";
                         }
-                        else if (d.activityType_Id == 2) {
+                        else if (d.activityType_Id == 3) {
                             return "城市会";
                         }
                         else {
@@ -209,7 +209,7 @@
                     }
                 }
                 , {
-                    field: 'activity_Product_Id', title: '产品组', width: 180, sort: true, templet: function (d) {
+                    field: 'activity_Product_Id', title: '产品组', width: 150, sort: true, templet: function (d) {
                         if (d.activity_Product_Id == 0) {
                             return "CV组";
                         }
@@ -222,7 +222,7 @@
                     }
                 }
                 , {
-                    field: 'acticity_Department_Id', title: '部门', width: 180, sort: true, templet: function (d) {
+                    field: 'acticity_Department_Id', title: '部门', width: 150, sort: true, templet: function (d) {
                         if (d.acticity_Department_Id == 0) {
                             return "市场部";
                         }
@@ -232,7 +232,7 @@
                     }
                 }
                 , {
-                    field: 'timeBegin', title: '开始时间', width: 180, templet: function (d) {
+                    field: 'timeBegin', title: '开始时间', width: 150, templet: function (d) {
                         var data = new Date(d.timeBegin);
                         var year = data.getFullYear();  //获取年
                         var month = data.getMonth() + 1;    //获取月
@@ -242,7 +242,7 @@
                     }
                 }
                 , {
-                    field: 'timeEnd', title: '结束时间', width: 180, sort: true, templet: function (d) {
+                    field: 'timeEnd', title: '结束时间', width: 150, sort: true, templet: function (d) {
                         var data = new Date(d.timeBegin);
                         var year = data.getFullYear();  //获取年
                         var month = data.getMonth() + 1;    //获取月
@@ -252,7 +252,7 @@
                     }
                 }
                 , {
-                    field: 'activityState_Id', title: '状态', width: 180, sort: true, templet: function (d) {
+                    field: 'activityState_Id', title: '状态', width: 150, sort: true, templet: function (d) {
                         if (d.activityState_Id == 1) {
                             return "未开始";
                         }
@@ -264,7 +264,7 @@
                         }
                     }
                 }
-                , { field: 'activityState_Id', title: '操作', width: 300, templet: '#barDemo' }
+                , { field: 'activityState_Id', title: '操作', width: 290, templet: '#barDemo' }
             ]], where: { ActivityType_Id: Number($("#Type1").val()), ActivityState_Id: Number($("#State1").val()), Search: $("#Search").val() },
             request: {
                 pageName: 'page',   // 页码的参数名称，默认：page

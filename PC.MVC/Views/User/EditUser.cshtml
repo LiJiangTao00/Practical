@@ -13,10 +13,10 @@
 <body>
     <div style="margin-left:100px;margin-left:20px">
         <div>
-            <h3 style="font-weight:600;">添加用户</h3>
-            <input type="button" value="返回" onclick="GoBack()"/>
+            <h3 style="font-weight:600;">编辑用户</h3>
+            <input type="button" value="返回" class="btn btn-warning" onclick="GoBack()"/>
         </div>
-        <table>
+        <table class="table table-hover">
             <tr>
                 <td>姓名</td>
                 <td>
@@ -104,13 +104,10 @@
                     <div style="position: relative;">
                         <input id="User_Photo" style="position: absolute; top: 0; bottom: 0; left: 0;right: 0; opacity: 0;" type="file" accept="image/gif, image/jpg, image/png" onchange="showImg(this)" />
                         <div style="text-align:top">
-                            <img id="upload"  style="width: 40px; height: 40px; vertical-align: middle;" />
+                            <img id="upload" style="width: 40px; height: 40px; vertical-align: middle;" />
                         </div>
                     </div>
-                    @*<div class="layui-input-inline">
-
-            <input type="file" id="User_Photo" style="height:20px;width:200px;" name="username" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
-        </div>*@
+                    <input id="User_Photo1" type="hidden" />
                 </td>
             </tr>
             <tr>
@@ -124,8 +121,8 @@
             <tr>
                 <td></td>
                 <td>
-                    <input id="Button1" type="button" value="提交" onclick="Save()" />
-                    <input id="Button1" type="button" value="重置" />
+                    <input id="Button1" type="button" class="btn btn-success" value="提交" onclick="Save()" />
+                    <input id="Button1" type="button" class="btn btn-danger" value="重置" />
                 </td>
             </tr>
         </table>
@@ -267,7 +264,8 @@
                 ShowCity(data.user_Province);
                 ShowDistrict(data.user_City);
                 $('#User_Address').val(data.user_Address);
-                $('#upload').attr("src", "http://localhost:49764"+data.user_Photo);
+                $('#upload').attr("src", "http://localhost:49764" + data.user_Photo);
+                $('#User_Photo1').val(data.user_Photo);
                 switch (data.user_ProductId) {
                     case 1:
                         $("input[name='User_ProductId']").get(0).checked = true;
@@ -320,7 +318,11 @@
         var fileUpload = $("#User_Photo").get(0);
         var file = fileUpload.files[0];
         var data = new FormData();
-        data.append(file.name, file);
+        if (file == undefined) {
+            var path = $('#Material_Image1').val();
+        } else {
+            data.append(file.name, file);
+        }
         var Id = localStorage["editid"];
         var User_Id = $('#User_Id').val();
         var User_Name = $('#User_Name').val();
@@ -356,6 +358,7 @@
         obj.User_Address = User_Address;
         obj.User_ProductId = parseInt(User_ProductId);
         obj.User_Area = User_Area;
+        obj.User_Photo = $('#User_Photo1').val();
         $.ajax({
             url: "http://localhost:49764/api/user/UpdateSingleUser?obj=" + JSON.stringify(obj),
             data: data,
@@ -364,6 +367,7 @@
             processData: false,
             success: function (data) {
                 if (data > 0) {
+                    alert("修改完毕");
                     location.href = "/user/showlist";
                 }
             }

@@ -47,6 +47,7 @@
                 <input type="button" value="CV组" onclick="ShowAll(1)" class="btn btn-block" style="background-color: Transparent; border-style: none;width:200px;float:left" />
                 <input type="button" value="DIA组" onclick="ShowAll(2)" class="btn btn-block" style="background-color: Transparent; border-style: none;width:200px;float:left" />
                 <input type="button" value="社区组" onclick="ShowAll(3)" class="btn btn-block" style="background-color: Transparent; border-style: none;width:200px;float:left" />
+                <input type="hidden" id="zu" value="" />
             </div>
             <table id="thistb" class="table table-hover">
                 <tr>
@@ -94,9 +95,11 @@
         var layer = layui.layer;
     });
     function ShowAll(id) {
-        ShowList(id, pageindex);
+        $('#zu').val(id);
+        ShowList(pageindex);
     }
     $(function () {
+        $('#zu').val(0);
         ShowDepartment();
     })
     function ShowDepartment() {
@@ -158,7 +161,7 @@
                 $('#ShowJob').append(str);
             }
         })
-        ShowList(0, pageindex);
+        ShowList(pageindex);
     }
     function ProvinceChange() {
         var pid = $('#ShowProvince').val();
@@ -192,7 +195,8 @@
             }
         })
     }
-    function ShowList(product, index) {
+    function ShowList(index) {
+        var product = $('#zu').val();
         var txt_Sel = $('#txt_Sel').val();
         var ShowDepartment = $('#ShowDepartment').val() == null ? 0 : $('#ShowDepartment').val();
         var ShowProvince = $('#ShowProvince').val() == null ? 0 : $('#ShowProvince').val();
@@ -218,35 +222,32 @@
                 $('#tb').append(str);
             }
         })
-        localStorage["selectid"] = product;
-
         $('input[type="checkbox"]').prop("checked", false);
     }
     function Page(num) {
-        var selectid = parseInt(localStorage["selectid"]);
         switch (num) {
             case 'first':
                 pageindex = 1;
-                ShowList(selectid, pageindex);
+                ShowList(pageindex);
                 break;
             case 'last':
                 pageindex = pageindex - 1 < 0 ? 1 : (pageindex - 1);
-                ShowList(selectid, pageindex);
+                ShowList(pageindex);
                 break;
             case 'next':
                 pageindex = pageindex + 1 > pagetotal ? pagetotal : (pageindex + 1);
-                ShowList(selectid, pageindex);
+                ShowList(pageindex);
                 break;
             case 'end':
                 pageindex = pagetotal;
-                ShowList(selectid, pageindex);
+                ShowList( pageindex);
                 break;
             default:
                 break;
         }
     }
     function Select() {
-        ShowList(0, 1);
+        ShowList(1);
     }
     function Lok(id) {
         var html = '<div id="upt"></div>';
@@ -332,7 +333,7 @@
                     console.log(data);
                 }
             })
-            ShowList(0);
+            ShowList(1);
         }
         
     }
@@ -455,7 +456,7 @@
                 }
             });
         });
-        ShowList(0);
+        ShowList(1);
     }
     function UpdateDepartment() {
         var ids = GetChkId();
@@ -556,7 +557,7 @@
                 }
             });
         });
-        ShowList(0);
+        ShowList(1);
     }
     function Dead() {
         var ids = GetChkId();
@@ -631,7 +632,7 @@
                 }
             });
         });
-        ShowList(0);
+        ShowList(1);
     }
     function Freeze() {
         var ids = GetChkId();
@@ -708,7 +709,7 @@
                 }
             });
         });
-        ShowList(0);
+        ShowList(1);
     }
     function Edit(id) {
         location.href = "/user/EditUser";

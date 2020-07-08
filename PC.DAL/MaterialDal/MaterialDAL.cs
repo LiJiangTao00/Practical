@@ -417,7 +417,8 @@ namespace PC.DAL.MaterialDal
         {
             using (SqlConnection conn = new SqlConnection("Data Source=192.168.43.93;Initial Catalog=Practial;User ID=sa;Pwd=12345"))
             {
-                return conn.Query<ShowMaterialApprove>($"select *  from  MaterialTable m  join OrderTable o on o.Order_MId = m.Id join MaterialTypeTable t on m.Material_TypeId = t.Id join ActivityTable a on m.Material_Activity_Id = a.Id join UserTable u on o.Order_User_Id = u.Id join ProductTable p on o.Order_Product_Id = p.Id join DepartmentTable d on o.Order_Department_Id = d.Id join JobTable j on o.Order_Job_Id = j.Id join PlaceTable g on o.Order_Area_Id = g.Id where o.Id = {Id}").ToList();
+                List<ShowMaterialApprove> list = conn.Query<ShowMaterialApprove>($"select *  from  MaterialTable m  join OrderTable o on o.Order_MId = m.Id join MaterialTypeTable t on m.Material_TypeId = t.Id join ActivityTable a on m.Material_Activity_Id = a.Id join UserTable u on o.Order_User_Id = u.Id join ProductTable p on o.Order_Product_Id = p.Id join DepartmentTable d on o.Order_Department_Id = d.Id join JobTable j on o.Order_Job_Id = j.Id join PlaceTable g on o.Order_Area_Id = g.Id where m.Id = {Id}").ToList();
+                return list;
             }
         }
 

@@ -65,38 +65,7 @@ namespace PC.API.Controllers.MaterialManagement
             return _bll.SelMaterial(Materialid, Materialname, Materialprice,Materialprice1, PageIndex, PageSize);
         }
 
-        /// <summary>
-        /// 添加物料
-        /// </summary>
-        /// <param name="mod"></param>
-        /// <returns></returns>
-        [HttpPost]
-        public int AddMaterial(string obj)
-        {
-            MaterialTableModel m = JsonConvert.DeserializeObject<MaterialTableModel>(obj);
-            var s = m.Material_Image;
-            if (Request.Form.Files.Count > 0)
-            {
-                //获取物理路径 webtootpath
-                string path = _hostEnvironment.ContentRootPath + "\\wwwroot\\img";
-                if (!Directory.Exists(path))
-                {
-                    Directory.CreateDirectory(path);
-                }
-                var file = Request.Form.Files[0];
-                string fileExt = file.FileName.Split('.')[file.FileName.Split('.').Length - 1];
-                string filename = Guid.NewGuid().ToString() + "." + fileExt;
-                string fileFullName = path + "\\" + filename;
-                using (FileStream fs = System.IO.File.Create(fileFullName))
-                {
-                    file.CopyTo(fs);
-                    fs.Flush();
-                }
-                m.Material_Image = "/img/" + filename;
-            }
-
-                return _bll.AddMaterial(m);
-        }
+        
 
         /// <summary>
         /// 显示活动列表
@@ -259,16 +228,68 @@ namespace PC.API.Controllers.MaterialManagement
         {
             return _bll.ShowMaterialFill(Id).First();
         }
+        /// <summary>
+        /// 添加物料
+        /// </summary>
+        /// <param name="mod"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public int AddMaterial(string obj)
+        {
+            MaterialTableModel m = JsonConvert.DeserializeObject<MaterialTableModel>(obj);
+            var s = m.Material_Image;
+            if (Request.Form.Files.Count > 0)
+            {
+                //获取物理路径 webtootpath
+                string path = _hostEnvironment.ContentRootPath + "\\wwwroot\\img";
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
+                var file = Request.Form.Files[0];
+                string fileExt = file.FileName.Split('.')[file.FileName.Split('.').Length - 1];
+                string filename = Guid.NewGuid().ToString() + "." + fileExt;
+                string fileFullName = path + "\\" + filename;
+                using (FileStream fs = System.IO.File.Create(fileFullName))
+                {
+                    file.CopyTo(fs);
+                    fs.Flush();
+                }
+                m.Material_Image = "/img/" + filename;
+            }
 
+            return _bll.AddMaterial(m);
+        }
         /// <summary>
         /// 修改物料
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-       [HttpPost]
-        public int UpdMaterial([FromForm]MaterialTableModel model)
+        [HttpPost]
+        public int UpdMaterial(string obj)
         {
-            return _bll.UpdMaterial(model);
+            MaterialTableModel m = JsonConvert.DeserializeObject<MaterialTableModel>(obj);
+            var s = m.Material_Image;
+            if (Request.Form.Files.Count > 0)
+            {
+                //获取物理路径 webtootpath
+                string path = _hostEnvironment.ContentRootPath + "\\wwwroot\\img";
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
+                var file = Request.Form.Files[0];
+                string fileExt = file.FileName.Split('.')[file.FileName.Split('.').Length - 1];
+                string filename = Guid.NewGuid().ToString() + "." + fileExt;
+                string fileFullName = path + "\\" + filename;
+                using (FileStream fs = System.IO.File.Create(fileFullName))
+                {
+                    file.CopyTo(fs);
+                    fs.Flush();
+                }
+                m.Material_Image = "/img/" + filename;
+            }
+            return _bll.UpdMaterial(m);
         }
 
         /// <summary>

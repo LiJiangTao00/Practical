@@ -17,7 +17,7 @@
         </div>
 
         <input type="button" value="添加职务" class="btn btn-primary" style="width:80px" onclick="Add()" />
-        <table>
+        <table class="table table-hover">
             <tr>
                 <td>选择</td>
                 <td>职务名称</td>
@@ -31,7 +31,7 @@
         </table>
         <div>
             <input id="chk" type="checkbox" onclick="GetChk()" />全选
-            <input type="button" value="批量删除" onclick="PiDel()" />
+            <input type="button" value="批量删除" class="btn btn-danger" onclick="PiDel()" />
         </div>
     </div>
 </body>
@@ -249,6 +249,7 @@
                 }
             });
         });
+        ShowTb();
     }
     function Edit(id) {
         var html = '<table style="width:400px;height:300px;margin-top:20px" id="uptTb"></table>';

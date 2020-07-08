@@ -120,7 +120,7 @@ namespace PC.DAL.UserDAL
                 switch (flag)
                 {
                     case 1:
-                        sql += " and User_Phone=" + name;
+                        sql += " and User_Phone like '%" + name + "%'";
                         break;
                     case 2:
                         sql += " and User_Name like '%" + name + "%'";
